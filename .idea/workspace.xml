@@ -4,11 +4,51 @@
     <option name="autoReloadType" value="SELECTIVE" />
   </component>
   <component name="ChangeListManager">
-    <list default="true" id="e2fdcfee-e7c4-4f52-a3e8-27cf7be62a7d" name="Changes" comment="" />
+    <list default="true" id="e2fdcfee-e7c4-4f52-a3e8-27cf7be62a7d" name="Changes" comment="">
+      <change afterPath="$PROJECT_DIR$/ITDproject/app/Themes/ThemeButton.tsx" afterDir="false" />
+      <change afterPath="$PROJECT_DIR$/ITDproject/app/Wrapper.tsx" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/.idea/workspace.xml" beforeDir="false" afterPath="$PROJECT_DIR$/.idea/workspace.xml" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/ITDproject/app/(tabs)/_layout.tsx" beforeDir="false" afterPath="$PROJECT_DIR$/ITDproject/app/(tabs)/_layout.tsx" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/ITDproject/app/(tabs)/explore.tsx" beforeDir="false" />
+      <change beforePath="$PROJECT_DIR$/ITDproject/app/(tabs)/index.tsx" beforeDir="false" afterPath="$PROJECT_DIR$/ITDproject/app/(tabs)/index.tsx" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/ITDproject/app/+not-found.tsx" beforeDir="false" />
+      <change beforePath="$PROJECT_DIR$/ITDproject/app/_layout.tsx" beforeDir="false" />
+      <change beforePath="$PROJECT_DIR$/ITDproject/assets/fonts/SpaceMono-Regular.ttf" beforeDir="false" />
+      <change beforePath="$PROJECT_DIR$/ITDproject/assets/images/adaptive-icon.png" beforeDir="false" />
+      <change beforePath="$PROJECT_DIR$/ITDproject/assets/images/favicon.png" beforeDir="false" />
+      <change beforePath="$PROJECT_DIR$/ITDproject/assets/images/icon.png" beforeDir="false" />
+      <change beforePath="$PROJECT_DIR$/ITDproject/assets/images/partial-react-logo.png" beforeDir="false" />
+      <change beforePath="$PROJECT_DIR$/ITDproject/assets/images/react-logo.png" beforeDir="false" />
+      <change beforePath="$PROJECT_DIR$/ITDproject/assets/images/react-logo@2x.png" beforeDir="false" />
+      <change beforePath="$PROJECT_DIR$/ITDproject/assets/images/react-logo@3x.png" beforeDir="false" />
+      <change beforePath="$PROJECT_DIR$/ITDproject/assets/images/splash-icon.png" beforeDir="false" />
+      <change beforePath="$PROJECT_DIR$/ITDproject/components/Collapsible.tsx" beforeDir="false" />
+      <change beforePath="$PROJECT_DIR$/ITDproject/components/ExternalLink.tsx" beforeDir="false" />
+      <change beforePath="$PROJECT_DIR$/ITDproject/components/HapticTab.tsx" beforeDir="false" />
+      <change beforePath="$PROJECT_DIR$/ITDproject/components/HelloWave.tsx" beforeDir="false" />
+      <change beforePath="$PROJECT_DIR$/ITDproject/components/ParallaxScrollView.tsx" beforeDir="false" />
+      <change beforePath="$PROJECT_DIR$/ITDproject/components/ThemedText.tsx" beforeDir="false" />
+      <change beforePath="$PROJECT_DIR$/ITDproject/components/ThemedView.tsx" beforeDir="false" />
+      <change beforePath="$PROJECT_DIR$/ITDproject/components/ui/IconSymbol.ios.tsx" beforeDir="false" />
+      <change beforePath="$PROJECT_DIR$/ITDproject/components/ui/IconSymbol.tsx" beforeDir="false" />
+      <change beforePath="$PROJECT_DIR$/ITDproject/components/ui/TabBarBackground.ios.tsx" beforeDir="false" />
+      <change beforePath="$PROJECT_DIR$/ITDproject/components/ui/TabBarBackground.tsx" beforeDir="false" />
+      <change beforePath="$PROJECT_DIR$/ITDproject/hooks/useColorScheme.ts" beforeDir="false" />
+      <change beforePath="$PROJECT_DIR$/ITDproject/hooks/useColorScheme.web.ts" beforeDir="false" />
+      <change beforePath="$PROJECT_DIR$/ITDproject/hooks/useThemeColor.ts" beforeDir="false" />
+      <change beforePath="$PROJECT_DIR$/ITDproject/ios/ITDproject.xcodeproj/project.pbxproj" beforeDir="false" afterPath="$PROJECT_DIR$/ITDproject/ios/ITDproject.xcodeproj/project.pbxproj" afterDir="false" />
+    </list>
     <option name="SHOW_DIALOG" value="false" />
     <option name="HIGHLIGHT_CONFLICTS" value="true" />
     <option name="HIGHLIGHT_NON_ACTIVE_CHANGELIST" value="false" />
     <option name="LAST_RESOLUTION" value="IGNORE" />
+  </component>
+  <component name="FileTemplateManagerImpl">
+    <option name="RECENT_TEMPLATES">
+      <list>
+        <option value="TypeScript JSX File" />
+      </list>
+    </option>
   </component>
   <component name="Git.Settings">
     <option name="RECENT_GIT_ROOT_PATH" value="$PROJECT_DIR$" />
@@ -35,7 +75,9 @@
   </component>
   <component name="PropertiesComponent"><![CDATA[{
   "keyToString": {
+    "ASKED_SHARE_PROJECT_CONFIGURATION_FILES": "true",
     "RunOnceActivity.ShowReadmeOnStart": "true",
+    "SHARE_PROJECT_CONFIGURATION_FILES": "true",
     "git-widget-placeholder": "main",
     "last_opened_file_path": "/Users/Schule/Documents/ProjektBestellSystemITO1",
     "node.js.detected.package.eslint": "true",
@@ -43,10 +85,28 @@
     "node.js.selected.package.eslint": "(autodetect)",
     "node.js.selected.package.tslint": "(autodetect)",
     "nodejs_package_manager_path": "npm",
+    "npm.lint.executor": "Run",
     "ts.external.directory.path": "/Users/Schule/Documents/ProjektBestellSystemITO1/ITDproject/node_modules/typescript/lib",
     "vue.rearranger.settings.migration": "true"
   }
 }]]></component>
+  <component name="RunManager">
+    <configuration name="lint" type="js.build_tools.npm" temporary="true" nameIsGenerated="true">
+      <package-json value="$PROJECT_DIR$/ITDproject/package.json" />
+      <command value="run" />
+      <scripts>
+        <script value="lint" />
+      </scripts>
+      <node-interpreter value="project" />
+      <envs />
+      <method v="2" />
+    </configuration>
+    <recent_temporary>
+      <list>
+        <item itemvalue="npm.lint" />
+      </list>
+    </recent_temporary>
+  </component>
   <component name="SharedIndexes">
     <attachedChunks>
       <set>
@@ -63,7 +123,7 @@
       <option name="presentableId" value="Default" />
       <updated>1757060153983</updated>
       <workItem from="1757060155053" duration="514000" />
-      <workItem from="1757060670456" duration="1047000" />
+      <workItem from="1757060670456" duration="7218000" />
     </task>
     <servers />
   </component>
