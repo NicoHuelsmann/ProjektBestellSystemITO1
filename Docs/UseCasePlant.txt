@@ -1,0 +1,26 @@
+@startuml
+skinparam packageStyle rectangle
+
+top to bottom direction
+
+:Koch: as Koch
+:Kellner: as Kellner
+
+left to right direction
+
+
+rectangle Diagramm {
+  usecase "Bestellung abschließen" as BstAbschließen
+  usecase "Bestellung Detailliert Einsehen" as BstEinsehen
+  usecase "Bestellung auflisten" as BstListe
+  usecase "Produkte einer Bestellung hinzufügen" as BstProduktHinzu
+  usecase "Bestellung aufnehmen" as BstAufnehmen
+}
+Koch --> BstAbschließen
+Koch --> BstEinsehen
+Kellner --> BstEinsehen
+Kellner --> BstProduktHinzu
+Kellner --> BstAufnehmen
+
+@enduml
+
