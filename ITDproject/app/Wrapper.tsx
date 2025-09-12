@@ -6,7 +6,7 @@ interface WrapperProps {
     children: ReactNode;
 }
 
-export default function Wrapper({ children }: WrapperProps) {
+export default function Wrapper({ children }: WrapperProps):React.JSX.Element {
     return (
         <View
             style={{

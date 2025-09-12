@@ -1,31 +1,34 @@
-import {Platform, StyleSheet, Text} from 'react-native';
 import ThemeButton from "@/app/Themes/ThemeButton";
 import Wrapper from '../Wrapper'
+import {useEffect, useState} from "react";
+
 
 export default function HomeScreen() {
+  const [connect,setConnect] = useState<boolean>(false);
+  useEffect(() => {
+    const ping = async () => {
+      try {
+        const response = await fetch("http://localhost:9000/health");
+        if (!response.ok) {
+          console.error("Fehler:", response.status);
+          return;
+        }
+        const data = await response.json();
+        if(data.ok){
+          setConnect(true)
+        }
+      } catch (err) {
+        console.error("Fetch Fehler:", err);
+      }
+    };
+
+    ping();
+  }, []);
   return (
    <Wrapper>
-       <ThemeButton text={'test'} onPress={() => ''} position={{left:0,bottom:0}}/>
+       <ThemeButton text={'test'} onPress={() =>'' } position={{left:0,bottom:0}}/>
 
    </Wrapper>
   );
 }
 
-const styles = StyleSheet.create({
-  titleContainer: {
-    flexDirection: 'row',
-    alignItems: 'center',
-    gap: 8,
-  },
-  stepContainer: {
-    gap: 8,
-    marginBottom: 8,
-  },
-  reactLogo: {
-    height: 178,
-    width: 290,
-    bottom: 0,
-    left: 0,
-    position: 'absolute',
-  },
-});
