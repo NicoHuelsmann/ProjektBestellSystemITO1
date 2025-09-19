@@ -5,7 +5,7 @@
   "scripts": {
     "devN": "ts-node src/server.ts",
     "build": "tsc",
-    "start": "node dist/server.js"
+    "start": "npx ts-node src/server.ts"
   },
   "keywords": [],
   "author": "",

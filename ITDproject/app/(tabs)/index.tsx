@@ -1,6 +1,7 @@
 import ThemeButton from "@/app/Themes/ThemeButton";
 import Wrapper from '../Wrapper'
 import {useEffect, useState} from "react";
+import {Logo} from "@/components/logo";
 
 
 export default function HomeScreen() {
@@ -27,7 +28,7 @@ export default function HomeScreen() {
   return (
    <Wrapper>
        <ThemeButton text={'test'} onPress={() =>'' } position={{left:0,bottom:0}}/>
-
+     <Logo/>
    </Wrapper>
   );
 }
