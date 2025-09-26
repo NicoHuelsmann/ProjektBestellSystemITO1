@@ -1,14 +1,13 @@
 @startuml
 skinparam packageStyle rectangle
+skinparam linetype ortho
 
 top to bottom direction
-
-:Koch: as Koch
-:Kellner: as Kellner
-:Gast: as Guest
-
 left to right direction
 
+actor Koch
+actor Kellner
+actor Gast as Guest
 
 rectangle Diagramm {
   usecase "Bestellung abschließen" as BstAbschließen
@@ -18,15 +17,21 @@ rectangle Diagramm {
   usecase "Bestellung aufnehmen" as BstAufnehmen
   usecase "Menükarte einsehen" as MenuKarte
   usecase "Bestellung für eigenen Tisch aufgeben" as BstForOwn
-  BstEinsehen .> BstListe : extends
-  BstProduktHinzu .> MenuKarte : includes
-  BstAufnehmen .> BstProduktHinzu : include
-  BstForOwn .> BstProduktHinzu : include
 }
+
+
+' normale Beziehungen
+BstEinsehen .> BstListe : <<extends>>
 Koch --> BstAbschließen
 Koch --> BstEinsehen
 Kellner --> BstListe
 Kellner --> BstProduktHinzu
 Kellner --> BstAufnehmen
 
+BstProduktHinzu .left.> MenuKarte : <<include>>
+
+BstAufnehmen .right.> BstProduktHinzu : <<include>>
+
+BstForOwn .right.> BstProduktHinzu : <<include>>
 @enduml
+
