@@ -1,0 +1,123 @@
+@startchen
+
+entity BESK {
+    BESNR
+    TISCH
+    KTEXT
+    STID   
+    MWSTKZ
+    BESDAT
+    BESTIME
+}
+
+entity BESP {
+    BESNR
+    POSNR
+    ARTNR
+    PTEXT
+    MENGE
+    STRNO
+}
+
+entity TSTA {
+    STID      
+    STTXT     
+}
+
+entity ARTIKEL {
+    ARTNR              
+    ARTEXT
+    KTEXT
+    LTEXT
+    PICT          
+    BSRBG  
+    KAT
+    PERNR
+    LOEKZ
+}
+
+entity PREIS {
+    ARTNR             
+    PRDAT
+    PRWRT
+    PERNR
+}
+
+entity MWST {
+    MWSTKZ         
+    MWSTWRT
+}
+
+entity USR01 {
+    PERSNR
+    USRNAM
+    NAME1
+    NAME2
+    PWCODE
+    ROLEID
+}
+
+entity ROLES {
+    ROLEKZ
+    ROLNAM
+}
+
+entity FAKTUR {
+    BELNR
+    ERDAT
+    ERTIM
+    BUDAT
+    BUTIM
+    RBTT
+    ZUSA
+    BELTXT
+    USNAM
+}
+
+entity FAKPOS {
+    BELNR
+    BESNR
+}
+
+
+
+relationship BESK_BESP {
+}
+
+relationship BESK_TSTA {
+}
+
+relationship BESP_ARTIKEL {
+}
+
+relationship MWST_BESK {
+}
+
+relationship ARTIKEL_PREIS {
+}
+
+relationship USER_ROLE {
+}
+
+relationship USER_ROLE {
+}
+
+USR01 -1- USER_ROLE
+USER_ROLE -1- ROLES
+
+BESK -1- BESK_BESP
+BESK_BESP -N- BESP
+
+BESK -N- BESK_TSTA
+BESK_TSTA -1- TSTA
+
+BESP -N- BESP_ARTIKEL
+BESP_ARTIKEL -M- ARTIKEL
+
+BESK -1- MWST_BESK
+MWST_BESK -N- MWST
+
+ARTIKEL -1- ARTIKEL_PREIS
+ARTIKEL_PREIS -1- PREIS
+
+@endchen
