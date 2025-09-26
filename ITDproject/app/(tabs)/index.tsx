@@ -10,7 +10,7 @@ import DetailsScreen from "@/app/(tabs)/DetailsScreen";
 import {createNativeStackNavigator} from "@react-navigation/native-stack";
 const Stack = createNativeStackNavigator();
 
-export default function HomeScreen() {
+export default function Login() {
   const navigation = useNavigation();
   const [connect,setConnect] = useState<boolean>(false);
   const [text, setText] = useState<string>('test');
