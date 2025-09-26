@@ -1,5 +1,6 @@
 {
   "expo": {
+    "plugins": ["expo-router"],
     "name": "ITDproject",
     "slug": "ITDproject",
     "version": "1.0.0",
@@ -17,7 +18,8 @@
         "foregroundImage": "./assets/images/adaptive-icon.png",
         "backgroundColor": "#ffffff"
       },
-      "edgeToEdgeEnabled": true
+      "edgeToEdgeEnabled": true,
+      "package": "com.anonymous.ITDproject"
     },
     "web": {
       "bundler": "metro",
