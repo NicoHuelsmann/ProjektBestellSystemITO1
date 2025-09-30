@@ -7,6 +7,8 @@ interface ThemeButtonProps {
         left: number;
         bottom: number;
     }
+    paddingTop?: number;
+    fontSize?: number;
 }
 
 export default function ThemeButton(props: ThemeButtonProps):React.JSX.Element{
@@ -14,20 +16,22 @@ export default function ThemeButton(props: ThemeButtonProps):React.JSX.Element{
         <View style={{
             width: 200,
             height:50,
+            paddingTop: props.paddingTop,
         }} >
             <TouchableOpacity style={{
                 width: 200,
                 height:50,
                 left: props.position.left,
                 bottom:props.position.bottom,
-                backgroundColor:'red',
+                backgroundColor:'blue',
                 alignItems: 'center',
                 justifyContent: 'center',
+                borderRadius:10,
             }} onPress={()=>{props.onPress()}}>
                 <Text
                 style={{
                     color:'white',
-                    fontSize:18,
+                    fontSize:18
                 }}>
                     {props.text}
                 </Text>
