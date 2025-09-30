@@ -5,16 +5,20 @@ interface ThemeTextInputProps {
     placeholder: string;
     value?: string;
     onChangeText: (value: string) => void;
+    paddingTop?: number
+    fontSize?: number
 }
 export default function ThemeTextInput(props: ThemeTextInputProps):React.JSX.Element {
 
-    return (<View style={{height:40,width:200}}>
+    return (<View style={{height:55,width:300,paddingTop: props.paddingTop, paddingBottom:props.paddingTop}}>
         <TextInput
-            style={{height:40,
-                width:200,
+            style={{height:55,
+                width:300,
                 backgroundColor:'#d9d9d9',
                 borderRadius:10,
-                paddingLeft:10}}
+                paddingLeft:10,
+                fontSize:props.fontSize? props.fontSize:18,
+        }}
             placeholderTextColor={'#ababab'}
             placeholder={props.placeholder}
             onChangeText={(value: string) => props.onChangeText(value)}/>

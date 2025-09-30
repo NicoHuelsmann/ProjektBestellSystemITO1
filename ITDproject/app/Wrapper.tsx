@@ -15,6 +15,7 @@ export default function Wrapper({ children }: WrapperProps):React.JSX.Element {
                 paddingBottom: Platform.OS !== 'web' ? 5 : 0,
                 width: '100%',
                 height: '100%',
+                backgroundColor:'#faa344'
             }}
         >
             {children}
