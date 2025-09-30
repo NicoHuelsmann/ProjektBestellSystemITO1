@@ -23,7 +23,7 @@ export default function Login() {
     const intervall = setInterval(()=> {
       const ping = async () => {
         try {
-          const response = await fetch("http://10.160.14.51:9000/health");
+          const response = await fetch("http://localhost:9000/Login");
           if (!response.ok) {
             console.error("Fehler:", response.status);
             return;
