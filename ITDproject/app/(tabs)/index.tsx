@@ -11,6 +11,7 @@ import {createNativeStackNavigator} from "@react-navigation/native-stack";
 import * as Crypto from "expo-crypto";
 import {Platform, Text, View} from "react-native";
 import {LoginLogo} from "@/components/loginLogo";
+import {screenbackground} from "@/constants/Colors";
 const Stack = createNativeStackNavigator();
 
 export default function Login() {
@@ -56,6 +57,10 @@ export default function Login() {
   }
   return (
    <Wrapper>
+       <View style={{flex: 1,
+           paddingTop: Platform.OS !== 'web' ? 5 : 0,
+           paddingBottom: Platform.OS !== 'web' ? 5 : 0,
+       }}>
      <Link href={'/'}/>
      <View style={{width:'100%',height:'100%',alignItems: "center",justifyContent:"center"}}>
      <View style={{bottom:Platform.OS !== 'web'?-25:0,alignItems: "center",justifyContent:"center"}}>
@@ -69,11 +74,12 @@ export default function Login() {
      <ThemeButton paddingTop={Platform.OS !== 'web'?30: 5} text={'Login'} onPress={() => {
        tryToLogin()
      } } position={{left:0,bottom:0}}/>
-       <View style={{width:400,justifyContent:"center",alignItems:'center',bottom:-50}}>
-      {error? <Text style={{color:'red', paddingTop:0,position:'absolute'}}>Username oder Password ist Falsch</Text>: null}
-      </View>
-         <ThemeButton text={'Registrieren'} onPress={() => router.push('/Registrieren')} position={{bottom:0,left:0}}/>
-     </View>
+            <View style={{width:400,justifyContent:"center",alignItems:'center',bottom:-50}}>
+                {error? <Text style={{color:'red', paddingTop:0,position:'absolute'}}>Username oder Password ist Falsch</Text>: null}
+            </View>
+                <ThemeButton text={'Registrieren'} backgroundColor={screenbackground} onPress={() => router.push('/Registrieren')} position={{bottom:-80,left:0}}/>
+            </View>
+       </View>
    </Wrapper>
   );
 }
