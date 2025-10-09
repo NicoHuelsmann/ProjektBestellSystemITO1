@@ -1,86 +1,69 @@
-import "expo-router/entry";
-import {Link, router} from "expo-router";
-import ThemeButton from "@/app/Themes/ThemeButton";
-import Wrapper from '../Wrapper'
-import {useEffect, useState} from "react";
-import {Logo} from "@/components/logo";
-import ThemeTextInput from "@/app/Themes/ThemeTextInput";
-import {useNavigation} from "expo-router";
-import DetailsScreen from "@/app/(tabs)/DetailsScreen";
-import {createNativeStackNavigator} from "@react-navigation/native-stack";
-import * as Crypto from "expo-crypto";
-import {Platform, Text, View} from "react-native";
-import {LoginLogo} from "@/components/loginLogo";
-import {screenbackground} from "@/constants/Colors";
-const Stack = createNativeStackNavigator();
+import React, { useEffect, useState } from "react";
+import { View, Text, ScrollView, ActivityIndicator } from "react-native";
 
-export default function Login() {
-  const navigation = useNavigation();
-  const [connect,setConnect] = useState<boolean>(false);
-  const [text, setText] = useState<string>('');
-  const [password, setPassword] = useState<string>('');
-  const [error, setError] = useState<boolean>(false);
+export default function UserList() {
+  const [users, setUsers] = useState<any[]>([]);
+  const [loading, setLoading] = useState(true);
+  const [error, setError] = useState<string | null>(null);
+
   useEffect(() => {
-    const intervall = setInterval(()=> {
-      const ping = async () => {
-        try {
-          const response = await fetch("http://localhost:9000/Login");
-          if (!response.ok) {
-            console.error("Fehler:", response.status);
-            return;
-          }
-          const data = await response.json();
-          if(data.ok){
-            setConnect(true)
-          }
-        } catch (err) {
-          console.error("Fetch Fehler:", err);
+    const fetchUsers = async () => {
+      try {
+        const response = await fetch("http://localhost:9000/users");
+        console.log("Antwortstatus:", response.status);
+        const data = await response.json();
+        console.log("Antwortdaten:", data);
+
+        if (data.success) {
+          setUsers(data.users);
+        } else {
+          setError("Server hat keine Benutzer geliefert");
         }
-      };
+      } catch (err: any) {
+        console.error("Fehler beim Abrufen:", err);
+        setError(err.message);
+      } finally {
+        setLoading(false);
+      }
+    };
 
-      ping();
-    },10000)
-  clearInterval(intervall)
-  });
+    fetchUsers();
+  }, []);
 
-  const tryToLogin = async () =>{
-  const resultDatabase = '';
-    const hashedPassword = await Crypto.digestStringAsync(
-        Crypto.CryptoDigestAlgorithm.SHA256,
-        password
+  if (loading) {
+    return (
+      <View style={{ flex: 1, justifyContent: "center", alignItems: "center" }}>
+        <ActivityIndicator size="large" color="blue" />
+        <Text>Lade Benutzer...</Text>
+      </View>
     );
-  if(hashedPassword === resultDatabase){
-    router.push("/DetailsScreen")
-  }else{
-    setError(true);
   }
+
+  if (error) {
+    return (
+      <View style={{ flex: 1, justifyContent: "center", alignItems: "center" }}>
+        <Text style={{ color: "red" }}>Fehler: {error}</Text>
+      </View>
+    );
   }
+
+  if (users.length === 0) {
+    return (
+      <View style={{ flex: 1, justifyContent: "center", alignItems: "center" }}>
+        <Text style={{ color: "white" }}>Keine Benutzer gefunden.</Text>
+      </View>
+    );
+  }
+
   return (
-   <Wrapper>
-       <View style={{flex: 1,
-           paddingTop: Platform.OS !== 'web' ? 5 : 0,
-           paddingBottom: Platform.OS !== 'web' ? 5 : 0,
-       }}>
-     <Link href={'/'}/>
-     <View style={{width:'100%',height:'100%',alignItems: "center",justifyContent:"center"}}>
-     <View style={{bottom:Platform.OS !== 'web'?-25:0,alignItems: "center",justifyContent:"center"}}>
-       <LoginLogo/>
-       <Text style={{color:'white',fontSize:32}}>
-         Bestellapp
-       </Text>
-     </View>
-     <ThemeTextInput placeholder={'Username'} onChangeText={setText} paddingTop={Platform.OS === 'web'?5:35} fontSize={26}/>
-     <ThemeTextInput placeholder={'Password'} onChangeText={setPassword} paddingTop={Platform.OS === 'web'?5:25} fontSize={26}/>
-     <ThemeButton paddingTop={Platform.OS !== 'web'?30: 5} text={'Login'} onPress={() => {
-       tryToLogin()
-     } } position={{left:0,bottom:0}}/>
-            <View style={{width:400,justifyContent:"center",alignItems:'center',bottom:-50}}>
-                {error? <Text style={{color:'red', paddingTop:0,position:'absolute'}}>Username oder Password ist Falsch</Text>: null}
-            </View>
-                <ThemeButton text={'Registrieren'} backgroundColor={screenbackground} onPress={() => router.push('/Registrieren')} position={{bottom:-80,left:0}}/>
-            </View>
-       </View>
-   </Wrapper>
+    <ScrollView style={{ padding: 20 }}>
+      {users.map((user, index) => (
+        <View key={index} style={{ marginBottom: 10 }}>
+          <Text style={{ color: "white", fontSize: 18 }}>
+            Benutzer: {user.username}
+          </Text>
+        </View>
+      ))}
+    </ScrollView>
   );
 }
-

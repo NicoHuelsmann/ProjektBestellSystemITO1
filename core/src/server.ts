@@ -20,32 +20,28 @@ app.post("/echo", (req: Request, res: Response) => {
 });
 
 // Login
-app.post("/login", (req: Request, res: Response) => {
-
-    const db = new sqlite3.Database('/home/nico/Dokumente/ProjektBestellSystemITO1/core/database/datenbank.db', (err) => {
+app.get("/users", (req: Request, res: Response) => {
+  const db = new sqlite3.Database(
+    'C:\\Users\\nicoh\\Documents\\GitHub\\ProjektBestellSystemITO1\\core\\database\\datenbank.db',
+    (err) => {
       if (err) {
-        console.error("Fehler beim Öffnen der Datenbank:", err.message);
+        console.error(err.message);
         res.status(500).json({ error: err.message });
         return;
       }
-    });
-    
-    db.get(
-      'SELECT 1 FROM USR01 WHERE USRNAM = ? AND PWCODE = ?',
-      [req.body.username, req.body.password],
-      (err, row) => {
-        if (err) {
-          console.error("Fehler beim SELECT:", err.message);
-          res.status(500).json({ error: err.message });
-        } else if (row) {
-          res.json({ success: true, row });
-        } else {
-          res.json({ success: false, message: "Kein Benutzer gefunden" });
-        }
-        db.close();
-      }
-    );
+    }
+  );
+
+  db.all('SELECT * FROM USR01', [], (err, rows) => {
+    if (err) {
+      res.status(500).json({ error: err.message });
+    } else {
+      res.json({ success: true, users: rows });
+    }
+    db.close();
+  });
 });
+
 
 app.listen(PORT, () => {
   console.log(`Server läuft auf http://localhost:${PORT}`);
