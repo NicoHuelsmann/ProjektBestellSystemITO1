@@ -13,6 +13,9 @@ import {Platform, Text, View} from "react-native";
 import {LoginLogo} from "@/components/loginLogo";
 import {screenbackground} from "@/constants/Colors";
 import asyncStorage from "@react-native-async-storage/async-storage/src/AsyncStorage";
+import React from "react";
+import fetchUser from "@/fetchRequests/fetchUser";
+import fetchRole from "@/fetchRequests/fetchRole";
 const Stack = createNativeStackNavigator();
 
 export default function Login() {
@@ -45,13 +48,14 @@ export default function Login() {
   });
 
   const tryToLogin = async () =>{
-  const resultDatabase = '';
+  const resultDatabase:{userId:number,password:string} = await fetchUser(text);
     const hashedPassword = await Crypto.digestStringAsync(
         Crypto.CryptoDigestAlgorithm.SHA256,
         password
     );
-  if(true){
-      await asyncStorage.setItem('user','Kellner')
+  if(resultDatabase.password === hashedPassword){
+      const resultRole = await fetchRole(resultDatabase.userId);
+      await asyncStorage.setItem('user',resultRole)
       console.log(await asyncStorage.getItem('user'))
     router.push("/HomeScreen")
   }else{
