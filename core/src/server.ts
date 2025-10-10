@@ -1,10 +1,10 @@
-import express, { Request, response, Response } from "express";
+import express, { Request, Response } from "express";
 import cors from "cors";
 import sqlite3, { Database } from "sqlite3";
-import path from "path";
 
 const app = express();
 const PORT = process.env.PORT || 9000;
+const dbpath = '/home/nico/Dokumente/ProjektBestellSystemITO1/core/database/datenbank.db'
 
 app.use(cors());
 app.use(express.json());
@@ -20,9 +20,8 @@ app.post("/echo", (req: Request, res: Response) => {
 });
 
 // Login
-app.get("/users", (req: Request, res: Response) => {
-  const db = new sqlite3.Database(
-    '/home/nico/Dokumente/ProjektBestellSystemITO1/core/database/datenbank.db',
+app.post("/users", (req: Request, res: Response) => {
+  const db = new sqlite3.Database(dbpath,
     (err) => {
       if (err) {
         console.error(err.message);
@@ -33,9 +32,8 @@ app.get("/users", (req: Request, res: Response) => {
   );
   (async () => {
     try {
-      const user = await fetchAll(db, `SELECT * FROM USR01`, []);
-      console.log(user);
-      res.json(user);
+      const user: any = await fetchFirst(db, `SELECT USR01.PERSNR, USR01.PWCODE FROM USR01 WHERE USR01.UNAME=?`, [req.query.usrnam as string]);
+      res.json({userID: user.PERSNR, password: user.PWCODE});
     } catch (err) {
       console.log(err);
     } finally {
@@ -47,22 +45,17 @@ app.get("/users", (req: Request, res: Response) => {
 
 // Role
 app.post("/role", (req: Request, res: Response) => {
-  const db = new sqlite3.Database(
-    '/home/nico/Dokumente/ProjektBestellSystemITO1/core/database/datenbank.db',
+    const db = new sqlite3.Database(dbpath,
     (err) => {
       if (err) {
         console.error(err.message);
         res.status(500).json({ error: err.message });
         return;
       }
-    }
-  );
+    });
 
   (async () => {
-    const db = new sqlite3.Database("/home/nico/Dokumente/ProjektBestellSystemITO1/core/database/datenbank.db");
-  
     try {
-      console.log (req.query.persnr);
       const user = await fetchFirst(db, `SELECT USR01.ROLEID FROM USR01 WHERE USR01.PERSNR=?`, [req.query.persnr as string]);
       res.json(user);
     } catch (err) {
@@ -74,7 +67,35 @@ app.post("/role", (req: Request, res: Response) => {
 });
 
 // Artikel
-app.get("/")
+app.get("/artikel", (req: Request, res: Response) => {
+    const db = new sqlite3.Database(dbpath,
+    (err) => {
+        if (err) {
+            console.error(err.message);
+            res.status(500).json({ error: err.message });
+            return;
+        }
+    });
+
+    (async () => {
+        try {
+            const artikel: any = await fetchAll(db, 'SELECT ARTIKEL.ARTNR, ARTIKEL.KTEXT FROM ARTIKEL', []);
+            //if (artikel.status !== 200) throw Error(artikel.status);
+            const data: any[] = [];
+            for (let i = 0; i < artikel.length; i++){
+                data.push({
+                    artikelnummer: artikel[i].ARTNR,
+                    beschreibung: artikel[i].KTEXT
+                });
+            }
+            res.json(data);
+        } catch (err) {
+            console.log(err);
+        } finally {
+            db.close();
+        }
+    })();
+});
 
 export const fetchAll = async (db: Database, sql: string, params: Array<string>) => {
   return new Promise((resolve, reject) => {
