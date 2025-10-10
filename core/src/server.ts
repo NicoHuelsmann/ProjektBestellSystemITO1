@@ -1,6 +1,6 @@
-import express, { Request, Response } from "express";
+import express, { Request, response, Response } from "express";
 import cors from "cors";
-import sqlite3 from "sqlite3";
+import sqlite3, { Database } from "sqlite3";
 import path from "path";
 
 const app = express();
@@ -20,32 +20,81 @@ app.post("/echo", (req: Request, res: Response) => {
 });
 
 // Login
-app.post("/login", (req: Request, res: Response) => {
-
-    const db = new sqlite3.Database('/home/nico/Dokumente/ProjektBestellSystemITO1/core/database/datenbank.db', (err) => {
+app.get("/users", (req: Request, res: Response) => {
+  const db = new sqlite3.Database(
+    '/home/nico/Dokumente/ProjektBestellSystemITO1/core/database/datenbank.db',
+    (err) => {
       if (err) {
-        console.error("Fehler beim Öffnen der Datenbank:", err.message);
+        console.error(err.message);
         res.status(500).json({ error: err.message });
         return;
       }
-    });
-    
-    db.get(
-      'SELECT 1 FROM USR01 WHERE USRNAM = ? AND PWCODE = ?',
-      [req.body.username, req.body.password],
-      (err, row) => {
-        if (err) {
-          console.error("Fehler beim SELECT:", err.message);
-          res.status(500).json({ error: err.message });
-        } else if (row) {
-          res.json({ success: true, row });
-        } else {
-          res.json({ success: false, message: "Kein Benutzer gefunden" });
-        }
-        db.close();
-      }
-    );
+    }
+  );
+  (async () => {
+    try {
+      const user = await fetchAll(db, `SELECT * FROM USR01`, []);
+      console.log(user);
+      res.json(user);
+    } catch (err) {
+      console.log(err);
+    } finally {
+      db.close();
+    }
+  })();
+
 });
+
+// Role
+app.post("/role", (req: Request, res: Response) => {
+  const db = new sqlite3.Database(
+    '/home/nico/Dokumente/ProjektBestellSystemITO1/core/database/datenbank.db',
+    (err) => {
+      if (err) {
+        console.error(err.message);
+        res.status(500).json({ error: err.message });
+        return;
+      }
+    }
+  );
+
+  (async () => {
+    const db = new sqlite3.Database("/home/nico/Dokumente/ProjektBestellSystemITO1/core/database/datenbank.db");
+  
+    try {
+      console.log (req.query.persnr);
+      const user = await fetchFirst(db, `SELECT USR01.ROLEID FROM USR01 WHERE USR01.PERSNR=?`, [req.query.persnr as string]);
+      res.json(user);
+    } catch (err) {
+      console.log(err);
+    } finally {
+      db.close();
+    }
+  })();
+});
+
+// Artikel
+app.get("/")
+
+export const fetchAll = async (db: Database, sql: string, params: Array<string>) => {
+  return new Promise((resolve, reject) => {
+    db.all(sql, params, (err, rows) => {
+      if (err) reject(err);
+      resolve(rows);
+    });
+  });
+};
+
+export const fetchFirst = async (db: Database, sql: string, params: Array<string>) => {
+  return new Promise((resolve, reject) => {
+    db.get(sql, params, (err, row) => {
+      if (err) reject(err);
+      resolve(row);
+    });
+  });
+};
+
+
 
 app.listen(PORT, () => {
   console.log(`Server läuft auf http://localhost:${PORT}`);
