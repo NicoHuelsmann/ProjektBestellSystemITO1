@@ -7,3 +7,4 @@ const tintColorLight = '#0a7ea4';
 const tintColorDark = '#fff';
 export const screenbackground = '#faa344'
 export const warning = '#FF0000'
+export const basicButtonColor = 'blue'

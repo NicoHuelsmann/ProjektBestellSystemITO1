@@ -1,5 +1,6 @@
 import React from "react";
 import {Text, TouchableOpacity, View} from "react-native";
+import {basicButtonColor} from "@/constants/Colors";
 interface ThemeButtonProps {
     text: string;
     onPress: () => void;
@@ -15,21 +16,19 @@ interface ThemeButtonProps {
         height?: number;
     };
     textColor?: string;
+    alignSelf?:'auto'|'center'| 'flex-start'| 'flex-end'|'stretch'|'baseline';
 }
 
 export default function ThemeButton(props: ThemeButtonProps):React.JSX.Element{
     return (
-        <View style={{
-            width: 200,
-            height:50,
-            paddingTop: props.paddingTop,
-        }} >
             <TouchableOpacity style={{
+                paddingTop: props.paddingTop,
+                alignSelf: props.alignSelf ? props.alignSelf : 'auto',
                 width: props.size?.width !== undefined ? props.size?.width : 200,
                 height:props.size?.height !== undefined? props.size?.height : 50,
                 left: props.position.left,
                 bottom:props.position.bottom,
-                backgroundColor:props.backgroundColor !== undefined? props.backgroundColor:'blue',
+                backgroundColor:props.backgroundColor !== undefined? props.backgroundColor:basicButtonColor,
                 alignItems: 'center',
                 justifyContent: 'center',
                 borderRadius:10,
@@ -42,6 +41,5 @@ export default function ThemeButton(props: ThemeButtonProps):React.JSX.Element{
                     {props.text}
                 </Text>
             </TouchableOpacity>
-        </View>
     )
 }
