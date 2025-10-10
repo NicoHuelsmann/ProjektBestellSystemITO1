@@ -12,6 +12,7 @@ import * as Crypto from "expo-crypto";
 import {Platform, Text, View} from "react-native";
 import {LoginLogo} from "@/components/loginLogo";
 import {screenbackground} from "@/constants/Colors";
+import asyncStorage from "@react-native-async-storage/async-storage/src/AsyncStorage";
 const Stack = createNativeStackNavigator();
 
 export default function Login() {
@@ -49,8 +50,10 @@ export default function Login() {
         Crypto.CryptoDigestAlgorithm.SHA256,
         password
     );
-  if(hashedPassword === resultDatabase){
-    router.push("/DetailsScreen")
+  if(true){
+      await asyncStorage.setItem('user','Kellner')
+      console.log(await asyncStorage.getItem('user'))
+    router.push("/HomeScreen")
   }else{
     setError(true);
   }

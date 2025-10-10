@@ -7,17 +7,16 @@ import {Link, router} from "expo-router";
 import {Text, View} from "react-native";
 import {screenbackground, warning} from "@/constants/Colors";
 import ThemeButton from "@/app/Themes/ThemeButton";
-import {error} from "@expo/fingerprint/cli/build/utils/log";
-
 export default function HomeScreen(): React.JSX.Element {
     const [userRole,setUserRole]= useState<string | null >('')
     const localStorage = async () => {
         const a =  await asyncStorage.getItem('user')
-        setUserRole(a)
+        if(a !== null) setUserRole(a);
+
     }
     useEffect(() => {
-        localStorage()
-    },[])
+        localStorage();
+    },[userRole])
 
     const error = ():React.JSX.Element => {
     return(
@@ -33,11 +32,18 @@ export default function HomeScreen(): React.JSX.Element {
         </View>
     )
     }
-
+    const checkRole = ():React.JSX.Element => {
+        if(userRole === 'Koch'){
+            return <Koch/>
+        }
+        else if(userRole === 'Kellner'){
+            return <Kellner/>
+        }
+        else return error()
+    }
     return (
         <Wrapper>
-            {userRole === 'Koch' ? <Koch/> : error()}
-            {userRole === 'Kellner'? <Kellner/> : <View style={{backgroundColor:screenbackground}}/>}
+            {checkRole()}
         </Wrapper>
     )
 }
