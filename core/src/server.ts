@@ -79,13 +79,17 @@ app.get("/artikel", (req: Request, res: Response) => {
 
     (async () => {
         try {
-            const artikel: any = await fetchAll(db, 'SELECT ARTIKEL.ARTNR, ARTIKEL.KTEXT FROM ARTIKEL', []);
-            //if (artikel.status !== 200) throw Error(artikel.status);
+                        const artikel: any = await fetchAll(db, `Select a.ARTNR, a.KTEXT, p.PRWRT 
+                                                    from preis p
+                                                    join artikel a on a.ARTNR = p.ARTNR
+                                                    where p.PRDAT = 
+	                                                  (select max(p2.prdat) from preis p2 where p2.ARTNR = a.ARTNR);`, []);
             const data: any[] = [];
             for (let i = 0; i < artikel.length; i++){
                 data.push({
                     artikelnummer: artikel[i].ARTNR,
-                    beschreibung: artikel[i].KTEXT
+                    beschreibung: artikel[i].KTEXT,
+                    preis: artikel[i].PRWRT
                 });
             }
             res.json(data);
