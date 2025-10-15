@@ -9,17 +9,17 @@ const dbpath = './database/datenbank.db';
 app.use(cors());
 app.use(express.json());
 
-// Health
+// HealthGET
 app.get("/health", (req: Request, res: Response) => {
   res.json({ ok: true });
 });
 
-// Echo
+// EchoPOST
 app.post("/echo", (req: Request, res: Response) => {
   res.json({ youSent: req.body });
 });
 
-// Login
+// LoginPOST
 app.post("/users", (req: Request, res: Response) => {
   const db = new sqlite3.Database(dbpath,
     (err) => {
@@ -43,7 +43,7 @@ app.post("/users", (req: Request, res: Response) => {
 
 });
 
-// Role
+// RolePOST
 app.post("/role", (req: Request, res: Response) => {
     const db = new sqlite3.Database(dbpath,
     (err) => {
@@ -66,7 +66,7 @@ app.post("/role", (req: Request, res: Response) => {
   })();
 });
 
-// Artikel
+// ArtikelGET
 app.get("/artikel", (req: Request, res: Response) => {
     const db = new sqlite3.Database(dbpath,
     (err) => {
@@ -79,11 +79,11 @@ app.get("/artikel", (req: Request, res: Response) => {
 
     (async () => {
         try {
-                        const artikel: any = await fetchAll(db, `Select a.ARTNR, a.KTEXT, p.PRWRT 
-                                                    from preis p
-                                                    join artikel a on a.ARTNR = p.ARTNR
-                                                    where p.PRDAT = 
-	                                                  (select max(p2.prdat) from preis p2 where p2.ARTNR = a.ARTNR);`, []);
+            const artikel: any = await fetchAll(db, `Select a.ARTNR, a.KTEXT, p.PRWRT 
+                                        from preis p
+                                        join artikel a on a.ARTNR = p.ARTNR
+                                        where p.PRDAT = 
+                                        (select max(p2.prdat) from preis p2 where p2.ARTNR = a.ARTNR);`, []);
             const data: any[] = [];
             for (let i = 0; i < artikel.length; i++){
                 data.push({
@@ -93,6 +93,35 @@ app.get("/artikel", (req: Request, res: Response) => {
                 });
             }
             res.json(data);
+        } catch (err) {
+            console.log(err);
+        } finally {
+            db.close();
+        }
+    })();
+});
+
+// TischeSetGET
+app.get("/tischeSet", (req: Request, res: Response) => {
+    const db = new sqlite3.Database(dbpath,
+    (err) => {
+        if (err) {
+            console.error(err.message);
+            res.status(500).json({ error: err.message });
+            return;
+        }
+    });
+
+    (async () => {
+        try {
+            const result: any = await fetchFirst(db, `SELECT COALESCE(
+                                        (SELECT MIN(t1.TISCHID) + 1
+                                        FROM TISCHE t1
+                                        WHERE NOT EXISTS (SELECT 1 FROM TISCHE t2 WHERE t2.TISCHID = t1.TISCHID + 1)
+                                          ), 1
+                                        ) AS nextId`, []);
+            await fetchAll(db, `INSERT INTO TISCHE (TISCHID) VALUES (?)`, [result.nextId]);
+            res.json({ ok : true, TischNr : result.nextId });
         } catch (err) {
             console.log(err);
         } finally {
