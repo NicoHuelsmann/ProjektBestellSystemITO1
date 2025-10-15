@@ -4,7 +4,7 @@ import sqlite3, { Database } from "sqlite3";
 
 const app = express();
 const PORT = process.env.PORT || 9000;
-const dbpath = '/home/nico/Dokumente/ProjektBestellSystemITO1/core/database/datenbank.db'
+const dbpath = './database/datenbank.db';
 
 app.use(cors());
 app.use(express.json());
