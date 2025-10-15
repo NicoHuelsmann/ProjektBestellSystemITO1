@@ -3,6 +3,7 @@ import ThemePopUp from "@/app/Themes/ThemePopUp";
 import {Dimensions, Platform, Text, View} from "react-native";
 import ThemeButton from "@/app/Themes/ThemeButton";
 import ThemeTextInput from "@/app/Themes/ThemeTextInput";
+import fetchSetTable from "@/fetchRequests/fetchSetTable";
 interface addTabelProps {
     addDialogOpen: boolean;
     closeDialog: () => void;
@@ -13,19 +14,14 @@ export default function AddTabel(props:addTabelProps):React.JSX.Element{
     const { width, height } = Dimensions.get("window");
     const [tablename, setTablename] = React.useState<string>("");
 
-    const add = () => {
-        if(tablename.length > 0){
-            props.onSubmit(tablename)
-            props.closeDialog()
-        }
-
+    const add = async () => {
+        await fetchSetTable()
     }
 
     if(props.addDialogOpen){
         return (
             <ThemePopUp onBlur={props.closeDialog}>
-                <Text>Test</Text>
-                <ThemeTextInput placeholder={'Tisch Name'} onChangeText={setTablename}/>
+                <Text>Möchten sie einen Tisch hinzufügen ? </Text>
                 <ThemeButton text={'Hinzufügen'}
                              onPress={add}
                              position={{left:-25,bottom:Platform.OS!== 'web'?-height+(height*0.3):-height+(height*0.55)}}

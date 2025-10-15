@@ -6,13 +6,14 @@ export default  async  function fetchRole(userId:number){
             method: "POST",
             headers: {
                 "Content-Type": "application/json",
+                "Accept": "application/json",
             },
             body: JSON.stringify({
-                userId: userId,
+                persnr: userId,
             })
         })
         if(res.status === 200){
-            return res.json()
+            return await res.json()
         }else{
             throw Error(`Unable to fetch user ${res.status}`)
         }

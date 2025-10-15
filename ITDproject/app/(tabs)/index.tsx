@@ -48,15 +48,14 @@ export default function Login() {
   });
 
   const tryToLogin = async () =>{
-  const resultDatabase:{userId:number,password:string} = await fetchUser(text);
+  const resultDatabase:{userID:number,password:string} = await fetchUser(text);
     const hashedPassword = await Crypto.digestStringAsync(
         Crypto.CryptoDigestAlgorithm.SHA256,
         password
     );
   if(resultDatabase.password === hashedPassword){
-      const resultRole = await fetchRole(resultDatabase.userId);
-      await asyncStorage.setItem('user',resultRole)
-      console.log(await asyncStorage.getItem('user'))
+      const resultRole = await fetchRole(resultDatabase.userID);
+      await asyncStorage.setItem('user',resultRole.ROLNAM)
     router.push("/HomeScreen")
   }else{
     setError(true);

@@ -1,6 +1,6 @@
 import {url} from "@/fetchRequests/config";
 
-export default  async  function fetchUser(email:string){
+export default  async  function fetchUser(userName:string){
     try{
     const res= await fetch(`${url}/users`,{
         method: "POST", // oder "GET", je nachdem, was dein Server erwartet
@@ -8,11 +8,11 @@ export default  async  function fetchUser(email:string){
             "Content-Type": "application/json",
         },
         body: JSON.stringify({
-            email: email,
+            usrnam: userName,
         })
     })
     if(res.status === 200){
-        return res.json()
+        return await res.json()
     }else{
         throw Error(`Unable to fetch user ${res.status}`)
     }
