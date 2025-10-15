@@ -1,6 +1,7 @@
 import express, { Request, Response } from "express";
 import cors from "cors";
 import sqlite3, { Database } from "sqlite3";
+import userEndpoint from "./endPoints/userEndpoint";
 
 const app = express();
 const PORT = process.env.PORT || 9000;
@@ -21,26 +22,9 @@ app.post("/echo", (req: Request, res: Response) => {
 
 // LoginPOST
 app.post("/users", (req: Request, res: Response) => {
-  const db = new sqlite3.Database(dbpath,
-    (err) => {
-      if (err) {
-        console.error(err.message);
-        res.status(500).json({ error: err.message });
-        return;
-      }
-    }
-  );
-  (async () => {
-    try {
-      const user: any = await fetchFirst(db, `SELECT USR01.PERSNR, USR01.PWCODE FROM USR01 WHERE USR01.UNAME=?`, [req.query.usrnam as string]);
-      res.json({userID: user.PERSNR, password: user.PWCODE});
-    } catch (err) {
-      console.log(err);
-    } finally {
-      db.close();
-    }
-  })();
-
+    (async () => {
+        res.json(await userEndpoint(dbpath,req.body.usrnam))
+    })()
 });
 
 // RolePOST
@@ -56,8 +40,10 @@ app.post("/role", (req: Request, res: Response) => {
 
   (async () => {
     try {
-      const user = await fetchFirst(db, `SELECT USR01.ROLEID FROM USR01 WHERE USR01.PERSNR=?`, [req.query.persnr as string]);
-      res.json(user);
+        console.log(req.body)
+        const user: any = await fetchFirst(db, `SELECT USR01.ROLEID FROM USR01 WHERE USR01.PERSNR=?`, [req.body.persnr as string]);
+        const role = await fetchFirst(db, `SELECT ROLES.ROLNAM FROM ROLES WHERE ROLEKZ=?`, [user.ROLEID as string]);
+      res.json(role);
     } catch (err) {
       console.log(err);
     } finally {
@@ -102,7 +88,7 @@ app.get("/artikel", (req: Request, res: Response) => {
 });
 
 // TischeSetGET
-app.get("/tischeSet", (req: Request, res: Response) => {
+app.get("/setTische", (req: Request, res: Response) => {
     const db = new sqlite3.Database(dbpath,
     (err) => {
         if (err) {

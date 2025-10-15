@@ -1,0 +1,23 @@
+import {url} from "@/fetchRequests/config";
+
+export default  async  function fetchRole(userId:number){
+    try{
+        const res= await fetch(`${url}/role`,{
+            method: "POST",
+            headers: {
+                "Content-Type": "application/json",
+                "Accept": "application/json",
+            },
+            body: JSON.stringify({
+                persnr: userId,
+            })
+        })
+        if(res.status === 200){
+            return await res.json()
+        }else{
+            throw Error(`Unable to fetch user ${res.status}`)
+        }
+    }catch (e){
+        console.log(e)
+    }
+};
