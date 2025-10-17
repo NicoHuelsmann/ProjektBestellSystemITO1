@@ -1,15 +1,15 @@
 import {url} from "@/fetchRequests/config";
 
-export default  async  function fetchRole(userId:number){
+export default  async  function fetchGetCurrentOrder(orderId:any){
     try{
-        const res= await fetch(`${url}/role`,{
+        const res= await fetch(`${url}/getCurrentOrder`,{
             method: "POST",
             headers: {
                 "Content-Type": "application/json",
                 "Accept": "application/json",
             },
             body: JSON.stringify({
-                persnr: userId,
+                orderId: orderId,
             })
         })
         if(res.status === 200){
