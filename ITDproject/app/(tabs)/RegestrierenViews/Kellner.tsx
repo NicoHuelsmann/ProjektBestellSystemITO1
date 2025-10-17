@@ -11,9 +11,12 @@ import {DatenbankTischResultInterface} from "@/interfaces/datenbankTischResultIn
 import {BestellungsInferface} from "@/interfaces/BestellungsInferface";
 import ThemeTextInput from "@/app/Themes/ThemeTextInput";
 import BestellungPopUp from "@/app/(tabs)/Kellner/BestellungPopUp";
+<<<<<<< Updated upstream
 import fetchSetCurrentOrder from "@/fetchRequests/fetchSetCurrentOrder";
 import fetchGetCurrentOrder from "@/fetchRequests/fetchGetCurrentOrder";
 import {data} from "browserslist";
+=======
+>>>>>>> Stashed changes
 
 export default function Kellner():React.JSX.Element {
     const [addDialogOpen, setAddDialogOpen] = React.useState(false);

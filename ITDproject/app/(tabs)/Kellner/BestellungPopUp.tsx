@@ -7,9 +7,12 @@ import asyncStorage from "@react-native-async-storage/async-storage/src/AsyncSto
 import fetchArtikle from "@/fetchRequests/fetchArtikle";
 import ThemeNumberPicker from "@/app/Themes/ThemeNumberPicker";
 import {router, usePathname} from "expo-router";
+<<<<<<< Updated upstream
 import fetchGetCurrentOrder from "@/fetchRequests/fetchGetCurrentOrder";
 import fetchSetCurrentOrder from "@/fetchRequests/fetchSetCurrentOrder";
 import fetchClearOrder from "@/fetchRequests/fetchClearOrder";
+=======
+>>>>>>> Stashed changes
 interface BestellungPopUpProps {
     tableId:number;
     openBestellungenDialog:boolean;
@@ -17,12 +20,17 @@ interface BestellungPopUpProps {
 }
 export default function BestellungPopUp({tableId,openBestellungenDialog, onBlur}:BestellungPopUpProps):React.JSX.Element | null{
     const [showFood,setShowFood] = useState<React.JSX.Element[]>([]);
+<<<<<<< Updated upstream
     const [currentArtickel ,setCurrentArtickel] = useState<any>();
     const [artikelCount,setArtikelCount] = useState<Map<number,number>>(new Map());
+=======
+    const [currentArtickel,setCurrentArtickel] = useState<any>();
+>>>>>>> Stashed changes
     const getArtike = async () =>{
         const result = await fetchArtikle()
         setCurrentArtickel(result)
     }
+<<<<<<< Updated upstream
     const heandleReturn = (numberPickerValue:number,arikelId:number) => {
         setArtikelCount((prev) => {
             const newMap = new Map(prev);
@@ -47,6 +55,10 @@ export default function BestellungPopUp({tableId,openBestellungenDialog, onBlur}
         //hier datenbankabfrage
         const getNumber = await fetchGetCurrentOrder(tableId)
         console.log(getNumber)
+=======
+    const possilbeFood = async () => {
+        //hier datenbankabfrage
+>>>>>>> Stashed changes
         if(currentArtickel.length > 0){
             setShowFood([])
             for (let i = 0; i < currentArtickel.length; i++){
@@ -66,7 +78,11 @@ export default function BestellungPopUp({tableId,openBestellungenDialog, onBlur}
                                   elevation: 5}}>
                             <Text>{currentArtickel[i].beschreibung}</Text>
                             <Text>{currentArtickel[i].preis}€</Text>
+<<<<<<< Updated upstream
                             <ThemeNumberPicker setNumer={getNumber !== undefined?getNumber[i].value:0} return={(e) => heandleReturn(e,currentArtickel[i].artikelnummer)}/>
+=======
+                            <ThemeNumberPicker/>
+>>>>>>> Stashed changes
                         </View>
                     ])
 
@@ -100,10 +116,14 @@ export default function BestellungPopUp({tableId,openBestellungenDialog, onBlur}
                </View>
 
 
+<<<<<<< Updated upstream
                <ThemeButton text={'OK'} onPress={() => {
                    heandleNumbers()
                    onBlur()
                }} position={{left:-2,bottom:-90}}/>
+=======
+               <ThemeButton text={'OK'} onPress={() => onBlur()} position={{left:-2,bottom:-90}}/>
+>>>>>>> Stashed changes
            </ThemePopUp>
        )
    }else return null
