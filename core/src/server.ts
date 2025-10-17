@@ -115,6 +115,34 @@ app.get("/setTische", (req: Request, res: Response) => {
         }
     })();
 });
+/**
+ * Es werden die bestellungen über alle Geräte sycronisiert
+ */
+const currentBestellungenSync:{ orderId:any, data:{} }[] = []
+app.post('/setCurrentOrder', (req: Request, res: Response) =>{
+    currentBestellungenSync.push(req.body)
+})
+app.post('/getCurrentOrder', (req: Request, res: Response) =>{
+    if(currentBestellungenSync.filter((d) => d.orderId === req.body.orderId) !== undefined){
+        const result = currentBestellungenSync.filter((d) => d.orderId === req.body.orderId)
+        if(result[0] !== undefined) res.json(result[0].data)
+
+    }
+    res.send(undefined)
+})
+app.post("/removeCurrentOrder", (req: Request, res: Response) => {
+    const orderId = req.body.orderId;
+    const lengthBefore = currentBestellungenSync.length;
+    const filtered = currentBestellungenSync.filter((d) => d.orderId !== orderId);
+
+    if (filtered.length === lengthBefore) {
+        return res.status(404).json({ error: "Order not found" });
+    }
+    currentBestellungenSync.length = 0; // Array leeren
+    currentBestellungenSync.push(...filtered); // gefilterte Items wieder einfügen
+
+    res.json({ message: "Order removed", currentBestellungenSync });
+});
 
 export const fetchAll = async (db: Database, sql: string, params: Array<string>) => {
   return new Promise((resolve, reject) => {

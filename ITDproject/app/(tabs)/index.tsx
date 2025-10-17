@@ -77,9 +77,9 @@ export default function Login() {
      </View>
      <ThemeTextInput placeholder={'Username'} onChangeText={setText} paddingTop={Platform.OS === 'web'?5:35} fontSize={26}/>
      <ThemeTextInput placeholder={'Password'} onChangeText={setPassword} paddingTop={Platform.OS === 'web'?5:25} fontSize={26}/>
-     <ThemeButton paddingTop={Platform.OS !== 'web'?30: 5} text={'Login'} onPress={() => {
+     <ThemeButton  position={{bottom: Platform.OS !== 'web'? -40:0 }} text={'Login'} onPress={() => {
        tryToLogin()
-     } } position={{left:0,bottom:0}}/>
+     } }/>
             <View style={{width:400,justifyContent:"center",alignItems:'center',bottom:-50}}>
                 {error? <Text style={{color:'red', paddingTop:0,position:'absolute'}}>Username oder Password ist Falsch</Text>: null}
             </View>

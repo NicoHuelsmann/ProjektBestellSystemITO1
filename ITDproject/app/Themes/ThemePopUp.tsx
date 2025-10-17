@@ -5,14 +5,9 @@ import ThemeXButton from "@/app/Themes/ThemeXButton";
 interface ThemePopUpProps {
     children: ReactNode;
     onBlur: () => void;
+    platforme?: "ios" | "android" | "windows" | "macos" | "web";
 }
-export default function ThemePopUp({ children, onBlur}: ThemePopUpProps):React.JSX.Element{
-    const [width, setWidth] = React.useState<number>(0);
-    useEffect(() => {
-        const { width, height } = Dimensions.get("window");
-        setWidth(width);
-        console.log(width)
-    })
+export default function ThemePopUp({ children, onBlur,platforme}: ThemePopUpProps):React.JSX.Element{
 return (
 
     <View  style={{
@@ -40,8 +35,8 @@ return (
             onPress={onBlur}/>
         <View
             style={{
-                width: Platform.OS!== 'web' || width <475? '100%': 400,
-                height: Platform.OS!== 'web'|| width <475? '100%': 600,
+                width: platforme !== 'web' ? '100%': 400,
+                height: platforme !== 'web'? '100%': 600,
                 backgroundColor:'white',
                 borderRadius:Platform.OS!== 'web'? 0:15,
                 elevation:10,

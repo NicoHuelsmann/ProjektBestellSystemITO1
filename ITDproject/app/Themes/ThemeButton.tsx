@@ -4,9 +4,9 @@ import {basicButtonColor} from "@/constants/Colors";
 interface ThemeButtonProps {
     text: string;
     onPress: () => void;
-    position:{
-        left: number;
-        bottom: number;
+    position?:{
+        left?: number;
+        bottom?: number;
     }
     paddingTop?: number;
     fontSize?: number;
@@ -26,8 +26,8 @@ export default function ThemeButton(props: ThemeButtonProps):React.JSX.Element{
                 alignSelf: props.alignSelf ? props.alignSelf : 'auto',
                 width: props.size?.width !== undefined ? props.size?.width : 200,
                 height:props.size?.height !== undefined? props.size?.height : 50,
-                left: props.position.left,
-                bottom:props.position.bottom,
+                left: props.position?.left !== undefined ? props.position.left : 0,
+                bottom:props.position?.bottom !== undefined ? props.position.bottom : 0,
                 backgroundColor:props.backgroundColor !== undefined? props.backgroundColor:basicButtonColor,
                 alignItems: 'center',
                 justifyContent: 'center',
