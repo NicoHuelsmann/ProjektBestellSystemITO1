@@ -1,12 +1,12 @@
 import sqlite3 from "sqlite3";
 import {fetchAll} from "../server";
 
-export default async function ArtikelEndpoint(dbpath:string,username:string){
+export async function ArtikelEndpoint(dbpath:string){
     const db = new sqlite3.Database(dbpath,
         (err) => {
             if (err) {
                 console.error(err.message);
-                return;
+                return err;
             }
         }
     );
@@ -30,7 +30,42 @@ export default async function ArtikelEndpoint(dbpath:string,username:string){
     } finally {
         db.close();
     }
+    return null
+}
 
+function runAsync(db: sqlite3.Database, sql: string, params: any[]): Promise<number> {
+    return new Promise((resolve, reject) => {
+        db.run(sql, params, function (this: sqlite3.RunResult, err) {
+            if (err) {
+                reject(err);
+            } else {
+                resolve(this.lastID);
+            }
+        });
+    });
+}
 
-return null
+export async function ArtikelInsertEndpoint(dbpath: string, ArtikelBeschreibung: string, ArtikelPreis: number) {
+    const db = new sqlite3.Database(dbpath, (err) => {
+        if (err) {
+            console.error(err.message);
+            return;
+        }
+    });
+    try {
+        const lastID = await runAsync(db, 
+            `INSERT INTO ARTIKEL (KTEXT) VALUES (?)`, 
+            [ArtikelBeschreibung]
+        );
+        await runAsync(db, 
+            `INSERT INTO PREIS (ARTNR, PRWRT, PRDAT) VALUES (?, ?, DATE('now'))`, 
+            [lastID, ArtikelPreis]
+        );
+        return {artikelnummer: lastID };
+    } catch (err) {
+        console.log(err);
+        return { ok: false, error: err };
+    } finally {
+        db.close();
+    }
 }

@@ -3,8 +3,9 @@ import cors from "cors";
 import sqlite3, { Database } from "sqlite3";
 import userEndpoint from "./endPoints/userEndpoint";
 import RoleEndpoint from "./endPoints/RoleEndpoints";
-import ArtikelEndpoint from "./endPoints/ArtikelEndpoints";
-import TischeEndpoint from "./endPoints/TischeEndpoints";
+import { ArtikelEndpoint, ArtikelInsertEndpoint} from "./endPoints/ArtikelEndpoints";
+import { TischeSetEndpoint, TischeEndpoint } from "./endPoints/TischeEndpoints";
+import BestellungenEndpoint from "./endPoints/BestellungEndpoints";
 
 const app = express();
 const PORT = process.env.PORT || 9000;
@@ -23,7 +24,7 @@ app.post("/echo", (req: Request, res: Response) => {
   res.json({ youSent: req.body });
 });
 
-// LoginPOST
+// usersPOST
 app.post("/users", (req: Request, res: Response) => {
     (async () => {
         res.json(await userEndpoint(dbpath,req.body.usrnam))
@@ -33,22 +34,43 @@ app.post("/users", (req: Request, res: Response) => {
 // RolePOST
 app.post("/role", (req: Request, res: Response) => {
     (async () => {
-        res.json(await RoleEndpoint(dbpath,req.query.usrnam as string))
+        res.json(await RoleEndpoint(dbpath, req.body.usrnam))
     })()
 });
 
 // ArtikelGET
-app.get("/artikel", (req: Request, res: Response) => {
+app.get("/Artikel", (req: Request, res: Response) => {
     (async () => {
-        res.json(await ArtikelEndpoint(dbpath,req.query.usrnam as string))
+        res.json(await ArtikelEndpoint(dbpath))
+    })()
+});
+
+// ArtikelInsertPOST
+app.post("/ArtikelInsert", (req: Request, res: Response) => {
+    (async () => {
+        res.json(await ArtikelInsertEndpoint(dbpath, req.body.bezeichnung, req.body.preis))
     })()
 });
 
 // TischeSetGET
 app.get("/setTische", (req: Request, res: Response) => {
     (async () => {
-        res.json(await TischeEndpoint(dbpath,req.query.usrnam as string))
+        res.json(await TischeSetEndpoint(dbpath))
     })()
+});
+
+// TischeGetGET
+app.get("/Tische", (req: Request, res: Response) => {
+    (async () => {
+        res.json(await TischeEndpoint(dbpath))
+    })()
+});
+
+// BestellungenGET
+app.get("/Bestellungen" , (req: Request, res: Response) => {
+    (async () => {
+        res.json(await BestellungenEndpoint(dbpath, req.body.besnr))
+      })()
 });
 /**
  * Es werden die bestellungen über alle Geräte sycronisiert
@@ -56,7 +78,8 @@ app.get("/setTische", (req: Request, res: Response) => {
 const currentBestellungenSync:{ orderId:any, data:{} }[] = []
 app.post('/setCurrentOrder', (req: Request, res: Response) =>{
     currentBestellungenSync.push(req.body)
-})
+});
+
 app.post('/getCurrentOrder', (req: Request, res: Response) =>{
     if(currentBestellungenSync.filter((d) => d.orderId === req.body.orderId) !== undefined){
         const result = currentBestellungenSync.filter((d) => d.orderId === req.body.orderId)
@@ -64,7 +87,8 @@ app.post('/getCurrentOrder', (req: Request, res: Response) =>{
 
     }
     res.send(undefined)
-})
+});
+
 app.post("/removeCurrentOrder", (req: Request, res: Response) => {
     const orderId = req.body.orderId;
     const lengthBefore = currentBestellungenSync.length;
@@ -96,8 +120,6 @@ export const fetchFirst = async (db: Database, sql: string, params: Array<string
     });
   });
 };
-
-
 
 app.listen(PORT, () => {
   console.log(`Server läuft auf http://localhost:${PORT}`);
