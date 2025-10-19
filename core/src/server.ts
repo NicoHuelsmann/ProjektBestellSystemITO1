@@ -2,6 +2,9 @@ import express, { Request, Response } from "express";
 import cors from "cors";
 import sqlite3, { Database } from "sqlite3";
 import userEndpoint from "./endPoints/userEndpoint";
+import RoleEndpoint from "./endPoints/RoleEndpoints";
+import ArtikelEndpoint from "./endPoints/ArtikelEndpoints";
+import TischeEndpoint from "./endPoints/TischeEndpoints";
 
 const app = express();
 const PORT = process.env.PORT || 9000;
@@ -29,91 +32,23 @@ app.post("/users", (req: Request, res: Response) => {
 
 // RolePOST
 app.post("/role", (req: Request, res: Response) => {
-    const db = new sqlite3.Database(dbpath,
-    (err) => {
-      if (err) {
-        console.error(err.message);
-        res.status(500).json({ error: err.message });
-        return;
-      }
-    });
-
-  (async () => {
-    try {
-        console.log(req.body)
-        const user: any = await fetchFirst(db, `SELECT USR01.ROLEID FROM USR01 WHERE USR01.PERSNR=?`, [req.body.persnr as string]);
-        const role = await fetchFirst(db, `SELECT ROLES.ROLNAM FROM ROLES WHERE ROLEKZ=?`, [user.ROLEID as string]);
-      res.json(role);
-    } catch (err) {
-      console.log(err);
-    } finally {
-      db.close();
-    }
-  })();
+    (async () => {
+        res.json(await RoleEndpoint(dbpath,req.query.usrnam as string))
+    })()
 });
 
 // ArtikelGET
 app.get("/artikel", (req: Request, res: Response) => {
-    const db = new sqlite3.Database(dbpath,
-    (err) => {
-        if (err) {
-            console.error(err.message);
-            res.status(500).json({ error: err.message });
-            return;
-        }
-    });
-
     (async () => {
-        try {
-            const artikel: any = await fetchAll(db, `Select a.ARTNR, a.KTEXT, p.PRWRT 
-                                        from preis p
-                                        join artikel a on a.ARTNR = p.ARTNR
-                                        where p.PRDAT = 
-                                        (select max(p2.prdat) from preis p2 where p2.ARTNR = a.ARTNR);`, []);
-            const data: any[] = [];
-            for (let i = 0; i < artikel.length; i++){
-                data.push({
-                    artikelnummer: artikel[i].ARTNR,
-                    beschreibung: artikel[i].KTEXT,
-                    preis: artikel[i].PRWRT
-                });
-            }
-            res.json(data);
-        } catch (err) {
-            console.log(err);
-        } finally {
-            db.close();
-        }
-    })();
+        res.json(await ArtikelEndpoint(dbpath,req.query.usrnam as string))
+    })()
 });
 
 // TischeSetGET
 app.get("/setTische", (req: Request, res: Response) => {
-    const db = new sqlite3.Database(dbpath,
-    (err) => {
-        if (err) {
-            console.error(err.message);
-            res.status(500).json({ error: err.message });
-            return;
-        }
-    });
-
     (async () => {
-        try {
-            const result: any = await fetchFirst(db, `SELECT COALESCE(
-                                        (SELECT MIN(t1.TISCHID) + 1
-                                        FROM TISCHE t1
-                                        WHERE NOT EXISTS (SELECT 1 FROM TISCHE t2 WHERE t2.TISCHID = t1.TISCHID + 1)
-                                          ), 1
-                                        ) AS nextId`, []);
-            await fetchAll(db, `INSERT INTO TISCHE (TISCHID) VALUES (?)`, [result.nextId]);
-            res.json({ ok : true, TischNr : result.nextId });
-        } catch (err) {
-            console.log(err);
-        } finally {
-            db.close();
-        }
-    })();
+        res.json(await TischeEndpoint(dbpath,req.query.usrnam as string))
+    })()
 });
 /**
  * Es werden die bestellungen über alle Geräte sycronisiert
