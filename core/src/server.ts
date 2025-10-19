@@ -4,7 +4,7 @@ import sqlite3, { Database } from "sqlite3";
 import userEndpoint from "./endPoints/userEndpoint";
 import RoleEndpoint from "./endPoints/RoleEndpoints";
 import ArtikelEndpoint from "./endPoints/ArtikelEndpoints";
-import TischeEndpoint from "./endPoints/TischeEndpoints";
+import { TischeSetEndpoint, TischeGetEndpoint } from "./endPoints/TischeEndpoints";
 
 const app = express();
 const PORT = process.env.PORT || 9000;
@@ -47,7 +47,14 @@ app.get("/artikel", (req: Request, res: Response) => {
 // TischeSetGET
 app.get("/setTische", (req: Request, res: Response) => {
     (async () => {
-        res.json(await TischeEndpoint(dbpath,req.query.usrnam as string))
+        res.json(await TischeSetEndpoint(dbpath,req.query.usrnam as string))
+    })()
+});
+
+// TischeGetGET
+app.get("/getTische", (req: Request, res: Response) => {
+    (async () => {
+        res.json(await TischeGetEndpoint(dbpath,req.query.usrnam as string))
     })()
 });
 /**

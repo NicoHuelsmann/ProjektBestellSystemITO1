@@ -2,7 +2,7 @@ import sqlite3 from "sqlite3";
 import {fetchFirst} from "../server";
 import {fetchAll} from "../server";
 
-export default async function userEndpoint(dbpath:string,username:string){
+export async function TischeSetEndpoint(dbpath:string,username:string){
     const db = new sqlite3.Database(dbpath,
         (err) => {
             if (err) {
@@ -26,5 +26,25 @@ export default async function userEndpoint(dbpath:string,username:string){
         db.close();
     }
 
+return null
+}
+
+export async function TischeGetEndpoint(dbpath:string,username:string){
+    const db = new sqlite3.Database(dbpath,
+        (err) => {
+            if (err) {
+                console.error(err.message);
+                return;
+            }
+        }
+    );
+    try {
+        const result: any = await fetchAll(db, `SELECT TISCHID FROM TISCHE`, []);
+        return ({ ok : true, Tische : result });
+    } catch (err) {
+        console.log(err);
+    } finally {
+        db.close();
+    }
 return null
 }
