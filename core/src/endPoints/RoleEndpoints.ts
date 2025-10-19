@@ -6,7 +6,7 @@ export default async function RoleEndpoint(dbpath:string,username:string){
         (err) => {
             if (err) {
                 console.error(err.message);
-                return (err);
+                return err;
             }
         }
     );
@@ -17,13 +17,10 @@ export default async function RoleEndpoint(dbpath:string,username:string){
             role = await fetchFirst(db, `SELECT ROLES.ROLNAM FROM ROLES WHERE ROLEKZ=?`, [user.ROLEID]);
             return ({role: role.ROLNAM});
         }
-        return null;
     } catch (err) {
       console.log(err);
     } finally {
       db.close();
     }
-
-
-return null
+    return null
 }

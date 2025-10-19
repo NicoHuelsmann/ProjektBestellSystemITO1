@@ -18,7 +18,5 @@ export default async function userEndpoint(dbpath:string,username:string){
     } finally {
         db.close();
     }
-
-
-return null
+    return null
 }
