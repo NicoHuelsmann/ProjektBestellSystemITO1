@@ -59,7 +59,7 @@ export default function Kellner():React.JSX.Element {
                 }}
                 alignSelf={'flex-end'}
                 position={{left:-2,bottom:-90}}/>
-            <View style={{height:'100%',width:'100%',paddingLeft:40,paddingRight:40,flexDirection: 'row', justifyContent: 'flex-start',flexWrap: 'wrap',gap: 16 }}>
+            <View style={{height:'100%',width:'100%',paddingLeft:Platform.OS!== 'web'? 35:40,paddingRight:Platform.OS!== 'web'? 35:40,flexDirection: 'row', justifyContent: 'flex-start',flexWrap: 'wrap',gap: 16 }}>
                 {tabels}
             </View>
 

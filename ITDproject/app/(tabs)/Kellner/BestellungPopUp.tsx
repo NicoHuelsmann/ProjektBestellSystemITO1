@@ -1,6 +1,6 @@
 import React, {useEffect, useState} from "react";
 import ThemePopUp from "@/app/Themes/ThemePopUp";
-import {Platform, Text, View} from "react-native";
+import {Platform, ScrollView, Text, View} from "react-native";
 import ThemeTextInput from "@/app/Themes/ThemeTextInput";
 import ThemeButton from "@/app/Themes/ThemeButton";
 import asyncStorage from "@react-native-async-storage/async-storage/src/AsyncStorage";
@@ -39,14 +39,14 @@ export default function BestellungPopUp({tableId,openBestellungenDialog, onBlur}
         });
 
 
-        console.log(await fetchClearOrder(tableId));
+        await fetchClearOrder(tableId);
         await fetchSetCurrentOrder(tableId, result)
     }
 
     const possilbeFood = async () => {
         //hier datenbankabfrage
         const getNumber = await fetchGetCurrentOrder(tableId)
-        console.log(getNumber)
+
             //hier datenbankabfrage
             if (currentArtickel.length > 0) {
                 setShowFood([])
@@ -58,8 +58,8 @@ export default function BestellungPopUp({tableId,openBestellungenDialog, onBlur}
                                   flexDirection: 'column',
                                   alignItems: 'center',
                                   backgroundColor: 'white',
-                                  width: 80,
-                                  //height:40,
+                                  width: Platform.OS !== 'web'? 150:110,
+                                  height: 100,
                                   shadowColor: '#000',
                                   shadowOffset: {width: 2, height: 2},
                                   shadowOpacity: 0.3,
@@ -68,7 +68,7 @@ export default function BestellungPopUp({tableId,openBestellungenDialog, onBlur}
                               }}>
                             <Text>{currentArtickel[i].beschreibung}</Text>
                             <Text>{currentArtickel[i].preis}€</Text>
-                            <ThemeNumberPicker setNumer={getNumber !== undefined ? getNumber[i].value : 0}
+                            <ThemeNumberPicker size={Platform.OS !== 'web'? 1.4 :1} setNumer={getNumber !== undefined ? getNumber[i].value : 0}
                                                return={(e) => heandleReturn(e, currentArtickel[i].artikelnummer)}/>
                         </View>
                     ])
@@ -98,21 +98,26 @@ export default function BestellungPopUp({tableId,openBestellungenDialog, onBlur}
                 onBlur()
             }}>
                 <Text>Tisch Nr: {tableId}</Text>
-                <View style={{
+                <View>
+                <ScrollView  contentContainerStyle={{
+                    width: '100%',
+                    height: Platform.OS !== 'web'? '80%':480,
                     flexDirection: 'row',
                     justifyContent: 'space-between',
                     flexWrap: 'wrap',
                     gap: 16,
-                    paddingLeft: 10,
-                    paddingRight: 10,
+                    paddingLeft: Platform.OS !== 'web'? 35:10,
+                    paddingRight: Platform.OS !== 'web'? 35:10,
                 }}>
                     {showFood}
-                </View>
+                </ScrollView>
                 <ThemeButton text={'OK'} onPress={() => {
                     heandleNumbers()
                     onBlur()
-                }} position={{left: -2, bottom: -90}}/>
+                }} position={{left: 180, bottom: 0}}/>
+                </View>
             </ThemePopUp>
+
         )
     } return <></>
 }

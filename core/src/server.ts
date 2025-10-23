@@ -8,9 +8,10 @@ import { TischeSetEndpoint, TischeEndpoint } from "./endPoints/TischeEndpoints";
 import BestellungenEndpoint from "./endPoints/BestellungEndpoints";
 
 const app = express();
-const PORT = process.env.PORT || 9000;
+const PORT = 9000;
 const dbpath = './database/datenbank.db';
-
+//const HOST = '172.16.0.100'
+const HOST = 'localhost';
 app.use(cors());
 app.use(express.json());
 
@@ -34,7 +35,7 @@ app.post("/users", (req: Request, res: Response) => {
 // RolePOST
 app.post("/role", (req: Request, res: Response) => {
     (async () => {
-        res.json(await RoleEndpoint(dbpath, req.body.usrnam))
+        res.json(await RoleEndpoint(dbpath, req.body.persnr))
     })()
 });
 
@@ -84,7 +85,6 @@ app.post('/getCurrentOrder', (req: Request, res: Response) =>{
     if(currentBestellungenSync.filter((d) => d.orderId === req.body.orderId) !== undefined){
         const result = currentBestellungenSync.filter((d) => d.orderId === req.body.orderId)
         if(result[0] !== undefined) res.json(result[0].data)
-
     }
     res.send(undefined)
 });
@@ -121,6 +121,6 @@ export const fetchFirst = async (db: Database, sql: string, params: Array<string
   });
 };
 
-app.listen(PORT, () => {
+app.listen(PORT,HOST, () => {
   console.log(`Server läuft auf http://localhost:${PORT}`);
 });

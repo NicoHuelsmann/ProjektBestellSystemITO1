@@ -11,6 +11,7 @@ export default function HomeScreen(): React.JSX.Element {
     const [userRole,setUserRole]= useState<string | null >('')
     const localStorage = async () => {
         const a =  await asyncStorage.getItem('user')
+        console.log(a)
         if(a !== null) setUserRole(a);
 
     }
