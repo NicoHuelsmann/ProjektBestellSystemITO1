@@ -10,8 +10,8 @@ import BestellungenEndpoint from "./endPoints/BestellungEndpoints";
 const app = express();
 const PORT = 9000;
 const dbpath = './database/datenbank.db';
-//const HOST = '172.16.0.100'
-const HOST = 'localhost';
+const HOST = '10.160.8.121'
+//const HOST = 'localhost';
 app.use(cors());
 app.use(express.json());
 
@@ -61,7 +61,7 @@ app.get("/setTische", (req: Request, res: Response) => {
 });
 
 // TischeGetGET
-app.get("/Tische", (req: Request, res: Response) => {
+app.get("/getTische", (req: Request, res: Response) => {
     (async () => {
         res.json(await TischeEndpoint(dbpath))
     })()
@@ -122,5 +122,5 @@ export const fetchFirst = async (db: Database, sql: string, params: Array<string
 };
 
 app.listen(PORT,HOST, () => {
-  console.log(`Server läuft auf http://localhost:${PORT}`);
+  console.log(`Server läuft auf http://${HOST}:${PORT}`);
 });
