@@ -44,10 +44,7 @@ export default function BestellungPopUp({tableId,openBestellungenDialog, onBlur}
     }
 
     const possilbeFood = async () => {
-        //hier datenbankabfrage
         const getNumber = await fetchGetCurrentOrder(tableId)
-
-            //hier datenbankabfrage
             if (currentArtickel.length > 0) {
                 setShowFood([])
                 for (let i = 0; i < currentArtickel.length; i++) {
@@ -97,7 +94,8 @@ export default function BestellungPopUp({tableId,openBestellungenDialog, onBlur}
             <ThemePopUp platforme={Platform.OS} onBlur={() => {
                 onBlur()
             }}>
-                <Text>Tisch Nr: {tableId}</Text>
+                <Text style={{fontSize:28,alignSelf:'center',paddingBottom:5}}>Tisch Nr: {tableId}</Text>
+                <View style={{borderStyle:'solid',borderBottomWidth:2}}/>
                 <View>
                 <ScrollView  contentContainerStyle={{
                     width: '100%',
@@ -106,6 +104,7 @@ export default function BestellungPopUp({tableId,openBestellungenDialog, onBlur}
                     justifyContent: 'space-between',
                     flexWrap: 'wrap',
                     gap: 16,
+                    paddingTop:10,
                     paddingLeft: Platform.OS !== 'web'? 35:10,
                     paddingRight: Platform.OS !== 'web'? 35:10,
                 }}>
@@ -114,7 +113,7 @@ export default function BestellungPopUp({tableId,openBestellungenDialog, onBlur}
                 <ThemeButton text={'OK'} onPress={() => {
                     heandleNumbers()
                     onBlur()
-                }} position={{left: 180, bottom: 0}}/>
+                }} position={{left: 180, bottom: 10}}/>
                 </View>
             </ThemePopUp>
 
