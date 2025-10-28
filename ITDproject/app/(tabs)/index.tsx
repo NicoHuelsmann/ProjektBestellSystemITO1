@@ -49,12 +49,10 @@ export default function Login() {
 
   const tryToLogin = async () =>{
   const resultDatabase:{userID:number,password:string} = await fetchUser(text);
-
     const hashedPassword = await Crypto.digestStringAsync(
         Crypto.CryptoDigestAlgorithm.SHA256,
         password
     );
-    console.log(resultDatabase)
   if(resultDatabase.password === hashedPassword){
       const resultRole = await fetchRole(resultDatabase.userID);
       console.log(resultRole)

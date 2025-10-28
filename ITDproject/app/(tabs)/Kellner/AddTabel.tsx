@@ -16,11 +16,12 @@ export default function AddTabel(props:addTabelProps):React.JSX.Element{
 
     const add = async () => {
         await fetchSetTable()
+        props.closeDialog()
     }
 
     if(props.addDialogOpen){
         return (
-            <ThemePopUp onBlur={props.closeDialog}>
+            <ThemePopUp platforme={Platform.OS} onBlur={props.closeDialog}>
                 <Text>Möchten sie einen Tisch hinzufügen ? </Text>
                 <ThemeButton text={'Hinzufügen'}
                              onPress={add}
