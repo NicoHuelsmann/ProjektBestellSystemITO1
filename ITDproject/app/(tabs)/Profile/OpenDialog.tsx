@@ -12,15 +12,14 @@ export default function OpenDialog(props:OpenDialogProps){
         router.push('/')
     }
     return(
-        <><TouchableOpacity onBlur={() => props.onBlur()} style={{width:'100%',height:'100%',backfaceVisibility:'hidden',backgroundColor:'transparent',position:'absolute'}}>
-            <View style={{
+            <View onTouchCancel={props.onBlur} style={{
             shadowColor: '#000',
             shadowOffset: {width: 2, height: 2},
             shadowOpacity: 0.3,
             shadowRadius: 4,
             elevation: 6,
             alignSelf: 'flex-end',
-            //bottom: '75%',
+            bottom: '75%',
             left: -20,
             borderRadius: 9,
             width: 200,
@@ -49,7 +48,5 @@ export default function OpenDialog(props:OpenDialogProps){
             }}>
                 <Text style={{fontSize: 28}}>Logout</Text>
             </Pressable>
-        </View>
-        </TouchableOpacity></>
-    )
+        </View>)
 }
