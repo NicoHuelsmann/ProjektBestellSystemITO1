@@ -4,6 +4,7 @@ import AntDesign from 'react-native-vector-icons/AntDesign';
 interface ThemeNumberPickerProps {
     setNumer?:number,
     size?:number,
+    bottom?:number,
     return: (n:number) => void
 }
 
@@ -19,7 +20,7 @@ export default function ThemeNumberPicker(props:ThemeNumberPickerProps): React.J
         if(props.setNumer !== undefined) setNumber(props.setNumer)
     }, [props.setNumer]);
     return(
-        <View style={{flexDirection:'row', justifyContent: 'space-between'}}>
+        <View style={{bottom:props.bottom !== undefined? props.bottom:0,flexDirection:'row', justifyContent: 'space-between'}}>
             <Pressable style={{
                 alignItems:'center',
                 justifyContent:'center',
