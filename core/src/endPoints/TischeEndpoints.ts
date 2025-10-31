@@ -47,3 +47,23 @@ export async function TischeSetEndpoint(dbpath:string){
     }
     return null
 }
+
+export async function TischeRemoveEndpoint(dbpath: string, TischID: string){
+    const db = new sqlite3.Database(dbpath,
+        (err) => {
+            if (err) {
+                console.error(err.message);
+                return;
+            }
+        }
+    );
+    try {
+        await fetchFirst(db, 'DELETE FROM TISCHE WHERE TISCHE.ID = ?', [TischID]);
+        return ({ ok : true});
+    } catch (err) {
+        console.log(err);
+    } finally {
+        db.close();
+    }
+    return null;
+}

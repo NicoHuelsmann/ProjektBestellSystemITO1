@@ -15,7 +15,7 @@ export default  async  function fetchGetCurrentOrder(orderId:any){
         if(res.status === 200){
             return await res.json()
         }else{
-            throw Error(`Unable to fetch role ${res.status}`)
+            throw Error(`Unable to fetch order ${res.status}`)
         }
     }catch (e){
         console.log(e)
