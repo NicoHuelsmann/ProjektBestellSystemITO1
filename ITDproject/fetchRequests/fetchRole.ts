@@ -2,7 +2,7 @@ import {url} from "@/fetchRequests/config";
 
 export default  async  function fetchRole(userId:number){
     try{
-        const res= await fetch(`${url}/role`,{
+        const res= await fetch(`${url}/getRole`,{
             method: "POST",
             headers: {
                 "Content-Type": "application/json",

@@ -3,7 +3,7 @@ import ThemePopUp from "@/app/Themes/ThemePopUp";
 import {Dimensions, Platform, Text, View} from "react-native";
 import ThemeButton from "@/app/Themes/ThemeButton";
 import ThemeTextInput from "@/app/Themes/ThemeTextInput";
-import fetchSetTable from "@/fetchRequests/fetchSetTable";
+import fetchSetTable from "@/fetchRequests/fetchSetTisch";
 interface addTabelProps {
     addDialogOpen: boolean;
     closeDialog: () => void;

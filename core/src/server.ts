@@ -5,7 +5,6 @@ import userEndpoint from "./endPoints/userEndpoint";
 import RoleEndpoint from "./endPoints/RoleEndpoints";
 import { ArtikelEndpoint, ArtikelInsertEndpoint} from "./endPoints/ArtikelEndpoints";
 import { TischeSetEndpoint, TischeEndpoint } from "./endPoints/TischeEndpoints";
-import BestellungenEndpoint from "./endPoints/BestellungEndpoints";
 
 const app = express();
 const PORT = 9000;
@@ -33,21 +32,21 @@ app.post("/users", (req: Request, res: Response) => {
 });
 
 // RolePOST
-app.post("/role", (req: Request, res: Response) => {
+app.post("/getRole", (req: Request, res: Response) => {
     (async () => {
         res.json(await RoleEndpoint(dbpath, req.body.persnr))
     })()
 });
 
 // ArtikelGET
-app.get("/Artikel", (req: Request, res: Response) => {
+app.get("/getArtikel", (req: Request, res: Response) => {
     (async () => {
         res.json(await ArtikelEndpoint(dbpath))
     })()
 });
 
 // ArtikelInsertPOST
-app.post("/ArtikelInsert", (req: Request, res: Response) => {
+app.post("/setArtikel", (req: Request, res: Response) => {
     (async () => {
         res.json(await ArtikelInsertEndpoint(dbpath, req.body.bezeichnung, req.body.preis))
     })()
@@ -65,13 +64,6 @@ app.get("/getTische", (req: Request, res: Response) => {
     (async () => {
         res.json(await TischeEndpoint(dbpath))
     })()
-});
-
-// BestellungenGET
-app.get("/Bestellungen" , (req: Request, res: Response) => {
-    (async () => {
-        res.json(await BestellungenEndpoint(dbpath, req.body.besnr))
-      })()
 });
 /**
  * Es werden die bestellungen über alle Geräte sycronisiert
