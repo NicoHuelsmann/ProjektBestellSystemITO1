@@ -8,15 +8,16 @@ interface ProfileIconProps {
 }
 
 export default function ProfileIcon(props:ProfileIconProps):React.JSX.Element{
-    const r = Math.floor(Math.random() * 256)
-    const g = Math.floor(Math.random() * 256)
-    const b = Math.floor(Math.random() * 256)
+
     const [RGB, setRGB] = React.useState<string>()
     const [openDialog, setOpenDialog] = React.useState<boolean>(false);
     const add = async () => {
-        const RGB = `rgb(${r},${g},${b})`
         const getstorage = await asyncStorage.getItem('profilePictureColor')
         if(getstorage === undefined || getstorage === null) {
+            const r = Math.floor(Math.random() * 256)
+            const g = Math.floor(Math.random() * 256)
+            const b = Math.floor(Math.random() * 256)
+            const RGB = `rgb(${r},${g},${b})`
             asyncStorage.setItem('profilePictureColor', RGB)
             setRGB(RGB)
         }else{

@@ -102,6 +102,9 @@ app.post("/removeCurrentOrder", (req: Request, res: Response) => {
 
     res.json({ message: "Order removed", currentBestellungenSync });
 });
+app.get("/getAllCurrentOrder", (req: Request, res: Response) => {
+    res.json({data:currentBestellungenSync})
+})
 
 export const fetchAll = async (db: Database, sql: string, params: Array<string>) => {
   return new Promise((resolve, reject) => {

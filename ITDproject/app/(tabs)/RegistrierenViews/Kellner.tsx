@@ -34,10 +34,13 @@ export default function Kellner():React.JSX.Element {
     }
     const getTable = async () => {
         const result = await fetchGetTisch();
-        if(result.Tische !== elementTables){
-            setElementTables(null)
-            setElementTables(result.Tische);
+        if(result !== undefined){
+            if(result.Tische !== elementTables){
+                setElementTables(null)
+                setElementTables(result.Tische);
+            }
         }
+
     }
 
       const table = async () => {
@@ -62,7 +65,7 @@ export default function Kellner():React.JSX.Element {
             } catch (e) {
                 console.error(e);
             }
-        }, 3000);
+        }, 1000);
         return () => clearInterval(interval);
     }, []);
     useEffect(() => {
@@ -72,7 +75,6 @@ export default function Kellner():React.JSX.Element {
         
             table()
     }, [elementTables]);
-    console.log(openProfileDialog)
     return (
         <Wrapper>
             <ProfileIcon currentState={openProfileDialog} open={(e) => setOpenProfileDialog(e)}/>
@@ -84,7 +86,7 @@ export default function Kellner():React.JSX.Element {
                 alignSelf={'flex-end'}
                 position={{left:-2,bottom:-90}}/>
             <View style={{height:'80%',bottom:Platform.OS !== 'web'?-20 :-10}}>
-            <ScrollView contentContainerStyle={{width:Platform.OS!== 'web'?'100%':'90%',paddingLeft:Platform.OS!== 'web'? 35:40,paddingRight:Platform.OS!== 'web'? 35:40,flexDirection: 'row', justifyContent: 'flex-start',flexWrap: 'wrap',gap: 16}}>
+            <ScrollView contentContainerStyle={{width:Platform.OS!== 'web'?'100%':'95%',paddingLeft:Platform.OS!== 'web'? 30:40,paddingRight:Platform.OS!== 'web'? 30:40,flexDirection: 'row', justifyContent: 'flex-start',flexWrap: 'wrap',gap: 16}}>
             {tabels}
         </ScrollView>
                 </View>
