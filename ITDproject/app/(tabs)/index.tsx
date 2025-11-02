@@ -24,6 +24,7 @@ export default function Login() {
   const [text, setText] = useState<string>('');
   const [password, setPassword] = useState<string>('');
   const [error, setError] = useState<boolean>(false);
+  const [usernotfound, setUsernotfound] = useState<boolean>(false);
   useEffect(() => {
     const intervall = setInterval(()=> {
       const ping = async () => {
@@ -48,19 +49,24 @@ export default function Login() {
   });
 
   const tryToLogin = async () =>{
-  const resultDatabase:{userID:number,password:string} = await fetchUser(text);
+    setError(false);
+    setUsernotfound(false);
+    const resultDatabase:{userID:number,password:string} = await fetchUser(text);
+    if (resultDatabase === null){
+      setUsernotfound(true);
+      return;
+    }
     const hashedPassword = await Crypto.digestStringAsync(
-        Crypto.CryptoDigestAlgorithm.SHA256,
-        password
+      Crypto.CryptoDigestAlgorithm.SHA256, password
     );
-  if(resultDatabase.password === hashedPassword){
+    if(resultDatabase.password === hashedPassword){
       const resultRole = await fetchRole(resultDatabase.userID);
-      console.log(resultRole)
-      await asyncStorage.setItem('user',resultRole.role)
-    router.push("/HomeScreen")
-  }else{
-    setError(true);
-  }
+      console.log(resultRole);
+      await asyncStorage.setItem('user',resultRole.role);
+      router.push("/HomeScreen");
+    }else{
+      setError(true);
+    }
   }
   return (
    <Wrapper>
@@ -76,13 +82,14 @@ export default function Login() {
          Bestellapp
        </Text>
      </View>
-     <ThemeTextInput placeholder={'Username'} onChangeText={setText} paddingTop={Platform.OS === 'web'?5:35} fontSize={26}/>
-     <ThemeTextInput placeholder={'Password'} onChangeText={setPassword} paddingTop={Platform.OS === 'web'?5:25} fontSize={26}/>
+     <ThemeTextInput type="default" placeholder={'Username'} onChangeText={setText} paddingTop={Platform.OS === 'web'?5:35} fontSize={26}/>
+     <ThemeTextInput type="password" placeholder={'Password'} onChangeText={setPassword} paddingTop={Platform.OS === 'web'?5:25} fontSize={26}/>
      <ThemeButton  position={{bottom: Platform.OS !== 'web'? -40:0 }} text={'Login'} onPress={() => {
-       tryToLogin()
+        tryToLogin()
      } }/>
             <View style={{width:400,justifyContent:"center",alignItems:'center',bottom:-50}}>
                 {error? <Text style={{color:'red', paddingTop:0,position:'absolute'}}>Username oder Password ist Falsch</Text>: null}
+                {usernotfound? <Text style={{color:'red', paddingTop:0,position:'absolute'}}>User nicht Gefunden</Text>: null}
             </View>
                 <ThemeButton text={'Registrieren'} backgroundColor={screenbackground} onPress={() => router.push('/Registrieren')} position={{bottom:-80,left:0}}/>
             </View>
