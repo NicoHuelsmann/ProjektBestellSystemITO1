@@ -61,7 +61,6 @@ export default function Login() {
     );
     if(resultDatabase.password === hashedPassword){
       const resultRole = await fetchRole(resultDatabase.userID);
-      console.log(resultRole);
       await asyncStorage.setItem('user',resultRole.role);
       router.push("/HomeScreen");
     }else{

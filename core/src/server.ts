@@ -9,8 +9,8 @@ import { TischeSetEndpoint, TischeEndpoint } from "./endPoints/TischeEndpoints";
 const app = express();
 const PORT = 9000;
 const dbpath = './database/datenbank.db';
-const HOST = '10.160.8.121'
-//const HOST = 'localhost';
+//const HOST = '10.160.8.121'
+const HOST = 'localhost';
 app.use(cors());
 app.use(express.json());
 
