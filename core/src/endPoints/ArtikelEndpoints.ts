@@ -1,5 +1,5 @@
 import sqlite3 from "sqlite3";
-import {fetchAll} from "../server";
+import { fetchAll } from "../server";
 
 export async function ArtikelEndpoint(dbpath:string){
     const db = new sqlite3.Database(dbpath,

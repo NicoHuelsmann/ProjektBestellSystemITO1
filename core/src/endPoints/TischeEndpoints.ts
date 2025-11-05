@@ -1,6 +1,5 @@
 import sqlite3 from "sqlite3";
-import {fetchFirst} from "../server";
-import {fetchAll} from "../server";
+import { fetchAll, fetchFirst } from "../server";
 
 export async function TischeEndpoint(dbpath:string){
     const db = new sqlite3.Database(dbpath,
@@ -22,7 +21,7 @@ export async function TischeEndpoint(dbpath:string){
     return null
 }
 
-export async function TischeSetEndpoint(dbpath:string){
+export async function TischeInsertEndpoint(dbpath:string){
     const db = new sqlite3.Database(dbpath,
         (err) => {
             if (err) {

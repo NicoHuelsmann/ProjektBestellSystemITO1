@@ -1,18 +1,43 @@
-import express, { Request, Response } from "express";
 import cors from "cors";
-import sqlite3, { Database } from "sqlite3";
-import userEndpoint from "./endPoints/userEndpoint";
+import express, { Request, Response } from "express";
+import { Database } from "sqlite3";
+import { ArtikelEndpoint, ArtikelInsertEndpoint } from "./endPoints/ArtikelEndpoints";
 import RoleEndpoint from "./endPoints/RoleEndpoints";
-import { ArtikelEndpoint, ArtikelInsertEndpoint} from "./endPoints/ArtikelEndpoints";
-import { TischeSetEndpoint, TischeEndpoint } from "./endPoints/TischeEndpoints";
+import { TischeEndpoint, TischeInsertEndpoint } from "./endPoints/TischeEndpoints";
+import { userEndpointGetNamesByPersnr, userEndpointGetPersnrByUname, } from "./endPoints/userEndpoint";
 
 const app = express();
 const PORT = 9000;
 const dbpath = './database/datenbank.db';
-const HOST = '10.160.8.121'
-//const HOST = 'localhost';
+//const HOST = '10.160.8.121'
+const HOST = 'localhost';
 app.use(cors());
 app.use(express.json());
+
+
+function createEndpoint<T extends (body?: any) => Promise<any>>(endpointFunction: T) {
+    return async (req: Request, res: Response) => {
+        try {
+            // Prüfen, ob die Funktion Parameter erwartet
+            const expectsBody = endpointFunction.length > 0;
+
+            if (expectsBody && !req.body) {
+                res.status(400).json({ error: "body is required" });
+                return;
+            }
+
+            // Wenn die Funktion Parameter erwartet, Body übergeben – sonst nicht
+            const result = expectsBody
+                ? await endpointFunction(req.body)
+                : await endpointFunction();
+
+            res.json(result);
+        } catch (error) {
+            console.error(error);
+            res.status(500).json({ error: "internal server error" });
+        }
+    };
+}
 
 // HealthGET
 app.get("/health", (req: Request, res: Response) => {
@@ -24,47 +49,41 @@ app.post("/echo", (req: Request, res: Response) => {
   res.json({ youSent: req.body });
 });
 
-// usersPOST
-app.post("/users", (req: Request, res: Response) => {
-    (async () => {
-        res.json(await userEndpoint(dbpath,req.body.usrnam))
-    })()
-});
+// UserPOST
+app.post("/getUser", createEndpoint(async (body) => {
+    return await userEndpointGetPersnrByUname(dbpath, body.usrnam);
+}));
+
+// UserNamesPOST
+app.post("/getUserNames", createEndpoint(async (body) => {
+    return await userEndpointGetNamesByPersnr(dbpath, body.persnr);
+}));
 
 // RolePOST
-app.post("/getRole", (req: Request, res: Response) => {
-    (async () => {
-        res.json(await RoleEndpoint(dbpath, req.body.persnr))
-    })()
-});
+app.post("/getRole", createEndpoint(async (body) => {
+    return await RoleEndpoint(dbpath, body.persnr);
+}));
 
 // ArtikelGET
-app.get("/getArtikel", (req: Request, res: Response) => {
-    (async () => {
-        res.json(await ArtikelEndpoint(dbpath))
-    })()
-});
+app.get("/getArtikel", createEndpoint(async () => {
+    return await ArtikelEndpoint(dbpath);
+}));
 
 // ArtikelInsertPOST
-app.post("/setArtikel", (req: Request, res: Response) => {
-    (async () => {
-        res.json(await ArtikelInsertEndpoint(dbpath, req.body.bezeichnung, req.body.preis))
-    })()
-});
+app.post("/insertArtikel", createEndpoint(async (body) => {
+    return await ArtikelInsertEndpoint(dbpath, body.bezeichnung, body.preis);
+}));
 
 // TischeSetGET
-app.get("/setTische", (req: Request, res: Response) => {
-    (async () => {
-        res.json(await TischeSetEndpoint(dbpath))
-    })()
-});
+app.get("/insertTische", createEndpoint(async () => {
+    return await TischeInsertEndpoint(dbpath);
+}));
 
 // TischeGetGET
-app.get("/getTische", (req: Request, res: Response) => {
-    (async () => {
-        res.json(await TischeEndpoint(dbpath))
-    })()
-});
+app.get("/getTische", createEndpoint(async () => {
+    return await TischeEndpoint(dbpath);
+}));
+
 /**
  * Es werden die bestellungen über alle Geräte sycronisiert
  */
@@ -98,7 +117,7 @@ app.get("/getAllCurrentOrder", (req: Request, res: Response) => {
     res.json({data:currentBestellungenSync})
 })
 
-export const fetchAll = async (db: Database, sql: string, params: Array<string>) => {
+export const fetchAll = async (db: Database, sql: string, params: Array<any>) => {
   return new Promise((resolve, reject) => {
     db.all(sql, params, (err, rows) => {
       if (err) reject(err);
@@ -107,7 +126,7 @@ export const fetchAll = async (db: Database, sql: string, params: Array<string>)
   });
 };
 
-export const fetchFirst = async (db: Database, sql: string, params: Array<string>) => {
+export const fetchFirst = async (db: Database, sql: string, params: Array<any>) => {
   return new Promise((resolve, reject) => {
     db.get(sql, params, (err, row) => {
       if (err) reject(err);
