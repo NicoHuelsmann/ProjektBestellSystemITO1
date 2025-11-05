@@ -2,7 +2,7 @@ import {url} from "@/fetchRequests/config";
 
 export default  async  function fetchArtikle(){
     try{
-        const res= await fetch(`${url}/setArtikel`)
+        const res= await fetch(`${url}/insertArtikel`)
         if(res.status === 200){
             return res.json()
         }else{

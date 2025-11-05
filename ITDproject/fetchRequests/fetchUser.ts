@@ -2,7 +2,7 @@ import {url} from "@/fetchRequests/config";
 
 export default  async  function fetchUser(userName:string){
     try{
-    const res= await fetch(`${url}/users`,{
+    const res= await fetch(`${url}/getUser`,{
         method: "POST", // oder "GET", je nachdem, was dein Server erwartet
             headers: {
             "Content-Type": "application/json",

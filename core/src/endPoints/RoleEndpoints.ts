@@ -13,7 +13,6 @@ export default async function RoleEndpoint(dbpath:string,username:string){
     try {
         let role: any = null;
         const user: any = await fetchFirst(db, `SELECT USR01.ROLEID FROM USR01 WHERE USR01.PERSNR=?`, [username]);
-        console.log(user)
         if (user){
             role = await fetchFirst(db, `SELECT ROLES.ROLNAM FROM ROLES WHERE ROLEKZ=?`, [user.ROLEID]);
             return ({role: role.ROLNAM});
