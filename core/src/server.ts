@@ -76,9 +76,10 @@ app.get("/Bestellungen" , (req: Request, res: Response) => {
 /**
  * Es werden die bestellungen über alle Geräte sycronisiert
  */
-const currentBestellungenSync:{ orderId:any, data:{} }[] = []
+const currentBestellungenSync:{ orderId:any, data:{}, date:string }[] = []
 app.post('/setCurrentOrder', (req: Request, res: Response) =>{
     currentBestellungenSync.push(req.body)
+    console.log(currentBestellungenSync)
 });
 
 app.post('/getCurrentOrder', (req: Request, res: Response) =>{
