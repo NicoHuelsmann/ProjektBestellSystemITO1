@@ -1,8 +1,8 @@
 import React, {useEffect, useState} from "react";
 import Wrapper from "@/app/Wrapper";
 import asyncStorage from "@react-native-async-storage/async-storage/src/AsyncStorage";
-import Koch from "@/app/(tabs)/RegistrierenViews/Koch";
-import Kellner from "@/app/(tabs)/RegistrierenViews/Kellner";
+import Koch from "@/app/(tabs)/(RegistrierenViews)/Koch";
+import Kellner from "@/app/(tabs)/(RegistrierenViews)/Kellner";
 import {Link, router} from "expo-router";
 import {Text, View} from "react-native";
 import {screenbackground, warning} from "@/constants/Colors";
