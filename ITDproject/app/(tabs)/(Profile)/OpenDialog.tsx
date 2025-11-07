@@ -12,7 +12,7 @@ export default function OpenDialog(props:OpenDialogProps){
     const [showAccount, setShowAccount] = useState(false);
     
     if (showAccount) {
-        router.push('/(tabs)/Profile/MeinAccount');
+        router.push('/(tabs)/(Profile)/MeinAccount');
     }
 
     const handleLogout = async () => {

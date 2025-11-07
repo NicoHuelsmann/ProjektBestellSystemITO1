@@ -14,8 +14,8 @@ import BestellungPopUp from '@/app/(tabs)/Kellner/BestellungPopUp';
 import fetchSetCurrentOrder from "@/fetchRequests/fetchSetCurrentOrder";
 import fetchGetCurrentOrder from "@/fetchRequests/fetchGetCurrentOrder";
 import {data} from "browserslist";
-import ProfileIcon from "@/app/(tabs)/Profile/profileIcon";
-import OpenDialog from "@/app/(tabs)/Profile/OpenDialog";
+import ProfileIcon from "@/app/(tabs)/(Profile)/profileIcon";
+import OpenDialog from "@/app/(tabs)/(Profile)/OpenDialog";
 import fetchGetTisch from "@/fetchRequests/fetchGetTisch";
 import {url} from "@/fetchRequests/config";
 

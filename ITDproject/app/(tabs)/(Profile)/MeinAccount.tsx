@@ -5,9 +5,11 @@ import { router } from "expo-router";
 import asyncStorage from "@react-native-async-storage/async-storage/src/AsyncStorage";
 import ThemeButton from "@/app/Themes/ThemeButton";
 import { screenbackground, warning } from "@/constants/Colors";
+import { fetchUserNames } from "@/fetchRequests/fetchUser";
 
 export default function MeinAccount(): React.JSX.Element {
     const [userRole,setUserRole]= useState<string | null >('')
+    const [userVorname,setUserVorname] = useState<string | null>('');
     const localStorage = async () => {
         const a =  await asyncStorage.getItem('user')
         if(a !== null) setUserRole(a);
@@ -15,6 +17,9 @@ export default function MeinAccount(): React.JSX.Element {
     useEffect(() => {
         localStorage();
     },[userRole])
+    useEffect(() => {
+        fetchUserNames ()
+    })
     const error = ():React.JSX.Element => {
         return(
             <View style={{backgroundColor:screenbackground,height:'100%',justifyContent:'center',alignItems:'center',}}>

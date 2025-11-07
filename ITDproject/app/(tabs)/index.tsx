@@ -52,7 +52,7 @@ export default function Login() {
     setError(false);
     setUsernotfound(false);
     const resultDatabase:{userID:number,password:string} = await fetchUser(text);
-    if (resultDatabase === null){
+    if (resultDatabase === null || resultDatabase === undefined){
       setUsernotfound(true);
       return;
     }
@@ -96,4 +96,3 @@ export default function Login() {
    </Wrapper>
   );
 }
-
