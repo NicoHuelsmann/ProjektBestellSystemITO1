@@ -2,11 +2,11 @@ import React, {useEffect, useState} from "react";
 import Wrapper from "@/app/Wrapper";
 import {ScrollView, Text, View} from "react-native";
 import fetchGetAllCurrentOrder from "@/fetchRequests/fetchGetAllCurrentOrder";
-import fetchArtikle from "@/fetchRequests/fetchArtikle";
 import ThemeChip from "@/app/Themes/Chips/ThemeChip";
 import ThemeCheckBox from "@/app/Themes/ThemeCheckBox";
-import ProfileIcon from "@/app/(tabs)/Profile/profileIcon";
 import QRLogin from "@/app/(tabs)/Koch/QRLogin";
+import fetchArtikle from "@/fetchRequests/fetchGetArtikle";
+import ProfileIcon from "../(Profile)/profileIcon";
 
 
 export default function Koch():React.JSX.Element{
@@ -128,7 +128,17 @@ return (
                 {einzelnebestellung}
             </ScrollView>
         </View>
-        <QRLogin/>
+        <View style={{width:150,height:150,alignItems:'center',shadowColor: '#000',
+            shadowOffset: {width: 2, height: 2},
+            shadowOpacity: 0.3,
+            shadowRadius: 4,
+            elevation: 5,
+            bottom:'80%',
+            left:'60%'
+        }}>
+            <QRLogin/>
+        </View>
+
     </Wrapper>
 )
 }
