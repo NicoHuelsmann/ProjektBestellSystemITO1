@@ -1,9 +1,7 @@
 import React, {useEffect, useState} from "react";
 import ThemePopUp from "@/app/Themes/ThemePopUp";
 import {Button, Platform, ScrollView, Text, View} from "react-native";
-import ThemeTextInput from "@/app/Themes/ThemeTextInput";
 import ThemeButton from "@/app/Themes/ThemeButton";
-import asyncStorage from "@react-native-async-storage/async-storage/src/AsyncStorage";
 import fetchArtikle from "@/fetchRequests/fetchGetArtikle";
 import ThemeNumberPicker from "@/app/Themes/ThemeNumberPicker";
 import {router, usePathname} from "expo-router";

@@ -1,25 +1,30 @@
-import React, { useEffect, useState } from "react";
-import { Text, View, Button } from "react-native";
-import Wrapper from "@/app/Wrapper";
-import { router } from "expo-router";
-import asyncStorage from "@react-native-async-storage/async-storage/src/AsyncStorage";
 import ThemeButton from "@/app/Themes/ThemeButton";
+import Wrapper from "@/app/Wrapper";
 import { screenbackground, warning } from "@/constants/Colors";
-import { fetchUserNames } from "@/fetchRequests/fetchUser";
+import { UserInterface } from "@/interfaces/UserInterface";
+import asyncStorage from "@react-native-async-storage/async-storage/src/AsyncStorage";
+import { router } from "expo-router";
+import React, { useEffect, useState } from "react";
+import { Button, Text, View } from "react-native";
 
 export default function MeinAccount(): React.JSX.Element {
-    const [userRole,setUserRole]= useState<string | null >('')
-    const [userVorname,setUserVorname] = useState<string | null>('');
+    const [user, setUser] = useState<UserInterface>();
     const localStorage = async () => {
-        const a =  await asyncStorage.getItem('user')
-        if(a !== null) setUserRole(a);
+        const storedUser = await asyncStorage.getItem('user');
+        if (storedUser){
+            setUser(JSON.parse(storedUser));
+        }
     }
+
     useEffect(() => {
         localStorage();
-    },[userRole])
+        console.log(user)
+    },[])
+
     useEffect(() => {
-        fetchUserNames ()
-    })
+        console.log(user)
+    }, [user])
+    
     const error = ():React.JSX.Element => {
         return(
             <View style={{backgroundColor:screenbackground,height:'100%',justifyContent:'center',alignItems:'center',}}>
@@ -36,10 +41,14 @@ export default function MeinAccount(): React.JSX.Element {
     }
     
     const checkRole = ():React.JSX.Element => {
-        if(userRole === 'Koch' || userRole === 'Kellner'){
+        if(user?.Role === 'Koch' || user?.Role === 'Kellner'){
             return (<Wrapper>
                     <View style={{ alignItems: "center", justifyContent: "center", height: "100%" }}>
                     <Text style={{ marginBottom: 20 }}>Mein Account</Text>
+                    <Text style={{fontSize:30}}>UserID: {user?.UserID}</Text>
+                    <Text style={{fontSize:30}}>Username: {user?.Benutzername}</Text>
+                    <Text style={{fontSize:30}}>Vorname: {user?.Vorname}</Text>
+                    <Text style={{fontSize:30}}>Nachname: {user?.Nachname}</Text>
                     <Button
                         title="Zum HomeScreen"
                         onPress={() => router.push("/HomeScreen")}
