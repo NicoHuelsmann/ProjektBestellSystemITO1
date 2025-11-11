@@ -19,6 +19,7 @@ import fetchRole from "@/fetchRequests/fetchRole";
 import QRScannerScreen from "@/app/(tabs)/Kellner/QRScannerScreen";
 import {setUrl, url} from "@/fetchRequests/config";
 import ThemeQRIcon from "@/app/Themes/ThemeQRIcon";
+import ThemeXButton from "@/app/Themes/ThemeXButton";
 const Stack = createNativeStackNavigator();
 
 export default function Login() {
@@ -98,8 +99,11 @@ export default function Login() {
             </View>
                 <ThemeButton text={'Registrieren'} backgroundColor={screenbackground} onPress={() => router.push('/Registrieren')} position={{bottom:-80,left:0}}/>
             </View>
-           {sowQRScanner? <View style={{position: 'absolute', width: '100%', height: '100%',bottom:3}}>
-               <QRScannerScreen/>
+           {sowQRScanner? <View style={{position: 'absolute', width: '100%', height: '100%',justifyContent:'flex-end',bottom:-4}}>
+               <View style={{position: 'absolute', width: '100%', height: '100%',}}>
+                   <ThemeXButton onPress={() => setSowQRScanner(false)}/>
+                   <QRScannerScreen/>
+               </View>
            </View>:null}
 
        </View>

@@ -42,7 +42,7 @@ export default function BestellungPopUp({tableId,openBestellungenDialog, onBlur}
             result.push({id, value});
         });
         await fetchClearOrder(tableId);
-        await fetchSetCurrentOrder(tableId, result, new Date().toISOString())
+        await fetchSetCurrentOrder(tableId, result, new Date().toISOString(),false)
     }
     const foodPriceCount = async () => {
         const save:any[] = [];
