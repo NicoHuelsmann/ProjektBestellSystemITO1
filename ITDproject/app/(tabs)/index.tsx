@@ -1,24 +1,53 @@
+import QRScannerScreen from "@/app/(tabs)/Kellner/QRScannerScreen";
 import ThemeButton from "@/app/Themes/ThemeButton";
+import ThemeQRIcon from "@/app/Themes/ThemeQRIcon";
 import ThemeTextInput from "@/app/Themes/ThemeTextInput";
 import { LoginLogo } from "@/components/loginLogo";
 import { screenbackground } from "@/constants/Colors";
+import { setUrl, url } from "@/fetchRequests/config";
 import fetchRole from "@/fetchRequests/fetchRole";
 import fetchUser, { fetchUserNames } from "@/fetchRequests/fetchUser";
 import useServerStatus from "@/hooks/useServerStatus";
 import { UserInterface } from "@/interfaces/UserInterface";
 import asyncStorage from "@react-native-async-storage/async-storage/src/AsyncStorage";
+import { createNativeStackNavigator } from '@react-navigation/native-stack';
 import * as Crypto from "expo-crypto";
 import { Link, router } from "expo-router";
 import "expo-router/entry";
-import React, { useState } from "react";
+import React, { useEffect, useState } from "react";
 import { Platform, Text, View } from "react-native";
 import Wrapper from '../Wrapper';
+
+const Stack = createNativeStackNavigator();
 
 export default function Login() {
   const [text, setText] = useState<string>('');
   const [password, setPassword] = useState<string>('');
   const [error, setError] = useState<boolean>(false);
   const [usernotfound, setUsernotfound] = useState<boolean>(false);
+  const [sowQRScanner, setSowQRScanner] = useState<boolean>(false);
+  const [connect, setConnect] = useState<boolean>(false);
+  useEffect(() => {
+    const intervall = setInterval(()=> {
+      const ping = async () => {
+        try {
+          const response = await fetch("http://localhost:9000/Login");
+          if (!response.ok) {
+            console.error("Fehler:", response.status);
+            return;
+          }
+          const data = await response.json();
+          if(data.ok){
+            setConnect(true)
+          }
+        } catch (err) {
+          console.error("Fetch Fehler:", err);
+        }
+      };
+      ping();
+    },5000);
+    return () => clearInterval(intervall);
+  },[]);
 
   const online = useServerStatus();
 
@@ -45,7 +74,9 @@ export default function Login() {
     if(User.Passwort !== hashedPassword){
       await asyncStorage.removeItem('user');
       setError(true);
-    }else{
+    } else{
+      setUrl(url)
+      setError(true);
       router.push("/HomeScreen");
     }
   }
@@ -57,6 +88,7 @@ export default function Login() {
        }}>
      <Link href={'/'}/>
      <View style={{width:'100%',height:'100%',alignItems: "center",justifyContent:"center"}}>
+         <ThemeQRIcon onPress={() => setSowQRScanner(!sowQRScanner)}/>
      <View style={{bottom:Platform.OS !== 'web'?-25:0,alignItems: "center",justifyContent:"center"}}>
        <LoginLogo/>
        <Text style={{color:'white',fontSize:32}}>
@@ -77,6 +109,10 @@ export default function Login() {
             </View>
                 <ThemeButton text={'Registrieren'} backgroundColor={screenbackground} onPress={() => router.push('/Registrieren')} position={{bottom:-80,left:0}}/>
             </View>
+           {sowQRScanner? <View style={{position: 'absolute', width: '100%', height: '100%',bottom:3}}>
+               <QRScannerScreen/>
+           </View>:null}
+
        </View>
    </Wrapper>
   );

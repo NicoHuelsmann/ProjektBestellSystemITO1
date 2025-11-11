@@ -10,7 +10,7 @@ export default function QRLogin():React.JSX.Element{
         <View style={{ flex: 1, justifyContent: "center", alignItems: "center" }}>
             <QRCode
                 value={qrString}      // Dein String hier
-                size={200}            // QR-Größe
+                size={100}            // QR-Größe
                 color="black"         // Farbe des Codes
                 backgroundColor="white"
             />

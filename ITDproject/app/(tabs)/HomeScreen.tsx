@@ -1,25 +1,23 @@
-import Kellner from "@/app/(tabs)/(RegistrierenViews)/Kellner";
-import Koch from "@/app/(tabs)/(RegistrierenViews)/Koch";
-import ThemeButton from "@/app/Themes/ThemeButton";
+import React, {useEffect, useState} from "react";
 import Wrapper from "@/app/Wrapper";
-import { screenbackground, warning } from "@/constants/Colors";
-import { UserInterface } from "@/interfaces/UserInterface";
 import asyncStorage from "@react-native-async-storage/async-storage/src/AsyncStorage";
-import { router } from "expo-router";
-import React, { useEffect, useState } from "react";
-import { View } from "react-native";
+import Koch from "@/app/(tabs)/(RegistrierenViews)/Koch";
+import Kellner from "@/app/(tabs)/(RegistrierenViews)/Kellner";
+import {Link, router} from "expo-router";
+import {Text, View} from "react-native";
+import {screenbackground, warning} from "@/constants/Colors";
+import ThemeButton from "@/app/Themes/ThemeButton";
+import {getUrl} from "@/fetchRequests/config";
 
 export default function HomeScreen(): React.JSX.Element {
-    const [user,setUser]= useState<UserInterface>();
+    const [userRole,setUserRole]= useState<string | null >('')
     const localStorage = async () => {
-        const storedUser = await asyncStorage.getItem('user');
-        if (storedUser){
-            setUser(JSON.parse(storedUser));
-        }
+        const a =  await asyncStorage.getItem('user')
+        if(a !== null) setUserRole(a);
     }
     useEffect(() => {
         localStorage();
-    },[])
+    },[userRole])
 
     const error = ():React.JSX.Element => {
         return(
@@ -36,10 +34,10 @@ export default function HomeScreen(): React.JSX.Element {
         )
     }
     const checkRole = ():React.JSX.Element => {
-        if(user?.Role === 'Koch'){
+        if(userRole === 'Koch'){
             return <Koch/>
         }
-        else if(user?.Role === 'Kellner'){
+        else if(userRole === 'Kellner'){
             return <Kellner/>
         }
         else return error()
