@@ -1,4 +1,4 @@
-import {url} from "@/fetchRequests/config";
+import { url } from "@/fetchRequests/config";
 
 export default  async  function fetchRole(userId:number){
     try{

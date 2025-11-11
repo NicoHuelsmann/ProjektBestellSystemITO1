@@ -1,22 +1,20 @@
-import {Pressable, Text, TouchableOpacity, View} from "react-native";
-import React, { useState } from "react";
 import asyncStorage from "@react-native-async-storage/async-storage/src/AsyncStorage";
-import {router} from "expo-router";
-import MeinAccount from "./MeinAccount";
+import { router } from "expo-router";
+import React from "react";
+import { Pressable, Text, View } from "react-native";
 
 interface OpenDialogProps {
     onBlur:() => void;
 }
 export default function OpenDialog(props:OpenDialogProps){
 
-    const [showAccount, setShowAccount] = useState(false);
-    
-    if (showAccount) {
-        router.push('/(tabs)/(Profile)/MeinAccount');
+    const goToMyAccount = async () => {
+        if (await asyncStorage.getItem('user') !== '')
+            router.push('/(tabs)/(Profile)/MeinAccount');
     }
 
     const handleLogout = async () => {
-        await asyncStorage.removeItem('user')
+        await asyncStorage.removeItem('user');
         router.push('/')
     }
 
@@ -35,7 +33,7 @@ export default function OpenDialog(props:OpenDialogProps){
             height: 400,
             backgroundColor: 'white',
         }}>
-            <Pressable onPress={() => setShowAccount(true)} style={{
+            <Pressable onPress={goToMyAccount} style={{
                 width: '100%',
                 height: 50,
                 justifyContent: 'center',

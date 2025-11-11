@@ -4,7 +4,7 @@ import { Database } from "sqlite3";
 import { ArtikelEndpoint, ArtikelInsertEndpoint } from "./endPoints/ArtikelEndpoints";
 import RoleEndpoint from "./endPoints/RoleEndpoints";
 import { TischeEndpoint, TischeInsertEndpoint } from "./endPoints/TischeEndpoints";
-import { userEndpointGetNamesByPersnr, userEndpointGetPersnrByUname, } from "./endPoints/userEndpoint";
+import { userEndpointGetPersnrByUname, userEndpointGetUserByUserID } from "./endPoints/userEndpoint";
 
 const app = express();
 const PORT = 9000;
@@ -56,7 +56,7 @@ app.post("/getUser", createEndpoint(async (body) => {
 
 // UserNamesPOST
 app.post("/getUserNames", createEndpoint(async (body) => {
-    return await userEndpointGetNamesByPersnr(dbpath, body.persnr);
+    return await userEndpointGetUserByUserID(dbpath, body.persnr);
 }));
 
 // RolePOST

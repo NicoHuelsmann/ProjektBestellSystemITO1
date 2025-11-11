@@ -2,10 +2,10 @@ import React, {useEffect, useState} from "react";
 import Wrapper from "@/app/Wrapper";
 import {ScrollView, Text, View} from "react-native";
 import fetchGetAllCurrentOrder from "@/fetchRequests/fetchGetAllCurrentOrder";
-import fetchArtikle from "@/fetchRequests/fetchArtikle";
+import fetchArtikle from "@/fetchRequests/fetchGetArtikle";
 import ThemeChip from "@/app/Themes/Chips/ThemeChip";
 import ThemeCheckBox from "@/app/Themes/ThemeCheckBox";
-import ProfileIcon from "@/app/(tabs)/Profile/profileIcon";
+import ProfileIcon from "@/app/(tabs)/(Profile)/profileIcon";
 import QRLogin from "@/app/(tabs)/Koch/QRLogin";
 
 
