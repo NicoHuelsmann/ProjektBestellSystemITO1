@@ -32,7 +32,7 @@ export default function Login() {
     const intervall = setInterval(()=> {
       const ping = async () => {
         try {
-          const response = await fetch("http://localhost:9000/Login");
+          const response = await fetch("http://localhost:9000/Health");
           if (!response.ok) {
             console.error("Fehler:", response.status);
             return;
@@ -60,7 +60,6 @@ export default function Login() {
     }
     let result = await fetchUser(text)
     const UserID: number = result.userID;
-    console.log(result.userID)
     if (UserID === null) {
       setUsernotfound(true);
       return;
@@ -76,8 +75,8 @@ export default function Login() {
       await asyncStorage.removeItem('user');
       setError(true);
     } else{
+      console.log("Login erfolgreich");
       setUrl(url)
-      setError(true);
       router.push("/HomeScreen");
     }
   }
