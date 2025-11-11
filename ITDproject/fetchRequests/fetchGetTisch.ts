@@ -1,8 +1,8 @@
-import {url} from "@/fetchRequests/config";
+import {getUrl} from "@/fetchRequests/config";
 
 export default  async  function fetchGetTisch(){
     try{
-        const res= await fetch(`${url}/getTische`)
+        const res= await fetch(`${getUrl()}/getTische`)
         if(res.status === 200){
             return await res.json()
         }else{

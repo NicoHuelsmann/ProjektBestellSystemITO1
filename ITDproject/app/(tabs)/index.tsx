@@ -16,6 +16,9 @@ import asyncStorage from "@react-native-async-storage/async-storage/src/AsyncSto
 import React from "react";
 import fetchUser from "@/fetchRequests/fetchUser";
 import fetchRole from "@/fetchRequests/fetchRole";
+import QRScannerScreen from "@/app/(tabs)/Kellner/QRScannerScreen";
+import {setUrl, url} from "@/fetchRequests/config";
+import ThemeQRIcon from "@/app/Themes/ThemeQRIcon";
 const Stack = createNativeStackNavigator();
 
 export default function Login() {
@@ -25,6 +28,7 @@ export default function Login() {
   const [password, setPassword] = useState<string>('');
   const [error, setError] = useState<boolean>(false);
   const [usernotfound, setUsernotfound] = useState<boolean>(false);
+  const [sowQRScanner, setSowQRScanner] = useState<boolean>(false);
   useEffect(() => {
     const intervall = setInterval(()=> {
       const ping = async () => {
@@ -62,6 +66,7 @@ export default function Login() {
     if(resultDatabase.password === hashedPassword){
       const resultRole = await fetchRole(resultDatabase.userID);
       await asyncStorage.setItem('user',resultRole.role);
+      setUrl(url)
       router.push("/HomeScreen");
     }else{
       setError(true);
@@ -75,6 +80,7 @@ export default function Login() {
        }}>
      <Link href={'/'}/>
      <View style={{width:'100%',height:'100%',alignItems: "center",justifyContent:"center"}}>
+         <ThemeQRIcon onPress={() => setSowQRScanner(!sowQRScanner)}/>
      <View style={{bottom:Platform.OS !== 'web'?-25:0,alignItems: "center",justifyContent:"center"}}>
        <LoginLogo/>
        <Text style={{color:'white',fontSize:32}}>
@@ -92,6 +98,10 @@ export default function Login() {
             </View>
                 <ThemeButton text={'Registrieren'} backgroundColor={screenbackground} onPress={() => router.push('/Registrieren')} position={{bottom:-80,left:0}}/>
             </View>
+           {sowQRScanner? <View style={{position: 'absolute', width: '100%', height: '100%',bottom:3}}>
+               <QRScannerScreen/>
+           </View>:null}
+
        </View>
    </Wrapper>
   );

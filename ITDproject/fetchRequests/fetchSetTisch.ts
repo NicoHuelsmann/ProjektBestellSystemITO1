@@ -1,8 +1,8 @@
-import {url} from "@/fetchRequests/config";
+import {getUrl} from "@/fetchRequests/config";
 
 export default  async  function fetchSetTable(){
     try{
-        const res= await fetch(`${url}/insertTische`)
+        const res= await fetch(`${getUrl()}/insertTische`)
         if(res.status === 200){
             return await res.json()
         }else{
