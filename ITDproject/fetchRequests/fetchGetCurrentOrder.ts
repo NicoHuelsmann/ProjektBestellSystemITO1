@@ -1,8 +1,8 @@
-import {getUrl} from "@/fetchRequests/config";
+import {url} from "@/fetchRequests/config";
 
 export default  async  function fetchGetCurrentOrder(orderId:any){
     try{
-        const res= await fetch(`${getUrl()}/getCurrentOrder`,{
+        const res= await fetch(`${url}/getCurrentOrder`,{
             method: "POST",
             headers: {
                 "Content-Type": "application/json",

@@ -1,4 +1,4 @@
-import {getUrl, url} from "@/fetchRequests/config";
+import {url} from "@/fetchRequests/config";
 
 export default  async  function fetchUser(userName:string){
     try{

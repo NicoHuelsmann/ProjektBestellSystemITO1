@@ -1,9 +1,8 @@
-import {getUrl} from "@/fetchRequests/config";
+import {url} from "@/fetchRequests/config";
 
 export default  async  function fetchArtikle(){
     try{
-        console.log("Fetch Artikle");
-        const res= await fetch(`${getUrl()}/insertArtikel`)
+        const res= await fetch(`${url}/insertArtikel`)
         if(res.status === 200){
             return res.json()
         }else{

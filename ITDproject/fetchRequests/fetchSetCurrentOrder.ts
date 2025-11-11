@@ -1,9 +1,8 @@
-import {getUrl} from "@/fetchRequests/config";
+import {url} from "@/fetchRequests/config";
 
 export default  async  function fetchSetCurrentOrder(orderId:any,data:{}, date:string){
     try{
-        console.log(getUrl().toString())
-        const res= await fetch(`${getUrl().toString()}/setCurrentOrder`,{
+        const res= await fetch(`${url}/setCurrentOrder`,{
             method: "POST",
             headers: {
                 "Content-Type": "application/json",
@@ -18,7 +17,7 @@ export default  async  function fetchSetCurrentOrder(orderId:any,data:{}, date:s
         if(res.status === 200){
             return await res.json()
         }else{
-            throw Error(`Unable to Order by id ${orderId} fetchSetCurrentUser ${res.status}`)
+            throw Error(`Unable to Order by id ${orderId} role ${res.status}`)
         }
     }catch (e){
         console.log(e)
