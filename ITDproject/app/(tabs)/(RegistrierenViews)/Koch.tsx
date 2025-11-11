@@ -7,22 +7,12 @@ import ThemeCheckBox from "@/app/Themes/ThemeCheckBox";
 import QRLogin from "@/app/(tabs)/Koch/QRLogin";
 import fetchArtikle from "@/fetchRequests/fetchGetArtikle";
 import ProfileIcon from "../(Profile)/profileIcon";
-import ThemeButton from "@/app/Themes/ThemeButton";
-import fetchClearOrder from "@/fetchRequests/fetchClearOrder";
-import fetchSetCurrentOrder from "@/fetchRequests/fetchSetCurrentOrder";
-import {data} from "browserslist";
 
 
 export default function Koch():React.JSX.Element{
 const [einzelnebestellung,setEinzelnebestellung] = useState<React.JSX.Element[]>([]);
 
 const [currentOrdersValues,setCurrentOrdersValues] = useState<React.JSX.Element[]>([]);
-
-const heandleDone = async (currentOrder:any) => {
-    console.log(currentOrder)
-     await fetchClearOrder(currentOrder.orderId)
-     await fetchSetCurrentOrder(currentOrder.orderId,currentOrder.data,currentOrder.date,true)
-}
 
     const getAllBestellungen = async () => {
         const orders = await fetchGetAllCurrentOrder();
@@ -90,32 +80,26 @@ const heandleDone = async (currentOrder:any) => {
             }
 
             // 🔹 4. Bestellung-Container erstellen
-            if(bestellung.ready !== true){
-                allEinzelneBestellungen.push(
-                    <View key={bestellung.orderId}>
-                        <View style={{ height: 50 }} />
+            allEinzelneBestellungen.push(
+                <View key={bestellung.orderId}>
+                    <View style={{ height: 50 }} />
 
-                        <ThemeChip
-                            size={{ width: 300, height: 30 + 50 * orderItems.length }}
-                            onPress={() => ""}
-                        >
-                            <Text style={{ fontSize: 18 }}>
-                                Bestellnummer {bestellung.orderId}
-                            </Text>
+                    <ThemeChip
+                        size={{ width: 300, height: 30 + 50 * orderItems.length }}
+                        onPress={() => ""}
+                    >
+                        <Text style={{ fontSize: 18 }}>
+                            Bestellnummer {bestellung.orderId}
+                        </Text>
 
-                            <Text style={{ fontSize: 14, color: "gray" }}>
-                                📅 {new Date(bestellung.date).toLocaleString()}
-                            </Text>
+                        <Text style={{ fontSize: 14, color: "gray" }}>
+                            📅 {new Date(bestellung.date).toLocaleString()}
+                        </Text>
 
-                            {orderItems}
-                            <View>
-                                <ThemeButton movable={'absolute'} text={'Done'} onPress={() => heandleDone(bestellung)} size={{width:50,height:40}} position={{left:210,bottom:10}}/>
-                            </View>
-                        </ThemeChip>
-                    </View>
-                );
-            }
-
+                        {orderItems}
+                    </ThemeChip>
+                </View>
+            );
         }
 
         // 🔹 5. Nur einmal State setzen
@@ -140,7 +124,7 @@ return (
             left:20
         }}>
             <Text style={{fontSize:24,paddingTop:20}}>Bestellungen</Text>
-            <ScrollView showsVerticalScrollIndicator={false} style={{}}>
+            <ScrollView style={{}}>
                 {einzelnebestellung}
             </ScrollView>
         </View>

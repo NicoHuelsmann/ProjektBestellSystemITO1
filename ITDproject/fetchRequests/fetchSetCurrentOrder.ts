@@ -1,9 +1,9 @@
-import {getUrl,url} from "@/fetchRequests/config";
+import {getUrl} from "@/fetchRequests/config";
 
-export default  async  function fetchSetCurrentOrder(orderId:any,data:{}, date:string,ready:boolean){
+export default  async  function fetchSetCurrentOrder(orderId:any,data:{}, date:string){
     try{
         console.log(getUrl().toString())
-        const res= await fetch(`${getUrl() === ''? url:getUrl()}/setCurrentOrder`,{
+        const res= await fetch(`${getUrl().toString()}/setCurrentOrder`,{
             method: "POST",
             headers: {
                 "Content-Type": "application/json",
@@ -12,8 +12,7 @@ export default  async  function fetchSetCurrentOrder(orderId:any,data:{}, date:s
             body: JSON.stringify({
                 orderId:orderId,
                 data:data,
-                date:date,
-                ready:ready
+                date:date
             })
         })
         if(res.status === 200){

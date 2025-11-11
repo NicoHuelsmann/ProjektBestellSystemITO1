@@ -18,7 +18,6 @@ import ProfileIcon from "@/app/(tabs)/(Profile)/profileIcon";
 import OpenDialog from "@/app/(tabs)/(Profile)/OpenDialog";
 import fetchGetTisch from "@/fetchRequests/fetchGetTisch";
 import {url} from "@/fetchRequests/config";
-import fetchGetAllCurrentOrder from "@/fetchRequests/fetchGetAllCurrentOrder";
 
 
 export default function Kellner():React.JSX.Element {
@@ -28,7 +27,7 @@ export default function Kellner():React.JSX.Element {
     const[openProfileDialog, setOpenProfileDialog] = React.useState(false);
     const [tabels, setTabels] = React.useState<React.JSX.Element[]>([]);
     const [elementTables,setElementTables] = React.useState<any>([]);
-    const [allebestellungen, setAllebestellungen] = React.useState<any>([]);
+
     const tableOnPressManeger = (taleId:number) => {
         setCurrenId(taleId)
         setOpenBestellungenDialog(true)
@@ -43,26 +42,12 @@ export default function Kellner():React.JSX.Element {
         }
 
     }
-    useEffect(() => {
-        const interval = setInterval( async () => {
-            const result = await fetchGetAllCurrentOrder();
-            setAllebestellungen(result);
-        })
-        return () => clearInterval(interval)
-    }, []);
+
       const table = async () => {
           setTabels([])
-
             for(let i=0; i<elementTables.length; i++){
-                let color = 'white'
-                allebestellungen.data.forEach((item:any) => {;
-                    if(item.ready && elementTables[i].TISCHID === item.orderId){
-                        color = 'green'
-                    }
-                })
-
                 setTabels( (prev) =>[...prev,
-                    <ThemeChip backgroundColor={color} key={elementTables[i].TISCHID} alignItems={'center'} size={{width:100,height:150}} onPress={() => tableOnPressManeger(elementTables[i].TISCHID)}>
+                    <ThemeChip key={elementTables[i].TISCHID} alignItems={'center'} size={{width:100,height:150}} onPress={() => tableOnPressManeger(elementTables[i].TISCHID)}>
                         <Text selectable={false} style={{fontSize:60,left:-5}}>{elementTables[i].TISCHID}</Text>
                     </ThemeChip>])
             }
@@ -90,15 +75,6 @@ export default function Kellner():React.JSX.Element {
         
             table()
     }, [elementTables]);
-
-    const [finishedFoodPopUp, setFinishedFoodPopUp] = React.useState(false);
-    useEffect(() => {
-        const interval = setInterval(async () => {
-
-        },1000)
-        return () => clearInterval(interval);
-
-    });
     return (
         <Wrapper>
             <ProfileIcon currentState={openProfileDialog} open={(e) => setOpenProfileDialog(e)}/>
@@ -119,7 +95,7 @@ export default function Kellner():React.JSX.Element {
 
 
                 <AddTabel addDialogOpen={addDialogOpen} closeDialog={() => setAddDialogOpen(false)} onSubmit={table}/>
-            {finishedFoodPopUp? <Text style={{fontSize: 60, position: 'absolute'}}>test</Text>:null}
+
             <BestellungPopUp tableId={currendId} openBestellungenDialog={openBestellungenDialog} onBlur={() => setOpenBestellungenDialog(false)}/>
         </Wrapper>
     )

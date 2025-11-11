@@ -17,13 +17,11 @@ interface ThemeButtonProps {
     };
     textColor?: string;
     alignSelf?:'auto'|'center'| 'flex-start'| 'flex-end'|'stretch'|'baseline';
-    movable?: 'absolute' | 'relative'
 }
 
 export default function ThemeButton(props: ThemeButtonProps):React.JSX.Element{
     return (
             <TouchableOpacity style={{
-                position:props.movable !== undefined? props.movable:'relative',
                 paddingTop: props.paddingTop,
                 alignSelf: props.alignSelf ? props.alignSelf : 'auto',
                 width: props.size?.width !== undefined ? props.size?.width : 200,
