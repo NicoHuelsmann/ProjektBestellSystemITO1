@@ -115,7 +115,7 @@ export default function Kellner():React.JSX.Element {
         </ScrollView>
                 </View>
 
-            {openProfileDialog? <OpenDialog onBlur={() => setOpenProfileDialog(false)}/>:null}
+            {openProfileDialog? <OpenDialog position={{left:'-1%',bottom:'75%'}} onBlur={() => setOpenProfileDialog(false)}/>:null}
 
 
                 <AddTabel addDialogOpen={addDialogOpen} closeDialog={() => setAddDialogOpen(false)} onSubmit={table}/>

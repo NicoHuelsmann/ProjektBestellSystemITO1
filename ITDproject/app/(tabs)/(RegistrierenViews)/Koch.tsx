@@ -11,10 +11,13 @@ import ThemeButton from "@/app/Themes/ThemeButton";
 import fetchClearOrder from "@/fetchRequests/fetchClearOrder";
 import fetchSetCurrentOrder from "@/fetchRequests/fetchSetCurrentOrder";
 import {data} from "browserslist";
+import FullProfile from "@/app/(tabs)/(Profile)/FullProfile";
+import OpenDialog from "@/app/(tabs)/(Profile)/OpenDialog";
 
 
 export default function Koch():React.JSX.Element{
 const [einzelnebestellung,setEinzelnebestellung] = useState<React.JSX.Element[]>([]);
+    const [open,setOpen] = React.useState<boolean>(false);
 
 const [currentOrdersValues,setCurrentOrdersValues] = useState<React.JSX.Element[]>([]);
 
@@ -130,7 +133,7 @@ const heandleDone = async (currentOrder:any) => {
     })
 return (
     <Wrapper>
-        <ProfileIcon open={() => ''} currentState={false}/>
+        <ProfileIcon open={() => setOpen(!open)} currentState={open}/>
         <View style={{width:'30%',height:'90%',alignItems:'center',shadowColor: '#000',
             shadowOffset: {width: 2, height: 2},
             shadowOpacity: 0.3,
@@ -154,6 +157,7 @@ return (
         }}>
             <QRLogin/>
         </View>
+        {open? <OpenDialog position={{left:'-1%',bottom:'100%'}} onBlur={() => setOpen(false)}/>:null}
 
     </Wrapper>
 )

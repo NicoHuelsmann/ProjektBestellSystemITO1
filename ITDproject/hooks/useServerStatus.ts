@@ -1,5 +1,6 @@
 // useServerStatus.ts
 import { useEffect, useState } from "react";
+import {url} from "@/fetchRequests/config";
 
 export default function useServerStatus(interval = 1000) {
   const [online, setOnline] = useState(true);
@@ -7,7 +8,7 @@ export default function useServerStatus(interval = 1000) {
   useEffect(() => {
     const checkServer = async () => {
       try {
-        const res = await fetch("http://localhost:9000/Health", { method: "HEAD" });
+        const res = await fetch(`${url}/health`, { method: "HEAD" });
         setOnline(res.ok);
       } catch {
         setOnline(false);

@@ -28,11 +28,12 @@ export default function Login() {
   const [usernotfound, setUsernotfound] = useState<boolean>(false);
   const [sowQRScanner, setSowQRScanner] = useState<boolean>(false);
   const [connect, setConnect] = useState<boolean>(false);
+    const [PreSetLoaded,setPreSetLoaded] = useState(false);
   useEffect(() => {
     const intervall = setInterval(()=> {
       const ping = async () => {
         try {
-          const response = await fetch("http://localhost:9000/Health");
+          const response = await fetch(`${url}/health`);
           if (!response.ok) {
             console.error("Fehler:", response.status);
             return;
@@ -80,6 +81,18 @@ export default function Login() {
       router.push("/HomeScreen");
     }
   }
+  const QRDataIsFull = async () => {
+      const data = await asyncStorage.getItem('QRPreSet')
+      if(data != null){
+          if(data.length > 0){
+              setPreSetLoaded(true)
+          }
+      }
+
+  }
+    useEffect(() => {
+        QRDataIsFull()
+    });
   return (
    <Wrapper>
        <View style={{flex: 1,
@@ -88,8 +101,11 @@ export default function Login() {
        }}>
      <Link href={'/'}/>
      <View style={{width:'100%',height:'100%',alignItems: "center",justifyContent:"center"}}>
-         <ThemeQRIcon onPress={() => setSowQRScanner(!sowQRScanner)}/>
-     <View style={{bottom:Platform.OS !== 'web'?-25:0,alignItems: "center",justifyContent:"center"}}>
+         <View style={{position:'absolute',paddingBottom:400}}>
+             {PreSetLoaded ? <ThemeQRIcon onPress={() => setSowQRScanner(!sowQRScanner)}/>:null}
+         </View>
+
+         <View style={{bottom:Platform.OS !== 'web'?-25:0,alignItems: "center",justifyContent:"center"}}>
        <LoginLogo/>
        <Text style={{color:'white',fontSize:32}}>
          Bestellapp
@@ -109,6 +125,17 @@ export default function Login() {
             </View>
                 <ThemeButton text={'Registrieren'} backgroundColor={screenbackground} onPress={() => router.push('/Registrieren')} position={{bottom:-80,left:0}}/>
             </View>
+           { Platform.OS !== 'web' && !PreSetLoaded? <View style={{bottom: 70, alignItems: 'center'}}>
+               <ThemeButton backgroundColor={screenbackground} position={{bottom: 0, left: 0}} text={'Qrcode Preset'}
+                            onPress={() => router.push('/preSetQrLogin')}/>
+           </View>:null}
+           { Platform.OS !== 'web' && PreSetLoaded === true? <View style={{bottom: 70, alignItems: 'center'}}>
+               <ThemeButton backgroundColor={screenbackground} position={{bottom: 0, left: 0}} text={'QR data Reset'}
+                            onPress={() => {
+                                asyncStorage.removeItem('QRPreSet');
+                                setPreSetLoaded(false)
+                            }}/>
+           </View>:null}
            {sowQRScanner? <View style={{position: 'absolute', width: '100%', height: '100%',justifyContent:'flex-end',bottom:-4}}>
                <View style={{position: 'absolute', width: '100%', height: '100%',}}>
                    <ThemeXButton onPress={() => setSowQRScanner(false)}/>
