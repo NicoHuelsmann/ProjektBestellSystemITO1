@@ -1,6 +1,8 @@
 import React, {useEffect} from "react";
 import {Platform, Pressable, Text, View} from "react-native";
 import asyncStorage from "@react-native-async-storage/async-storage/src/AsyncStorage";
+import fetchGetUserName from "@/fetchRequests/fetchGetUserName";
+import AsyncStorage from "@react-native-async-storage/async-storage";
 
 interface ProfileIconProps {
     open: (state:boolean) => void;
@@ -11,6 +13,8 @@ export default function ProfileIcon(props:ProfileIconProps):React.JSX.Element{
 
     const [RGB, setRGB] = React.useState<string>()
     const [openDialog, setOpenDialog] = React.useState<boolean>(false);
+    const [vorName, setVorName] = React.useState<string | null>(null);
+    const [nachName, setNachName] = React.useState<string | null>(null);
     const add = async () => {
         const getstorage = await asyncStorage.getItem('profilePictureColor')
         if(getstorage === undefined || getstorage === null) {
@@ -24,12 +28,22 @@ export default function ProfileIcon(props:ProfileIconProps):React.JSX.Element{
             setRGB(getstorage)
         }
     }
+    const getPerson = async () => {
+        const userId = await AsyncStorage.getItem('user')
+        const a = userId ? JSON.parse(userId) : null;
+        setVorName(a.Vorname)
+        setNachName(a.Nachname)
+        console.log(a.Vorname)
+    }
     useEffect(() => {
         add()
+        getPerson()
     }, []);
     return (
             <View style={{position:'absolute', alignItems:'flex-end',width:'100%',height:'100%',bottom:-10,left:-20}}>
                 <Pressable style={{
+                    justifyContent:'center',
+                    alignItems:'center',
                     shadowColor: '#000',
                     shadowOffset: {width: 2, height: 2},
                     shadowOpacity: 0.3,
@@ -39,7 +53,9 @@ export default function ProfileIcon(props:ProfileIconProps):React.JSX.Element{
                     props.open(!props.currentState)
                 }}
                 >
-                    <Text></Text>
+                    <Text style={{color:'white',fontSize:22}} selectable={false}>
+                        {vorName?.slice(0,1)}{nachName?.slice(0,1)}
+                    </Text>
                 </Pressable>
             </View>
 

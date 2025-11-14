@@ -4,6 +4,7 @@ import { CameraView, useCameraPermissions, BarcodeType, BarcodeScanningResult } 
 import asyncStorage from "@react-native-async-storage/async-storage/src/AsyncStorage";
 import {getUrl, setUrl} from "@/fetchRequests/config";
 import {router} from "expo-router";
+import {UserInterface} from "@/interfaces/UserInterface";
 
 export default function QRCodeScannerScreen() {
     const [permission, requestPermission, getPermission] = useCameraPermissions();
@@ -12,8 +13,6 @@ export default function QRCodeScannerScreen() {
     const handleBarCodeScanned = async (result: BarcodeScanningResult) => {
         setScanned(true);
 
-        await asyncStorage.setItem('user', 'Kellner');
-
         // QR-Daten prüfen
         if (
             result.type.length === 2 &&
@@ -21,8 +20,19 @@ export default function QRCodeScannerScreen() {
             result.data.toString() !== '{"_h":0,"_i":0,"_j":null,"_k":null}'
         ) {
             setUrl(result.data);
-            router.push('/HomeScreen');
-            console.log(getUrl())
+            const a = await asyncStorage.getItem('QRPreSet')
+            const body: UserInterface = {
+                Benutzername: 'QRCodeLogin',
+                Nachname: 'R',
+                Role:'Kellner',
+                UserID: 0,
+                Passwort:'',
+                Vorname: 'Q'
+            }
+            if(a != null){
+                await asyncStorage.setItem('user', a);
+                router.push('/HomeScreen');
+            }
         }
     };
 

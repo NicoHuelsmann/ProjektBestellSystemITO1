@@ -4,6 +4,10 @@ import React from "react";
 import { Pressable, Text, View } from "react-native";
 
 interface OpenDialogProps {
+    position?:{
+        left?: number | string;
+        bottom?: number | string;
+    }
     onBlur:() => void;
 }
 export default function OpenDialog(props:OpenDialogProps){
@@ -26,8 +30,8 @@ export default function OpenDialog(props:OpenDialogProps){
             shadowRadius: 4,
             elevation: 6,
             alignSelf: 'flex-end',
-            bottom: '75%',
-            left: -20,
+            bottom: props.position?.bottom != null ? props.position?.bottom : 0,
+            left: props.position?.left != null ? props.position?.left :0,
             borderRadius: 9,
             width: 200,
             height: 400,
@@ -42,7 +46,7 @@ export default function OpenDialog(props:OpenDialogProps){
                 borderBottomColor: 'back',
                 borderBottomWidth: 1
             }}>
-                <Text style={{fontSize: 28}}>Mein Profil</Text>
+                <Text  selectable={false} style={{fontSize: 28}}>Mein Profil</Text>
             </Pressable>
             <Pressable onPress={handleLogout} style={{
                 width: '100%',
@@ -53,7 +57,7 @@ export default function OpenDialog(props:OpenDialogProps){
                 borderBottomColor: 'back',
                 borderBottomWidth: 1
             }}>
-                <Text style={{fontSize: 28}}>Logout</Text>
+                <Text selectable={false} style={{fontSize: 28}}>Logout</Text>
             </Pressable>
         </View>)
 }
