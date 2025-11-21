@@ -1,9 +1,9 @@
-import {getUrl, url} from "@/fetchRequests/config";
+import { url } from "@/fetchRequests/config";
 
 export default  async  function fetchUser(userName:string){
     try{
     const res= await fetch(`${url}/getUser`,{
-        method: "POST", // oder "GET", je nachdem, was dein Server erwartet
+        method: "POST",
             headers: {
             "Content-Type": "application/json",
         },

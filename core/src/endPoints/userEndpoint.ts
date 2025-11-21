@@ -12,13 +12,15 @@ export async function userEndpointGetPersnrByUname(dbpath:string,username:string
     );
     try {
         const user: any = await fetchFirst(db, `SELECT USR01.PERSNR FROM USR01 WHERE USR01.UNAME=?`, [username]);
-        return ({userID: user.PERSNR, password: user.PWCODE});
+        if (!user)
+            return null;
+        ({userID: user.PERSNR, password: user.PWCODE});
     } catch (err) {
         console.log(err);
     } finally {
         db.close();
     }
-    return null
+    return null;
 }
 
 export async function userEndpointGetUserByUserID(dbpath:string, userid:number){
@@ -32,6 +34,8 @@ export async function userEndpointGetUserByUserID(dbpath:string, userid:number){
     );
     try {
         const user: any = await fetchFirst(db, `SELECT USR01.UNAME, USR01.NAME1, USR01.NAME2, USR01.UNAME, USR01.PWCODE FROM USR01 WHERE USR01.PERSNR=?`, [userid]);
+        if (!user)
+            return null;
         return ({Vorname: user.NAME1, Nachname: user.NAME2, Benutzername: user.UNAME, Passwort: user.PWCODE});
     }
     catch (err) {

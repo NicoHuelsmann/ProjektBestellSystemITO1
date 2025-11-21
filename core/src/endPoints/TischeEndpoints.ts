@@ -57,7 +57,11 @@ export async function TischeRemoveEndpoint(dbpath: string, TischID: string){
         }
     );
     try {
-        await fetchFirst(db, 'DELETE FROM TISCHE WHERE TISCHE.ID = ?', [TischID]);
+        const result = await fetchFirst(db, 'SELECT * FROM TISCHE WHERE TISCHE.TISCHID = ?', [TischID]);
+        await fetchFirst(db, 'DELETE FROM TISCHE WHERE TISCHE.TISCHID = ?', [TischID]);
+        if (result === undefined) {
+            return ({ ok: false, error: "Tisch not found" });
+       }    
         return ({ ok : true});
     } catch (err) {
         console.log(err);

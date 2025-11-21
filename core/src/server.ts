@@ -3,7 +3,7 @@ import express, { Request, Response } from "express";
 import { Database } from "sqlite3";
 import { ArtikelEndpoint, ArtikelInsertEndpoint } from "./endPoints/ArtikelEndpoints";
 import RoleEndpoint from "./endPoints/RoleEndpoints";
-import { TischeEndpoint, TischeInsertEndpoint } from "./endPoints/TischeEndpoints";
+import { TischeEndpoint, TischeInsertEndpoint, TischeRemoveEndpoint } from "./endPoints/TischeEndpoints";
 import { userEndpointGetPersnrByUname, userEndpointGetUserByUserID } from "./endPoints/userEndpoint";
 
 const app = express();
@@ -82,6 +82,11 @@ app.get("/insertTische", createEndpoint(async () => {
 // TischeGetGET
 app.get("/getTische", createEndpoint(async () => {
     return await TischeEndpoint(dbpath);
+}));
+
+// TischeDelPOST
+app.post("/delTisch", createEndpoint(async (body) => {
+    return await TischeRemoveEndpoint(dbpath, body.TischID);
 }));
 
 /**

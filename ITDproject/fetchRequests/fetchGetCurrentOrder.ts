@@ -1,4 +1,4 @@
-import {getUrl} from "@/fetchRequests/config";
+import { getUrl } from "@/fetchRequests/config";
 
 export default  async  function fetchGetCurrentOrder(orderId:any){
     try{

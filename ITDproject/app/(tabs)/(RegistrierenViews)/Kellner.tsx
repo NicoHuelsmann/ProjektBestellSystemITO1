@@ -1,31 +1,22 @@
-import React, {useEffect} from "react";
-import Wrapper from "@/app/Wrapper";
-import {Dimensions, Platform, Pressable, ScrollView, Text, View} from "react-native";
-import ThemeFabButton from "@/app/Themes/ThemeFabButton";
-import ThemePopUp from "@/app/Themes/ThemePopUp";
-import {router} from "expo-router";
-import ThemeChip from "@/app/Themes/Chips/ThemeChip";
-import ThemeButton from "@/app/Themes/ThemeButton";
-import AddTabel from "@/app/(tabs)/Kellner/AddTabel";
-import {DatenbankTischResultInterface} from "@/interfaces/datenbankTischResultInterface";
-import {BestellungsInferface} from "@/interfaces/BestellungsInferface";
-import ThemeTextInput from "@/app/Themes/ThemeTextInput";
-import BestellungPopUp from '@/app/(tabs)/Kellner/BestellungPopUp';
-import fetchSetCurrentOrder from "@/fetchRequests/fetchSetCurrentOrder";
-import fetchGetCurrentOrder from "@/fetchRequests/fetchGetCurrentOrder";
-import {data} from "browserslist";
-import ProfileIcon from "@/app/(tabs)/(Profile)/profileIcon";
 import OpenDialog from "@/app/(tabs)/(Profile)/OpenDialog";
-import fetchGetTisch from "@/fetchRequests/fetchGetTisch";
-import {url} from "@/fetchRequests/config";
+import ProfileIcon from "@/app/(tabs)/(Profile)/profileIcon";
+import AddTabel from "@/app/(tabs)/Kellner/AddTabel";
+import BestellungPopUp from '@/app/(tabs)/Kellner/BestellungPopUp';
+import ThemeChip from "@/app/Themes/Chips/ThemeChip";
+import ThemeFabButton from "@/app/Themes/ThemeFabButton";
+import Wrapper from "@/app/Wrapper";
+import { url } from "@/fetchRequests/config";
 import fetchGetAllCurrentOrder from "@/fetchRequests/fetchGetAllCurrentOrder";
+import { fetchGetTisch } from "@/fetchRequests/fetchTische";
+import React, { useEffect } from "react";
+import { Platform, ScrollView, Text, View } from "react-native";
 
 
 export default function Kellner():React.JSX.Element {
     const [addDialogOpen, setAddDialogOpen] = React.useState(false);
     const [openBestellungenDialog, setOpenBestellungenDialog] = React.useState(false);
     const [currendId,setCurrenId] = React.useState<number>(0);
-    const[openProfileDialog, setOpenProfileDialog] = React.useState(false);
+    const [openProfileDialog, setOpenProfileDialog] = React.useState(false);
     const [tabels, setTabels] = React.useState<React.JSX.Element[]>([]);
     const [elementTables,setElementTables] = React.useState<any>([]);
     const [allebestellungen, setAllebestellungen] = React.useState<any>([]);
@@ -90,15 +81,6 @@ export default function Kellner():React.JSX.Element {
         
             table()
     }, [elementTables]);
-
-    const [finishedFoodPopUp, setFinishedFoodPopUp] = React.useState(false);
-    useEffect(() => {
-        const interval = setInterval(async () => {
-
-        },1000)
-        return () => clearInterval(interval);
-
-    });
     return (
         <Wrapper>
             <ProfileIcon currentState={openProfileDialog} open={(e) => setOpenProfileDialog(e)}/>
@@ -119,7 +101,6 @@ export default function Kellner():React.JSX.Element {
 
 
                 <AddTabel addDialogOpen={addDialogOpen} closeDialog={() => setAddDialogOpen(false)} onSubmit={table}/>
-            {finishedFoodPopUp? <Text style={{fontSize: 60, position: 'absolute'}}>test</Text>:null}
             <BestellungPopUp tableId={currendId} openBestellungenDialog={openBestellungenDialog} onBlur={() => setOpenBestellungenDialog(false)}/>
         </Wrapper>
     )

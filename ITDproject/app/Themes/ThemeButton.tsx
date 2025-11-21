@@ -1,6 +1,6 @@
+import { basicButtonColor } from "@/constants/Colors";
 import React from "react";
-import {Text, TouchableOpacity, View} from "react-native";
-import {basicButtonColor} from "@/constants/Colors";
+import { Text, TouchableOpacity } from "react-native";
 interface ThemeButtonProps {
     text: string;
     onPress: () => void;

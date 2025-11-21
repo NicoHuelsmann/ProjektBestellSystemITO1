@@ -1,9 +1,8 @@
-import React from "react";
-import ThemePopUp from "@/app/Themes/ThemePopUp";
-import {Dimensions, Platform, Text, View} from "react-native";
 import ThemeButton from "@/app/Themes/ThemeButton";
-import ThemeTextInput from "@/app/Themes/ThemeTextInput";
-import fetchSetTable from "@/fetchRequests/fetchSetTisch";
+import ThemePopUp from "@/app/Themes/ThemePopUp";
+import { fetchSetTable } from "@/fetchRequests/fetchTische";
+import React from "react";
+import { Dimensions, Platform, Text, View } from "react-native";
 interface addTabelProps {
     addDialogOpen: boolean;
     closeDialog: () => void;

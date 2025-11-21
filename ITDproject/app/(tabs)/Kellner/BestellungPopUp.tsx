@@ -1,13 +1,14 @@
-import React, {useEffect, useState} from "react";
-import ThemePopUp from "@/app/Themes/ThemePopUp";
-import {Button, Platform, ScrollView, Text, View} from "react-native";
 import ThemeButton from "@/app/Themes/ThemeButton";
-import fetchArtikle from "@/fetchRequests/fetchGetArtikle";
 import ThemeNumberPicker from "@/app/Themes/ThemeNumberPicker";
-import {router, usePathname} from "expo-router";
+import ThemePopUp from "@/app/Themes/ThemePopUp";
+import fetchClearOrder from "@/fetchRequests/fetchClearOrder";
+import fetchArtikle from "@/fetchRequests/fetchGetArtikle";
 import fetchGetCurrentOrder from "@/fetchRequests/fetchGetCurrentOrder";
 import fetchSetCurrentOrder from "@/fetchRequests/fetchSetCurrentOrder";
-import fetchClearOrder from "@/fetchRequests/fetchClearOrder";
+import { fetchDelTisch } from "@/fetchRequests/fetchTische";
+import { usePathname } from "expo-router";
+import React, { useEffect, useState } from "react";
+import { Platform, ScrollView, Text, View } from "react-native";
 interface BestellungPopUpProps {
     tableId:number;
     openBestellungenDialog:boolean;
@@ -86,10 +87,18 @@ export default function BestellungPopUp({tableId,openBestellungenDialog, onBlur}
         }
     }
     const storno = async () => {
-
         await fetchClearOrder(tableId);
         onBlur()
     }
+    const del = async () =>  {
+        // hinweis das offene bestellung gelöscht wird
+        const result = await fetchGetCurrentOrder(tableId);
+        if (result) {
+            await fetchClearOrder(tableId);
+        }
+        await fetchDelTisch (tableId);
+        onBlur();
+    }   
     const pathname = usePathname()
     useEffect(() => {
         if (openBestellungenDialog) possilbeFood()
@@ -143,6 +152,9 @@ export default function BestellungPopUp({tableId,openBestellungenDialog, onBlur}
                     </View>
                     <View style={{paddingLeft:10}}>
                         <ThemeButton  text={'Storno'} onPress={storno} position={{left:0,bottom:60}} size={{width:179}}/>
+                    </View>
+                    <View>
+                        <ThemeButton text={'Löschen'} onPress={del} position={{left:100,bottom:180}} size={{width:179}}/>
                     </View>
                 </View>
             </ThemePopUp>

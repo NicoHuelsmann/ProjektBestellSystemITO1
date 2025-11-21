@@ -1,18 +1,16 @@
-import React, {useEffect, useState} from "react";
-import Wrapper from "@/app/Wrapper";
-import {ScrollView, Text, View} from "react-native";
-import fetchGetAllCurrentOrder from "@/fetchRequests/fetchGetAllCurrentOrder";
-import ThemeChip from "@/app/Themes/Chips/ThemeChip";
-import ThemeCheckBox from "@/app/Themes/ThemeCheckBox";
-import QRLogin from "@/app/(tabs)/Koch/QRLogin";
-import fetchArtikle from "@/fetchRequests/fetchGetArtikle";
-import ProfileIcon from "../(Profile)/profileIcon";
-import ThemeButton from "@/app/Themes/ThemeButton";
-import fetchClearOrder from "@/fetchRequests/fetchClearOrder";
-import fetchSetCurrentOrder from "@/fetchRequests/fetchSetCurrentOrder";
-import {data} from "browserslist";
-import FullProfile from "@/app/(tabs)/(Profile)/FullProfile";
 import OpenDialog from "@/app/(tabs)/(Profile)/OpenDialog";
+import QRLogin from "@/app/(tabs)/Koch/QRLogin";
+import ThemeChip from "@/app/Themes/Chips/ThemeChip";
+import ThemeButton from "@/app/Themes/ThemeButton";
+import ThemeCheckBox from "@/app/Themes/ThemeCheckBox";
+import Wrapper from "@/app/Wrapper";
+import fetchClearOrder from "@/fetchRequests/fetchClearOrder";
+import fetchGetAllCurrentOrder from "@/fetchRequests/fetchGetAllCurrentOrder";
+import fetchArtikle from "@/fetchRequests/fetchGetArtikle";
+import fetchSetCurrentOrder from "@/fetchRequests/fetchSetCurrentOrder";
+import React, { useEffect, useState } from "react";
+import { ScrollView, Text, View } from "react-native";
+import ProfileIcon from "../(Profile)/profileIcon";
 
 
 export default function Koch():React.JSX.Element{
