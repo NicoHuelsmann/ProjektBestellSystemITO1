@@ -11,7 +11,7 @@ export async function ArtikelEndpoint(dbpath:string){
         }
     );
     try {
-        const artikel: any = await fetchAll(db, `Select a.ARTNR, a.KTEXT, p.PRWRT 
+        const artikel: any = await fetchAll(db, `Select a.ARTNR, a.TEXT, p.PRWRT 
                                     from preis p
                                     join artikel a on a.ARTNR = p.ARTNR
                                     where p.PRDAT = 
@@ -20,7 +20,7 @@ export async function ArtikelEndpoint(dbpath:string){
         for (let i = 0; i < artikel.length; i++){
             data.push({
                 artikelnummer: artikel[i].ARTNR,
-                beschreibung: artikel[i].KTEXT,
+                beschreibung: artikel[i].TEXT,
                 preis: artikel[i].PRWRT
             });
         }
