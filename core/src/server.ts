@@ -92,7 +92,7 @@ app.post("/delTisch", createEndpoint(async (body) => {
 /**
  * Es werden die bestellungen über alle Geräte sycronisiert
  */
-const currentBestellungenSync:{ orderId:any, data:{}, date:string }[] = []
+const currentBestellungenSync:{ orderId:any, data:{}, date:string, ready:boolean }[] = []
 app.post('/setCurrentOrder', (req: Request, res: Response) =>{
     currentBestellungenSync.push(req.body)
     console.log(currentBestellungenSync)

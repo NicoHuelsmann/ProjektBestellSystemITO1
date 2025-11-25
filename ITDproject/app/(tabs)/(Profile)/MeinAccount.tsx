@@ -10,16 +10,18 @@ import ThemeBackButton from "@/app/Themes/ThemeBackButton";
 
 export default function MeinAccount(): React.JSX.Element {
     const [user, setUser] = useState<UserInterface>();
+    const [PreSetLoaded,setPreSetLoaded] = useState(false);
     const localStorage = async () => {
         const storedUser = await asyncStorage.getItem('user');
+        console.log('meinacc',storedUser)
         if (storedUser){
             setUser(JSON.parse(storedUser));
         }
     }
 
+
     useEffect(() => {
         localStorage();
-        console.log(user)
     },[])
 
     useEffect(() => {
@@ -95,9 +97,40 @@ export default function MeinAccount(): React.JSX.Element {
         else return error()
     }
 
+    const setPreSet = async () => {
+        const currentuser = await asyncStorage.getItem('user')
+
+        if(currentuser != null){
+            const a = JSON.parse(currentuser)
+            const body:UserInterface ={
+                UserID: a.UserID,
+                Role: 'Kellner',
+                Benutzername: a.Benutzername,
+                Vorname: a.Vorname,
+                Nachname: a.Nachname,
+                Passwort: a.Passwort,
+            }
+            console.log('dataset',a)
+            await asyncStorage.setItem('QRPreSet',JSON.stringify(body));
+        }
+
+
+    }
+
+    const QRPreSetLoade = async () => {
+        const user = await asyncStorage.getItem('QRPreSet')
+        console.log(user)
+        if(user != null){
+            setPreSetLoaded(true)
+        }
+    }
+    useEffect(() => {
+        QRPreSetLoade()
+    }, []);
   return (
     <Wrapper>
             {checkRole()}
+
         {Platform.OS !== 'web'?
             <View style={{
                 //alignItems:'center',
@@ -107,6 +140,20 @@ export default function MeinAccount(): React.JSX.Element {
             }}>
                 <ThemeButton text={'Zurück'} onPress={() => router.push('/HomeScreen')}/>
             </View>:null}
+        { Platform.OS !== 'web' && !PreSetLoaded? <View style={{bottom: 0, alignItems: 'center'}}>
+            <ThemeButton backgroundColor={screenbackground} position={{bottom: 0, left: 0}} text={'Qrcode Preset'}
+                         onPress={() => {
+                             setPreSet()
+                             setPreSetLoaded(true)
+                         }}/>
+        </View>:null}
+        { Platform.OS !== 'web' && PreSetLoaded === true? <View style={{bottom: 0, alignItems: 'center'}}>
+            <ThemeButton backgroundColor={screenbackground} position={{bottom: 0, left: 0}} text={'QR data Reset'}
+                         onPress={() => {
+                             asyncStorage.removeItem('QRPreSet')
+                             setPreSetLoaded(false)
+                         }}/>
+        </View>:null}
     </Wrapper>
   );
 }

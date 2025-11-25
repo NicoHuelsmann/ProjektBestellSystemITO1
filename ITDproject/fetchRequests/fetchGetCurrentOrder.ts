@@ -13,11 +13,14 @@ export default  async  function fetchGetCurrentOrder(orderId:any){
             })
         })
         if(res.status === 200){
+            if( await res.json() !== '')
             return await res.json()
         }else{
             throw Error(`Unable to fetch order ${res.status}`)
         }
-    }catch (e){
-        console.log(e)
+    }catch (e:any){
+        if(!e.message.includes('Failed to execute \'json\'')){
+            console.log(e)
+        }
     }
 };

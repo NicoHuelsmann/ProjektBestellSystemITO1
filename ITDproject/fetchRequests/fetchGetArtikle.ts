@@ -13,7 +13,6 @@ export default  async  function fetchArtikle(){
             }
         }
         else{
-            console.log(getUrl())
             const res= await fetch(`${checkUrl()}/getArtikel`)
             if(res.status === 200){
                 return res.json()

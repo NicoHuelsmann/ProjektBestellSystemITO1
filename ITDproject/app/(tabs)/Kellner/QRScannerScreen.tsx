@@ -21,17 +21,9 @@ export default function QRCodeScannerScreen() {
         ) {
             setUrl(result.data);
             const a = await asyncStorage.getItem('QRPreSet')
-            const body: UserInterface = {
-                Benutzername: 'QRCodeLogin',
-                Nachname: 'R',
-                Role:'Kellner',
-                UserID: 0,
-                Passwort:'',
-                Vorname: 'Q'
-            }
             if(a != null){
-                await asyncStorage.setItem('user', a);
-                router.push('/HomeScreen');
+                 await asyncStorage.setItem('user', a);
+                 router.push('/HomeScreen');
             }
         }
     };
