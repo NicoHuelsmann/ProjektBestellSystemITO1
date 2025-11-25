@@ -11,6 +11,7 @@ import fetchSetCurrentOrder from "@/fetchRequests/fetchSetCurrentOrder";
 import React, { useEffect, useState } from "react";
 import { ScrollView, Text, View } from "react-native";
 import ProfileIcon from "../(Profile)/profileIcon";
+import {bestellungenBackground} from "@/constants/Colors";
 
 
 export default function Koch():React.JSX.Element{
@@ -138,7 +139,9 @@ return (
             shadowRadius: 4,
             elevation: 5,
             bottom:-40,
-            left:20
+            left:20,
+            backgroundColor:bestellungenBackground,
+            borderRadius:40
         }}>
             <Text style={{fontSize:24,paddingTop:20}}>Bestellungen</Text>
             <ScrollView showsVerticalScrollIndicator={false} style={{}}>

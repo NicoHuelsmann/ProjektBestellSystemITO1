@@ -1,11 +1,12 @@
 import ThemeButton from "@/app/Themes/ThemeButton";
 import Wrapper from "@/app/Wrapper";
-import { screenbackground, warning } from "@/constants/Colors";
+import {bestellungenBackground, screenbackground, warning} from "@/constants/Colors";
 import { UserInterface } from "@/interfaces/UserInterface";
 import asyncStorage from "@react-native-async-storage/async-storage/src/AsyncStorage";
 import { router } from "expo-router";
 import React, { useEffect, useState } from "react";
-import { Button, Text, View } from "react-native";
+import {Button, Platform, Text, View} from "react-native";
+import ThemeBackButton from "@/app/Themes/ThemeBackButton";
 
 export default function MeinAccount(): React.JSX.Element {
     const [user, setUser] = useState<UserInterface>();
@@ -41,27 +42,61 @@ export default function MeinAccount(): React.JSX.Element {
     }
     
     const checkRole = ():React.JSX.Element => {
-        if(user?.Role === 'Koch' || user?.Role === 'Kellner'){
-            return (<Wrapper>
-                    <View style={{ alignItems: "center", justifyContent: "center", height: "100%" }}>
-                    <Text style={{ marginBottom: 20 }}>Mein Account</Text>
-                    <Text style={{fontSize:30}}>UserID: {user?.UserID}</Text>
-                    <Text style={{fontSize:30}}>Username: {user?.Benutzername}</Text>
-                    <Text style={{fontSize:30}}>Vorname: {user?.Vorname}</Text>
-                    <Text style={{fontSize:30}}>Nachname: {user?.Nachname}</Text>
-                    <Button
-                        title="Zum HomeScreen"
-                        onPress={() => router.push("/HomeScreen")}
-                    />
+        if(user?.Role != null){
+            if(Platform.OS === 'web'){
+                return (
+                    <View style={{width:'30%',height:'90%',alignItems: 'flex-start',shadowColor: '#000',
+                        shadowOffset: {width: 2, height: 2},
+                        shadowOpacity: 0.3,
+                        shadowRadius: 4,
+                        elevation: 5,borderRadius:40,
+                        backgroundColor:bestellungenBackground,
+                    }}>
+                        <View style={{bottom:-10,left:10}}>
+                            <ThemeBackButton onPress={() => router.push('/HomeScreen')}/>
+                        </View>
+
+                        <Text style={{ alignSelf:'center',paddingTop:20,fontSize:30,color:'black'}}>Mein Account</Text>
+                        <View style={{borderWidth:1,width:'100%',backgroundColor:'black'}}/>
+                    <View style={{flexDirection:'column' }}>
+                        <Text style={{fontSize:20,paddingLeft:20,color:'black'}}>UserID: {user?.UserID}</Text>
+                        <Text style={{fontSize:20,paddingLeft:20,color:'black'}}>Username: {user?.Benutzername}</Text>
+                        <Text style={{fontSize:20,paddingLeft:20,color:'black'}}>Vorname: {user?.Vorname}</Text>
+                        <Text style={{fontSize:20,paddingLeft:20,color:'black'}}>Nachname: {user?.Nachname}</Text>
+
                     </View>
-                    </Wrapper>)
+                    </View>
+                )
+            }else{
+                return (
+                    <View style={{ alignItems: 'flex-start', width:200,height:'90%',shadowColor: '#000',
+                        shadowOffset: {width: 2, height: 2},
+                        shadowOpacity: 0.3,
+                        shadowRadius: 4,
+                        elevation: 5, }}>
+                        <Text style={{ marginBottom: 20 }}>Mein Account</Text>
+                        <Text style={{fontSize:30}}>UserID: {user?.UserID}</Text>
+                        <Text style={{fontSize:30}}>Username: {user?.Benutzername}</Text>
+                        <Text style={{fontSize:30}}>Vorname: {user?.Vorname}</Text>
+                        <Text style={{fontSize:30}}>Nachname: {user?.Nachname}</Text>
+                        <Button
+                            title="Zum HomeScreen"
+                            onPress={() => router.push("/HomeScreen")}
+                        />
+                    </View>
+                )
+            }
+
         }
         else return error()
     }
 
   return (
     <Wrapper>
-        {checkRole()}
+        <View style={{alignItems:'center',justifyContent:'center',height:'100%'}}>
+            {checkRole()}
+        </View>
+
     </Wrapper>
   );
 }
