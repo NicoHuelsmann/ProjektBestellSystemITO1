@@ -1,8 +1,8 @@
-import { url } from "@/fetchRequests/config";
+import {checkUrl, url} from "@/fetchRequests/config";
 
 export default  async  function fetchRole(userId:number){
     try{
-        const res= await fetch(`${url}/getRole`,{
+        const res= await fetch(`${checkUrl()}/getRole`,{
             method: "POST",
             headers: {
                 "Content-Type": "application/json",

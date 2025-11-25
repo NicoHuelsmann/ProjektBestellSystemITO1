@@ -1,8 +1,8 @@
-import {getUrl, url} from "@/fetchRequests/config";
+import {checkUrl, getUrl, url} from "@/fetchRequests/config";
 
 export default  async  function fetchGetAllCurrentOrder(){
     try{
-        const res= await fetch(`${url}/getAllCurrentOrder`)
+        const res= await fetch(`${checkUrl()}/getAllCurrentOrder`)
         if(res.status === 200){
             return await res.json()
         }else{
