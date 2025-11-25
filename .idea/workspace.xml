@@ -5,10 +5,19 @@
   </component>
   <component name="ChangeListManager">
     <list default="true" id="e2fdcfee-e7c4-4f52-a3e8-27cf7be62a7d" name="Changes" comment="">
+      <change afterPath="$PROJECT_DIR$/ITDproject/app/Themes/Icons/ThemeTrashIcon.tsx" afterDir="false" />
+      <change afterPath="$PROJECT_DIR$/ITDproject/app/Themes/ThemeTime.tsx" afterDir="false" />
       <change beforePath="$PROJECT_DIR$/.idea/workspace.xml" beforeDir="false" afterPath="$PROJECT_DIR$/.idea/workspace.xml" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/ITDproject/app/(tabs)/(Profile)/MeinAccount.tsx" beforeDir="false" afterPath="$PROJECT_DIR$/ITDproject/app/(tabs)/(Profile)/MeinAccount.tsx" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/ITDproject/app/(tabs)/(RegistrierenViews)/Kellner.tsx" beforeDir="false" afterPath="$PROJECT_DIR$/ITDproject/app/(tabs)/(RegistrierenViews)/Kellner.tsx" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/ITDproject/app/(tabs)/(RegistrierenViews)/Koch.tsx" beforeDir="false" afterPath="$PROJECT_DIR$/ITDproject/app/(tabs)/(RegistrierenViews)/Koch.tsx" afterDir="false" />
       <change beforePath="$PROJECT_DIR$/ITDproject/app/(tabs)/Kellner/BestellungPopUp.tsx" beforeDir="false" afterPath="$PROJECT_DIR$/ITDproject/app/(tabs)/Kellner/BestellungPopUp.tsx" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/ITDproject/app/(tabs)/RegestrierenViews/Kellner.tsx" beforeDir="false" afterPath="$PROJECT_DIR$/ITDproject/app/(tabs)/RegestrierenViews/Kellner.tsx" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/ITDproject/app/Themes/ThemeNumberPicker.tsx" beforeDir="false" afterPath="$PROJECT_DIR$/ITDproject/app/Themes/ThemeNumberPicker.tsx" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/ITDproject/app/(tabs)/index.tsx" beforeDir="false" afterPath="$PROJECT_DIR$/ITDproject/app/(tabs)/index.tsx" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/ITDproject/app/Themes/ThemePopUp.tsx" beforeDir="false" afterPath="$PROJECT_DIR$/ITDproject/app/Themes/ThemePopUp.tsx" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/ITDproject/app/Themes/ThemeQRIcon.tsx" beforeDir="false" afterPath="$PROJECT_DIR$/ITDproject/app/Themes/Icons/ThemeQRIcon.tsx" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/ITDproject/app/Themes/ThemeXButton.tsx" beforeDir="false" afterPath="$PROJECT_DIR$/ITDproject/app/Themes/Icons/ThemeXButton.tsx" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/ITDproject/constants/Colors.ts" beforeDir="false" afterPath="$PROJECT_DIR$/ITDproject/constants/Colors.ts" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/core/database/datenbank.db" beforeDir="false" afterPath="$PROJECT_DIR$/core/database/datenbank.db" afterDir="false" />
     </list>
     <option name="SHOW_DIALOG" value="false" />
     <option name="HIGHLIGHT_CONFLICTS" value="true" />
@@ -46,24 +55,29 @@
     <option name="hideEmptyMiddlePackages" value="true" />
     <option name="showLibraryContents" value="true" />
   </component>
-  <component name="PropertiesComponent"><![CDATA[{
-  "keyToString": {
-    "ASKED_SHARE_PROJECT_CONFIGURATION_FILES": "true",
-    "RunOnceActivity.ShowReadmeOnStart": "true",
-    "SHARE_PROJECT_CONFIGURATION_FILES": "true",
-    "git-widget-placeholder": "Artikel-anzeigen",
-    "last_opened_file_path": "/Users/Schule/Documents/ProjektBestellSystemITO1",
-    "node.js.detected.package.eslint": "true",
-    "node.js.detected.package.tslint": "true",
-    "node.js.selected.package.eslint": "(autodetect)",
-    "node.js.selected.package.tslint": "(autodetect)",
-    "nodejs_package_manager_path": "npm",
-    "npm.devN.executor": "Run",
-    "npm.lint.executor": "Run",
-    "ts.external.directory.path": "/Users/Schule/Documents/ProjektBestellSystemITO1/ITDproject/node_modules/typescript/lib",
-    "vue.rearranger.settings.migration": "true"
+  <component name="PropertiesComponent">{
+  &quot;keyToString&quot;: {
+    &quot;ASKED_SHARE_PROJECT_CONFIGURATION_FILES&quot;: &quot;true&quot;,
+    &quot;RunOnceActivity.ShowReadmeOnStart&quot;: &quot;true&quot;,
+    &quot;SHARE_PROJECT_CONFIGURATION_FILES&quot;: &quot;true&quot;,
+    &quot;git-widget-placeholder&quot;: &quot;Artikel-anzeigen&quot;,
+    &quot;last_opened_file_path&quot;: &quot;/Users/Schule/Documents/ProjektBestellSystemITO1&quot;,
+    &quot;node.js.detected.package.eslint&quot;: &quot;true&quot;,
+    &quot;node.js.detected.package.tslint&quot;: &quot;true&quot;,
+    &quot;node.js.selected.package.eslint&quot;: &quot;(autodetect)&quot;,
+    &quot;node.js.selected.package.tslint&quot;: &quot;(autodetect)&quot;,
+    &quot;nodejs_package_manager_path&quot;: &quot;npm&quot;,
+    &quot;npm.devN.executor&quot;: &quot;Run&quot;,
+    &quot;npm.lint.executor&quot;: &quot;Run&quot;,
+    &quot;ts.external.directory.path&quot;: &quot;/Users/Schule/Documents/ProjektBestellSystemITO1/ITDproject/node_modules/typescript/lib&quot;,
+    &quot;vue.rearranger.settings.migration&quot;: &quot;true&quot;
   }
-}]]></component>
+}</component>
+  <component name="RecentsManager">
+    <key name="MoveFile.RECENT_KEYS">
+      <recent name="$PROJECT_DIR$/ITDproject/app/Themes/Icons" />
+    </key>
+  </component>
   <component name="RunManager" selected="npm.devN">
     <configuration name="devN" type="js.build_tools.npm" temporary="true" nameIsGenerated="true">
       <package-json value="$PROJECT_DIR$/core/package.json" />

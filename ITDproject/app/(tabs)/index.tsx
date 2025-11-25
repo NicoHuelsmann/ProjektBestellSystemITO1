@@ -1,8 +1,8 @@
 import QRScannerScreen from "@/app/(tabs)/Kellner/QRScannerScreen";
 import ThemeButton from "@/app/Themes/ThemeButton";
-import ThemeQRIcon from "@/app/Themes/ThemeQRIcon";
+import ThemeQRIcon from "@/app/Themes/Icons/ThemeQRIcon";
 import ThemeTextInput from "@/app/Themes/ThemeTextInput";
-import ThemeXButton from "@/app/Themes/ThemeXButton";
+import ThemeXButton from "@/app/Themes/Icons/ThemeXButton";
 import { LoginLogo } from "@/components/loginLogo";
 import { screenbackground } from "@/constants/Colors";
 import { setUrl, url } from "@/fetchRequests/config";

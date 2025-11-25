@@ -12,14 +12,13 @@ import React, { useEffect, useState } from "react";
 import { ScrollView, Text, View } from "react-native";
 import ProfileIcon from "../(Profile)/profileIcon";
 import {bestellungenBackground} from "@/constants/Colors";
+import ThemeTime from "@/app/Themes/ThemeTime";
 
 
 export default function Koch():React.JSX.Element{
 const [einzelnebestellung,setEinzelnebestellung] = useState<React.JSX.Element[]>([]);
     const [open,setOpen] = React.useState<boolean>(false);
-
-const [currentOrdersValues,setCurrentOrdersValues] = useState<React.JSX.Element[]>([]);
-
+    
 const heandleDone = async (currentOrder:any) => {
     console.log(currentOrder)
      await fetchClearOrder(currentOrder.orderId)
@@ -56,7 +55,7 @@ const heandleDone = async (currentOrder:any) => {
                 if (artikel) {
                     orderItems.push(
                         <View key={`${bestellung.orderId}-${artikel.artikelnummer}`}>
-                            <Text
+                            <Text selectable={false}
                                 style={{
                                     borderTopWidth: 1,
                                     borderLeftWidth: 1,
@@ -67,7 +66,7 @@ const heandleDone = async (currentOrder:any) => {
                                 Artikel: {artikel.beschreibung}
                             </Text>
 
-                            <Text
+                            <Text selectable={false}
                                 style={{
                                     borderBottomWidth: 1,
                                     borderLeftWidth: 1,
@@ -101,11 +100,11 @@ const heandleDone = async (currentOrder:any) => {
                             size={{ width: 300, height: 30 + 50 * orderItems.length }}
                             onPress={() => ""}
                         >
-                            <Text style={{ fontSize: 18 }}>
+                            <Text selectable={false} style={{ fontSize: 18 }}>
                                 Bestellnummer {bestellung.orderId}
                             </Text>
 
-                            <Text style={{ fontSize: 14, color: "gray" }}>
+                            <Text selectable={false} style={{ fontSize: 14, color: "gray" }}>
                                 📅 {new Date(bestellung.date).toLocaleString()}
                             </Text>
 
@@ -133,6 +132,7 @@ const heandleDone = async (currentOrder:any) => {
 return (
     <Wrapper>
         <ProfileIcon open={() => setOpen(!open)} currentState={open}/>
+        <ThemeTime/>
         <View style={{width:'30%',height:'90%',alignItems:'center',shadowColor: '#000',
             shadowOffset: {width: 2, height: 2},
             shadowOpacity: 0.3,
@@ -143,7 +143,7 @@ return (
             backgroundColor:bestellungenBackground,
             borderRadius:40
         }}>
-            <Text style={{fontSize:24,paddingTop:20}}>Bestellungen</Text>
+            <Text selectable={false} style={{fontSize:24,paddingTop:20}}>Bestellungen</Text>
             <ScrollView showsVerticalScrollIndicator={false} style={{}}>
                 {einzelnebestellung}
             </ScrollView>
