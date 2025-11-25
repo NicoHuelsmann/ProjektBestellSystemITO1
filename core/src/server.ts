@@ -9,8 +9,8 @@ import { userEndpointGetPersnrByUname, userEndpointGetUserByUserID } from "./end
 const app = express();
 const PORT = 9000;
 const dbpath = './database/datenbank.db';
-const HOST = '192.168.178.194'
-//const HOST = 'localhost';
+//const HOST = '192.168.178.194'
+const HOST = 'localhost';
 app.use(cors());
 app.use(express.json());
 
@@ -103,7 +103,7 @@ app.post('/getCurrentOrder', (req: Request, res: Response) =>{
         const result = currentBestellungenSync.filter((d) => d.orderId === req.body.orderId)
         if(result[0] !== undefined) res.json(result[0].data)
     }
-    res.send(undefined)
+    return (res.json({}) );
 });
 
 app.post("/removeCurrentOrder", (req: Request, res: Response) => {

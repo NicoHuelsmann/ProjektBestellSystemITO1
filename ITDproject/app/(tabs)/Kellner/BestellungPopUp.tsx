@@ -1,3 +1,4 @@
+import ThemeTrashIcon from "@/app/Themes/Icons/ThemeTrashIcon";
 import ThemeButton from "@/app/Themes/ThemeButton";
 import ThemeNumberPicker from "@/app/Themes/ThemeNumberPicker";
 import ThemePopUp from "@/app/Themes/ThemePopUp";
@@ -9,7 +10,6 @@ import { fetchDelTisch } from "@/fetchRequests/fetchTische";
 import { usePathname } from "expo-router";
 import React, { useEffect, useState } from "react";
 import { Platform, ScrollView, Text, View } from "react-native";
-import ThemeTrashIcon from "@/app/Themes/Icons/ThemeTrashIcon";
 interface BestellungPopUpProps {
     tableId:number;
     openBestellungenDialog:boolean;
@@ -20,10 +20,11 @@ export default function BestellungPopUp({tableId,openBestellungenDialog, onBlur}
     const [artikelCount, setArtikelCount] = useState<Map<number, number>>(new Map());
     const [clearArtikelCount, setClearArtikelCount] = useState<{ id: number; value: number }[]>([]);
     const [currentArtickel, setCurrentArtickel] = useState<any>();
-    const [currentStorno,setStorno] = useState<boolean>(false);
+    const [Kat,setKat] = useState<string>('');
     const [priceAll,setPriceAll] = useState<number>(0)
     const getArtike = async () => {
         const result = await fetchArtikle()
+        console.log(result)
         setCurrentArtickel(result)
     }
     const heandleReturn = (numberPickerValue: number, arikelId: number) => {
@@ -34,13 +35,13 @@ export default function BestellungPopUp({tableId,openBestellungenDialog, onBlur}
         });
     }
 
-
     const heandleNumbers = async () => {
         const result: { id: number; value: number }[] = [];
 
         artikelCount.forEach((value, id) => {
             result.push({id, value});
         });
+        console.log(tableId,result)
         await fetchClearOrder(tableId);
         await fetchSetCurrentOrder(tableId, result, new Date().toISOString(),false)
     }
@@ -55,14 +56,16 @@ export default function BestellungPopUp({tableId,openBestellungenDialog, onBlur}
         }
         const result = save.reduce((acc, aktuelleZahl) => acc + aktuelleZahl, 0)
         setPriceAll(result)
-    }
-    const possilbeFood = async () => {
+    }   
+    const possilbeFood = async (Kat: any) => {
+        console.log('possilbeFood')
         const getNumber = await fetchGetCurrentOrder(tableId)
             if (currentArtickel !== undefined && currentArtickel.length > 0) {
                 setPriceAll(0)
                 setShowFood([])
                 await foodPriceCount()
                 for (let i = 0; i < currentArtickel.length; i++) {
+                    if (currentArtickel[i].kategorie !== Kat && currentArtickel[i].kategorieListe[0] !== Kat) continue;
                     setShowFood((prev) => [...prev,
                         <View key={currentArtickel[i].artikelnummer}
                               style={{
@@ -92,7 +95,6 @@ export default function BestellungPopUp({tableId,openBestellungenDialog, onBlur}
         onBlur()
     }
     const del = async () =>  {
-        // hinweis das offene bestellung gelöscht wird
         const result = await fetchGetCurrentOrder(tableId);
         if (result) {
             await fetchClearOrder(tableId);
@@ -102,7 +104,10 @@ export default function BestellungPopUp({tableId,openBestellungenDialog, onBlur}
     }   
     const pathname = usePathname()
     useEffect(() => {
-        if (openBestellungenDialog) possilbeFood()
+        if (openBestellungenDialog) possilbeFood(Kat)
+        else {
+            setKat('')
+        }
     }, [openBestellungenDialog])
 
     useEffect(() => {
@@ -123,6 +128,13 @@ export default function BestellungPopUp({tableId,openBestellungenDialog, onBlur}
         })
         return () =>clearInterval(interval)
     });
+
+    useEffect(() => {
+        if (Kat !== '') {
+            possilbeFood(Kat)
+        }
+    }, [Kat]);
+
     if (openBestellungenDialog) {
         return (
             <ThemePopUp platforme={Platform.OS} onBlur={() => {
@@ -143,23 +155,38 @@ export default function BestellungPopUp({tableId,openBestellungenDialog, onBlur}
                     paddingLeft: Platform.OS !== 'web'? 35:10,
                     paddingRight: Platform.OS !== 'web'? 35:10,
                 }}>
+                    {Kat === '' ? (
+                        <>
+                            <ThemeButton text={'Getränke'} onPress={async () => {
+                                setShowFood([])
+                                setKat('Getränke')
+                            }} position={{left:0}} size={{width:120}}/>
+                            <ThemeButton text={'Essen'} onPress={async () => {
+                                setShowFood([])
+                                setKat('Essen')
+                            }} position={{left:0}} size={{width:120}}/>
+                        </>
+                    ) : null}
                     {showFood}
                 </ScrollView>
                     <View style={{alignItems:'flex-end',paddingRight:10}}>
                 <ThemeButton  text={'OK'} onPress={() => {
                     heandleNumbers()
+                    setKat('')
                     onBlur()
                 }} position={{bottom: 10}}size={{width:179}}/>
                     </View>
                     <View style={{paddingLeft:10}}>
-                        <ThemeButton  text={'Storno'} onPress={storno} position={{left:0,bottom:60}} size={{width:179}}/>
+                        <ThemeButton  text={'Storno'} onPress={()=> {
+                            setKat('')
+                            storno()
+                        }} position={{left:0,bottom:60}} size={{width:179}}/>
                     </View>
                     <View>
                         <ThemeTrashIcon paddingLeft={0} paddingTop={0} bottom={Platform.OS !== 'web'? '2555%':'2116%'} left={10} onPress={del}/>
                     </View>
                 </View>
             </ThemePopUp>
-
         )
     } return <></>
 }

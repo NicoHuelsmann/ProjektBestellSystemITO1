@@ -1,8 +1,7 @@
-import React, {useEffect} from "react";
-import {Platform, Pressable, Text, View} from "react-native";
-import asyncStorage from "@react-native-async-storage/async-storage/src/AsyncStorage";
-import fetchGetUserName from "@/fetchRequests/fetchGetUserName";
 import AsyncStorage from "@react-native-async-storage/async-storage";
+import asyncStorage from "@react-native-async-storage/async-storage/src/AsyncStorage";
+import React, { useEffect } from "react";
+import { Pressable, Text, View } from "react-native";
 
 interface ProfileIconProps {
     open: (state:boolean) => void;
@@ -33,7 +32,6 @@ export default function ProfileIcon(props:ProfileIconProps):React.JSX.Element{
         const a = userId ? JSON.parse(userId) : null;
         setVorName(a.Vorname)
         setNachName(a.Nachname)
-        console.log(a.Vorname)
     }
     useEffect(() => {
         add()
