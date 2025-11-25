@@ -1,12 +1,12 @@
 import asyncStorage from "@react-native-async-storage/async-storage/src/AsyncStorage";
 import { router } from "expo-router";
 import React from "react";
-import { Pressable, Text, View } from "react-native";
+import {DimensionValue, Pressable, Text, View} from "react-native";
 
 interface OpenDialogProps {
     position?:{
-        left?: number | string;
-        bottom?: number | string;
+        left?: DimensionValue;
+        bottom?: DimensionValue;
     }
     onBlur:() => void;
 }
