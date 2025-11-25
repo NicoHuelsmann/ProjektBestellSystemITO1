@@ -11,10 +11,10 @@ export async function userEndpointGetPersnrByUname(dbpath:string,username:string
         }
     );
     try {
-        const user: any = await fetchFirst(db, `SELECT USR01.PERSNR FROM USR01 WHERE USR01.UNAME=?`, [username]);
+        const user: any = await fetchFirst(db, `SELECT USR01.PERSNR, USR01.PWCODE FROM USR01 WHERE USR01.UNAME=?`, [username]);
         if (!user)
             return null;
-        ({userID: user.PERSNR, password: user.PWCODE});
+        return ({userID: user.PERSNR, password: user.PWCODE});
     } catch (err) {
         console.log(err);
     } finally {

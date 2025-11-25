@@ -1,6 +1,6 @@
 //export const url = 'http://localhost:9000'
 
-export const url = 'http://10.160.0.67:9000'
+export const url = 'http://192.168.178.194:9000'
 
 
 let newURL = ''

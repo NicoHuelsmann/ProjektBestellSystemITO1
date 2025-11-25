@@ -60,7 +60,6 @@ export default function Login() {
       return;
     }
     let result = await fetchUser(text);
-    console.log(result);
     const UserID = result?.userID ?? null;
     if (UserID === null) {
       setUsernotfound(true);
