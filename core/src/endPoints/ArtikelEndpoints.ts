@@ -70,7 +70,7 @@ function runAsync(db: sqlite3.Database, sql: string, params: any[]): Promise<num
     });
 }
 
-export async function ArtikelInsertEndpoint(dbpath: string, ArtikelBeschreibung: string, ArtikelPreis: number) {
+export async function ArtikelInsertEndpoint(dbpath: string, ArtikelBeschreibung: string, ArtikelPreis: number, ArtikelKategorieID: number) {
     const db = new sqlite3.Database(dbpath, (err) => {
         if (err) {
             console.error(err.message);
@@ -79,8 +79,8 @@ export async function ArtikelInsertEndpoint(dbpath: string, ArtikelBeschreibung:
     });
     try {
         const lastID = await runAsync(db, 
-            `INSERT INTO ARTIKEL (KTEXT) VALUES (?)`, 
-            [ArtikelBeschreibung]
+            `INSERT INTO ARTIKEL (TEXT, KATID) VALUES (?, ?)`,
+            [ArtikelBeschreibung, ArtikelKategorieID]
         );
         await runAsync(db, 
             `INSERT INTO PREIS (ARTNR, PRWRT, PRDAT) VALUES (?, ?, DATE('now'))`, 

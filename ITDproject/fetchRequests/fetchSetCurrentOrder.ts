@@ -1,8 +1,8 @@
-import {checkUrl, getUrl, url} from "@/fetchRequests/config";
+import { checkUrl } from "@/fetchRequests/config";
 
 export default  async  function fetchSetCurrentOrder(orderId:any,data:{}, date:string,ready:boolean){
     try{
-        const res= await fetch(`${checkUrl()}/setCurrentOrder`,{
+        const res= await fetch(`${checkUrl()}/SetOrUpdateCurrentOrder`,{
             method: "POST",
             headers: {
                 "Content-Type": "application/json",
