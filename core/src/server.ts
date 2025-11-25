@@ -9,8 +9,8 @@ import { userEndpointGetPersnrByUname, userEndpointGetUserByUserID } from "./end
 const app = express();
 const PORT = 9000;
 const dbpath = './database/datenbank.db';
-const HOST = '192.168.178.194'
-//const HOST = 'localhost';
+//const HOST = '192.168.178.194'
+const HOST = 'localhost';
 app.use(cors());
 app.use(express.json());
 
@@ -92,18 +92,20 @@ app.post("/delTisch", createEndpoint(async (body) => {
 /**
  * Es werden die bestellungen über alle Geräte sycronisiert
  */
-const currentBestellungenSync:{ orderId:any, data:{}, date:string, ready:boolean }[] = []
+const currentBestellungenSync:{ orderId:number, data:{}, date:string, ready:boolean }[] = []
 app.post('/setCurrentOrder', (req: Request, res: Response) =>{
     currentBestellungenSync.push(req.body)
     console.log(currentBestellungenSync)
+    res.json({ ok: true });
 });
 
-app.post('/getCurrentOrder', (req: Request, res: Response) =>{
-    if(currentBestellungenSync.filter((d) => d.orderId === req.body.orderId) !== undefined){
-        const result = currentBestellungenSync.filter((d) => d.orderId === req.body.orderId)
-        if(result[0] !== undefined) res.json(result[0].data)
+app.post('/getCurrentOrder', (req: Request, res: Response) => {
+    const order = currentBestellungenSync.find((d) => d.orderId === req.body.orderId);
+    if (order) {
+        res.json(order);
+    } else { 
+        res.status(404).json({ error: "Order not found" });
     }
-    res.send(undefined)
 });
 
 app.post("/removeCurrentOrder", (req: Request, res: Response) => {

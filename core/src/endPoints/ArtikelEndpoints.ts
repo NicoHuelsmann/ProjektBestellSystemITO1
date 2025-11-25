@@ -11,17 +11,42 @@ export async function ArtikelEndpoint(dbpath:string){
         }
     );
     try {
-        const artikel: any = await fetchAll(db, `Select a.ARTNR, a.TEXT, p.PRWRT 
-                                    from preis p
-                                    join artikel a on a.ARTNR = p.ARTNR
-                                    where p.PRDAT = 
-                                    (select max(p2.prdat) from preis p2 where p2.ARTNR = a.ARTNR);`, []);
+
+        const artikel: any = await fetchAll(db, `Select 
+                                            a.ARTNR, a.TEXT, p.PRWRT, k.KATEXT, k.PARENTID 
+                                        from artikel a
+                                        left join preis p on a.ARTNR = p.ARTNR
+                                        join kateg k on k.KATID = a.KATID
+                                        where
+                                            p.PRDAT IS NULL 
+                                            OR p.PRDAT = 
+                                            (select max(p2.prdat) from preis p2 where p2.ARTNR = a.ARTNR);`, []);
+        artikel.forEach((a: any) => {
+            a.KAT = [];
+        });
+        for (let i = 0; i < artikel.length; i++){
+            let PARENTID = artikel[i].PARENTID;
+            while (PARENTID !== null) {
+                const parentKategorie: any = await fetchAll(db, `Select KATEXT, PARENTID from kateg where KATID = ?`, [PARENTID]);
+                if (parentKategorie.length > 0) {
+                    artikel[i].KAT[artikel[i].KAT.length] = parentKategorie[0].KATEXT;
+                }
+                PARENTID = parentKategorie.length > 0 ? parentKategorie[0].PARENTID : null;
+                artikel[i].PARENT = parentKategorie.length > 0 ? parentKategorie[0].KATEXT : null;
+            }
+            if (artikel[i].PARENT == null) {
+                artikel[i].PARENT = artikel[i].KATEXT;
+            }
+        }
         const data: any[] = [];
         for (let i = 0; i < artikel.length; i++){
             data.push({
                 artikelnummer: artikel[i].ARTNR,
+                parentID: artikel[i].PARENTID,
                 beschreibung: artikel[i].TEXT,
-                preis: artikel[i].PRWRT
+                preis: artikel[i].PRWRT,
+                kategorie: artikel[i].KATEXT,
+                kategorieListe: artikel[i].KAT.reverse()
             });
         }
         return data;

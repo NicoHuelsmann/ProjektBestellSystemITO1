@@ -1,8 +1,8 @@
-import {checkUrl, getUrl} from "@/fetchRequests/config";
+import { url } from "@/fetchRequests/config";
 
 export default  async  function fetchGetCurrentOrder(orderId:any){
     try{
-        const res= await fetch(`${checkUrl()}/getCurrentOrder`,{
+        const res= await fetch(`${url}/getCurrentOrder`,{
             method: "POST",
             headers: {
                 "Content-Type": "application/json",
@@ -13,8 +13,7 @@ export default  async  function fetchGetCurrentOrder(orderId:any){
             })
         })
         if(res.status === 200){
-            const a = await res.json()
-            return a
+            return await res.json()
         }else{
             throw Error(`Unable to fetch order ${res.status}`)
         }
