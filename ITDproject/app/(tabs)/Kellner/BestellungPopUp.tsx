@@ -22,8 +22,6 @@ interface BestellungItem {
 export default function BestellungPopUp({tableId,openBestellungenDialog, onBlur}:BestellungPopUpProps):React.JSX.Element{
     const [showFood, setShowFood] = useState<React.JSX.Element[]>([]);
     const [Bestellung, setBestellung] = useState<BestellungItem[]>([]);
-    const [artikelCount, setArtikelCount] = useState<Map<number, number>>(new Map());
-    const [clearArtikelCount, setClearArtikelCount] = useState<{ id: number; value: number }[]>([]);
     const [currentArtickel, setCurrentArtickel] = useState<any>();
     const [Kat,setKat] = useState<string>('');
     const [priceAll,setPriceAll] = useState<number>(0);
@@ -31,17 +29,6 @@ export default function BestellungPopUp({tableId,openBestellungenDialog, onBlur}
     const getArtike = async () => {
         const result = await fetchArtikle()
         setCurrentArtickel(result)
-    }
-
-    const setUpBestellung = async () => {
-        for (let i = 0; i < currentArtickel?.length; i++) {
-            setBestellung((prev:any) => [...prev, {artikelnummer: currentArtickel[i].artikelnummer, value: 0}])
-        }
-    }
-
-    const getBestellung = async () => {
-        const result = await fetchGetCurrentOrder(tableId);
-        console.log(result,'getBestellung');
     }
 
     const heandleReturn = (numberPickerValue: number, arikelId: number) => {
@@ -56,57 +43,63 @@ export default function BestellungPopUp({tableId,openBestellungenDialog, onBlur}
     }
 
     const heandleNumbers = async () => {
-        const result: { id: number; value: number }[] = [];
-
-        artikelCount.forEach((value, id) => {
-            result.push({id, value});
-        });
         await fetchClearOrder(tableId);
         await fetchSetCurrentOrder(tableId, Bestellung, new Date().toISOString(),false)
     }
 
+    // Abhängigkeit: Diese Funktion verwendet den aktuellen 'Bestellung' State
     const foodPriceCount = async () => {
+        if (!Array.isArray(Bestellung)) {
+             setPriceAll(0);
+             return;
+        }
         const save:any[] = [];
-        for (let i = 0; clearArtikelCount.length > i; i++){
-            const filter = currentArtickel.filter((artikel:any) => artikel.artikelnummer === clearArtikelCount[i].id && clearArtikelCount[i].value > 0);
+        // Iteriere über den aktuellen Bestellung State
+        for (let i = 0; Bestellung.length > i; i++){
+            // Suche den Artikel im 'currentArtickel' Array
+            const filter = currentArtickel.filter((artikel:any) => artikel.artikelnummer === Bestellung[i].artikelnummer && Bestellung[i].value > 0);
+            
             if(filter.length > 0){
-                const result = filter[0].preis * clearArtikelCount[i].value
+                // Berechnung: Preis * Menge (value)
+                const result = filter[0].preis * Bestellung[i].value
                 save.push(result)
             }
         }
         const result = save.reduce((acc, aktuelleZahl) => acc + aktuelleZahl, 0)
         setPriceAll(result)
-    }   
+    }
 
     const possilbeFood = async (Kat: any) => {
-            if (currentArtickel !== undefined && currentArtickel.length > 0) {
-                setPriceAll(0)
-                setShowFood([])
-                await foodPriceCount()
-                for (let i = 0; i < currentArtickel.length; i++) {
-                    if (currentArtickel[i].kategorie !== Kat && currentArtickel[i].kategorieListe[0] !== Kat) continue;
-                    setShowFood((prev) => [...prev,
-                        <View key={currentArtickel[i].artikelnummer}
-                              style={{
-                                  borderRadius: 9,
-                                  flexDirection: 'column',
-                                  alignItems: 'center',
-                                  backgroundColor: 'white',
-                                  width: Platform.OS !== 'web'? 150:110,
-                                  height: 110,
-                                  shadowColor: '#000',
-                                  shadowOffset: {width: 2, height: 2},
-                                  shadowOpacity: 0.3,
-                                  shadowRadius: 4,
-                                  elevation: 5
-                              }}>
-                            <Text style={{fontSize:18}}>{currentArtickel[i].beschreibung}</Text>
-                            <Text style={{fontSize:14,color:'green',bottom:-5}}>Preis: {currentArtickel[i].preis}€</Text>
-                            <ThemeNumberPicker bottom={-15} size={Platform.OS !== 'web'? 1.4 :1} setNumer={0} return={(e) => heandleReturn(e, currentArtickel[i].artikelnummer)}/>
-                        </View>
-                    ])
+        setShowFood([])
+        for (let i = 0; i < currentArtickel.length; i++) {
+            if (currentArtickel[i].kategorie !== Kat && currentArtickel[i].kategorieListe[0] !== Kat) continue;
+            const currentItem = Bestellung.find(item => item.artikelnummer === currentArtickel[i].artikelnummer);
+            const initialValue = currentItem ? currentItem.value : 0;
+            setShowFood((prev) => [...prev,
+                <View key={currentArtickel[i].artikelnummer}
+                        style={{
+                            borderRadius: 9,
+                            flexDirection: 'column',
+                            alignItems: 'center',
+                            backgroundColor: 'white',
+                            width: Platform.OS !== 'web'? 150:110,
+                            height: 110,
+                            shadowColor: '#000',
+                            shadowOffset: {width: 2, height: 2},
+                            shadowOpacity: 0.3,
+                            shadowRadius: 4,
+                            elevation: 5
+                        }}>
+                    <Text style={{fontSize:18}}>{currentArtickel[i].beschreibung}</Text>
+                    <Text style={{fontSize:14,color:'green',bottom:-5}}>Preis: {currentArtickel[i].preis}€</Text>
+                    <ThemeNumberPicker 
+                        bottom={-15} 
+                        size={Platform.OS !== 'web'? 1.4 :1} 
+                        setNumer={initialValue} 
+                        return={(e) => heandleReturn(e, currentArtickel[i].artikelnummer)}/>
+                </View>
+            ])
 
-                }
         }
     }
 
@@ -127,44 +120,55 @@ export default function BestellungPopUp({tableId,openBestellungenDialog, onBlur}
     const pathname = usePathname()
     useEffect(() => {
         const loadinitialData = async () => {
-            const result = await fetchArtikle()
-            setCurrentArtickel(result)
-            await setUpBestellung()
-            await getBestellung()
+            // 1. Zuerst States leeren, um von einem sauberen Blatt zu starten
+            setBestellung([]);
+            setShowFood([]); // Wurde in der vorherigen Antwort hinzugefügt
+
+            // 2. Artikel laden
+            const resultArtikle = await fetchArtikle();
+            setCurrentArtickel(resultArtikle);
+
+            // 3. Versuchen, die aktuelle Bestellung zu laden
+            const resultOrder = await fetchGetCurrentOrder(tableId);
+
+            if (resultOrder) {
+                // FALL 1: Bestellung existiert, State direkt setzen
+                setBestellung(resultOrder.data);
+            } else {
+                // FALL 2: Bestellung existiert NICHT, State mit 0 initialisieren
+                const initialBestellung: BestellungItem[] = [];
+                // Verwenden Sie resultArtikle direkt, da es geladen wurde
+                for (let i = 0; i < resultArtikle?.length; i++) {
+                    initialBestellung.push({artikelnummer: resultArtikle[i].artikelnummer, value: 0});
+                }
+                setBestellung(initialBestellung);
+            }
         }
+        
         if (openBestellungenDialog) {
-            loadinitialData()
-            possilbeFood(Kat)
+            loadinitialData();
         }
         else {
-            setKat('')
+            setKat('');
+            setShowFood([]);
         }
-    }, [openBestellungenDialog])
+    }, [openBestellungenDialog]);
 
     useEffect(() => {
         getArtike()
     }, [pathname === '/HomeScreen']);
 
     useEffect(() => {
-        const result: { id: number; value: number }[] = [];
-        artikelCount.forEach((value, id) => {
-            result.push({id, value});
-        });
-        setClearArtikelCount(result)
-    }, [artikelCount]);
-
-    useEffect(() => {
-        const interval = setInterval(async ()=>{
-            await foodPriceCount()
-        })
-        return () =>clearInterval(interval)
-    });
-
-    useEffect(() => {
         if (Kat !== '') {
+            // Dies wird ausgelöst, wenn der Benutzer die Kategorie wählt ("Getränke" oder "Essen")
             possilbeFood(Kat)
         }
     }, [Kat]);
+
+    useEffect(() => {
+        // 1. Rufe foodPriceCount auf, wenn sich die Bestellung ändert (IMMER erforderlich)
+        foodPriceCount()
+    }, [Bestellung]); // Reagiere auf Änderungen im State 'Bestellung'
 
     if (openBestellungenDialog) {
         return (
@@ -189,11 +193,9 @@ export default function BestellungPopUp({tableId,openBestellungenDialog, onBlur}
                     {Kat === '' ? (
                         <>
                             <ThemeButton text={'Getränke'} onPress={async () => {
-                                setShowFood([])
                                 setKat('Getränke')
                             }} position={{left:0}} size={{width:120}}/>
                             <ThemeButton text={'Essen'} onPress={async () => {
-                                setShowFood([])
                                 setKat('Essen')
                             }} position={{left:0}} size={{width:120}}/>
                         </>
