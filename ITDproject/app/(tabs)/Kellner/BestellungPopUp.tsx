@@ -9,6 +9,7 @@ import { fetchDelTisch } from "@/fetchRequests/fetchTische";
 import { usePathname } from "expo-router";
 import React, { useEffect, useState } from "react";
 import { Platform, ScrollView, Text, View } from "react-native";
+import ThemeTrashIcon from "@/app/Themes/Icons/ThemeTrashIcon";
 interface BestellungPopUpProps {
     tableId:number;
     openBestellungenDialog:boolean;
@@ -154,7 +155,7 @@ export default function BestellungPopUp({tableId,openBestellungenDialog, onBlur}
                         <ThemeButton  text={'Storno'} onPress={storno} position={{left:0,bottom:60}} size={{width:179}}/>
                     </View>
                     <View>
-                        <ThemeButton text={'Löschen'} onPress={del} position={{left:100,bottom:180}} size={{width:179}}/>
+                        <ThemeTrashIcon paddingLeft={0} paddingTop={0} bottom={Platform.OS !== 'web'? '2555%':'2116%'} left={10} onPress={del}/>
                     </View>
                 </View>
             </ThemePopUp>

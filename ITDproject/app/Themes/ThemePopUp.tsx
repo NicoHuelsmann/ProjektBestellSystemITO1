@@ -1,6 +1,6 @@
 import React, {ReactNode, useEffect} from "react";
 import {Dimensions, Platform, TouchableOpacity, View} from "react-native";
-import ThemeXButton from "@/app/Themes/ThemeXButton";
+import ThemeXButton from "@/app/Themes/Icons/ThemeXButton";
 
 interface ThemePopUpProps {
     children: ReactNode;

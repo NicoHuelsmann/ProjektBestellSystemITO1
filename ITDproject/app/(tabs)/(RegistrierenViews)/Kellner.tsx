@@ -10,6 +10,7 @@ import fetchGetAllCurrentOrder from "@/fetchRequests/fetchGetAllCurrentOrder";
 import { fetchGetTisch } from "@/fetchRequests/fetchTische";
 import React, { useEffect } from "react";
 import { Platform, ScrollView, Text, View } from "react-native";
+import ThemeTime from "@/app/Themes/ThemeTime";
 
 
 export default function Kellner():React.JSX.Element {
@@ -84,6 +85,7 @@ export default function Kellner():React.JSX.Element {
     return (
         <Wrapper>
             <ProfileIcon currentState={openProfileDialog} open={(e) => setOpenProfileDialog(e)}/>
+            <ThemeTime/>
             <ThemeFabButton
                 fix={true}
                 onPress={() => {

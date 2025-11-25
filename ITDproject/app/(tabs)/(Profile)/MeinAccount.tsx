@@ -45,6 +45,7 @@ export default function MeinAccount(): React.JSX.Element {
         if(user?.Role != null){
             if(Platform.OS === 'web'){
                 return (
+                    <View style={{alignItems:'center',justifyContent:'center',height:'100%'}}>
                     <View style={{width:'30%',height:'90%',alignItems: 'flex-start',shadowColor: '#000',
                         shadowOffset: {width: 2, height: 2},
                         shadowOpacity: 0.3,
@@ -63,26 +64,29 @@ export default function MeinAccount(): React.JSX.Element {
                         <Text style={{fontSize:20,paddingLeft:20,color:'black'}}>Username: {user?.Benutzername}</Text>
                         <Text style={{fontSize:20,paddingLeft:20,color:'black'}}>Vorname: {user?.Vorname}</Text>
                         <Text style={{fontSize:20,paddingLeft:20,color:'black'}}>Nachname: {user?.Nachname}</Text>
-
+                        <Text style={{fontSize:20,paddingLeft:20,color:'black'}}>Role: {user?.Role}</Text>
+                    </View>
                     </View>
                     </View>
                 )
             }else{
                 return (
-                    <View style={{ alignItems: 'flex-start', width:200,height:'90%',shadowColor: '#000',
+                    <View style={{ width:'90%',height:'35%',alignItems: 'flex-start',shadowColor: '#000',
                         shadowOffset: {width: 2, height: 2},
                         shadowOpacity: 0.3,
                         shadowRadius: 4,
-                        elevation: 5, }}>
-                        <Text style={{ marginBottom: 20 }}>Mein Account</Text>
-                        <Text style={{fontSize:30}}>UserID: {user?.UserID}</Text>
-                        <Text style={{fontSize:30}}>Username: {user?.Benutzername}</Text>
-                        <Text style={{fontSize:30}}>Vorname: {user?.Vorname}</Text>
-                        <Text style={{fontSize:30}}>Nachname: {user?.Nachname}</Text>
-                        <Button
-                            title="Zum HomeScreen"
-                            onPress={() => router.push("/HomeScreen")}
-                        />
+                        elevation: 5,borderRadius:40,
+                        backgroundColor:bestellungenBackground,
+                        alignSelf:'center',
+                        bottom:-20
+                    }}>
+                        <Text style={{ alignSelf:'center',paddingTop:20,fontSize:30,color:'black'}}>Mein Account</Text>
+                        <View style={{borderWidth:1,width:'100%',backgroundColor:'black'}}/>
+                        <Text style={{fontSize:30,paddingLeft:10}}>UserID: {user?.UserID}</Text>
+                        <Text style={{fontSize:30,paddingLeft:10}}>Username: {user?.Benutzername}</Text>
+                        <Text style={{fontSize:30,paddingLeft:10}}>Vorname: {user?.Vorname}</Text>
+                        <Text style={{fontSize:30,paddingLeft:10}}>Nachname: {user?.Nachname}</Text>
+                        <Text style={{fontSize:30,paddingLeft:10}}>Role: {user?.Role}</Text>
                     </View>
                 )
             }
@@ -93,10 +97,16 @@ export default function MeinAccount(): React.JSX.Element {
 
   return (
     <Wrapper>
-        <View style={{alignItems:'center',justifyContent:'center',height:'100%'}}>
             {checkRole()}
-        </View>
-
+        {Platform.OS !== 'web'?
+            <View style={{
+                //alignItems:'center',
+                alignItems:'flex-end',
+                bottom:'-55%',
+                left:-10
+            }}>
+                <ThemeButton text={'Zurück'} onPress={() => router.push('/HomeScreen')}/>
+            </View>:null}
     </Wrapper>
   );
 }
