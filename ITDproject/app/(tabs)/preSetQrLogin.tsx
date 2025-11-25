@@ -11,14 +11,6 @@ export default function PreSetQrLogin():React.JSX.Element {
     const [vorName, setVorName] = useState<string>("");
     const [nachName, setNachName] = useState<string>("");
     const [userName, setUserName] = useState<string>("");
-    const body: UserInterface = {
-        Benutzername: 'QRCodeLogin',
-        Nachname: 'R',
-        Role:'Kellner',
-        UserID: 0,
-        Passwort:'',
-        Vorname: 'Q'
-    }
     const speichern = () => {
         const body: UserInterface = {
             Benutzername: userName,
@@ -31,7 +23,7 @@ export default function PreSetQrLogin():React.JSX.Element {
         }
         if(vorName.length > 0 && nachName.length > 0 && userName.length > 0) {
             asyncStorage.setItem('QRPreSet',JSON.stringify(body));
-            router.push('/');
+            router.push('/MeinAccount');
         }
     }
     return(

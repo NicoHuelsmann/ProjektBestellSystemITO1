@@ -47,11 +47,14 @@ export default function Kellner():React.JSX.Element {
 
             for(let i=0; i<elementTables.length; i++){
                 let color = 'white'
-                allebestellungen.data.forEach((item:any) => {;
-                    if(item.ready && elementTables[i].TISCHID === item.orderId){
-                        color = 'green'
-                    }
-                })
+                if(allebestellungen.data != null){
+                    allebestellungen.data.forEach((item:any) => {;
+                        if(item.ready && elementTables[i].TISCHID === item.orderId){
+                            color = 'green'
+                        }
+                    })
+                }
+
 
                 setTabels( (prev) =>[...prev,
                     <ThemeChip backgroundColor={color} key={elementTables[i].TISCHID} alignItems={'center'} size={{width:100,height:150}} onPress={() => tableOnPressManeger(elementTables[i].TISCHID)}>

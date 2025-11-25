@@ -12,12 +12,13 @@ export default  async  function fetchClearOrder(orderId:any){
                 orderId:orderId,
             })
         })
+        console.log(res)
         if(res.status === 200){
             return await res.json()
         }else{
             throw Error(`Unable to Order by id ${orderId} role ${res.status}`)
         }
-    }catch (e){
-        console.log(e)
+    }catch (e:any){
+            console.log(e)
     }
 };
