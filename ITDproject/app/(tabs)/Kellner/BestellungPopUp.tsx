@@ -15,23 +15,43 @@ interface BestellungPopUpProps {
     openBestellungenDialog:boolean;
     onBlur: () => void
 }
+interface BestellungItem {
+    artikelnummer: number;
+    value: number;
+}
 export default function BestellungPopUp({tableId,openBestellungenDialog, onBlur}:BestellungPopUpProps):React.JSX.Element{
     const [showFood, setShowFood] = useState<React.JSX.Element[]>([]);
+    const [Bestellung, setBestellung] = useState<BestellungItem[]>([]);
     const [artikelCount, setArtikelCount] = useState<Map<number, number>>(new Map());
     const [clearArtikelCount, setClearArtikelCount] = useState<{ id: number; value: number }[]>([]);
     const [currentArtickel, setCurrentArtickel] = useState<any>();
     const [Kat,setKat] = useState<string>('');
-    const [priceAll,setPriceAll] = useState<number>(0)
+    const [priceAll,setPriceAll] = useState<number>(0);
+
     const getArtike = async () => {
         const result = await fetchArtikle()
-        console.log(result)
         setCurrentArtickel(result)
     }
+
+    const setUpBestellung = async () => {
+        for (let i = 0; i < currentArtickel?.length; i++) {
+            setBestellung((prev:any) => [...prev, {artikelnummer: currentArtickel[i].artikelnummer, value: 0}])
+        }
+    }
+
+    const getBestellung = async () => {
+        const result = await fetchGetCurrentOrder(tableId);
+        console.log(result,'getBestellung');
+    }
+
     const heandleReturn = (numberPickerValue: number, arikelId: number) => {
-        setArtikelCount((prev) => {
-            const newMap = new Map(prev);
-            newMap.set(arikelId, numberPickerValue);
-            return newMap;
+        setBestellung((prev) => {
+            return prev.map((item) => {
+                if (item.artikelnummer === arikelId) {
+                    return { ...item, value: numberPickerValue };
+                }
+                return item;
+            });
         });
     }
 
@@ -41,10 +61,10 @@ export default function BestellungPopUp({tableId,openBestellungenDialog, onBlur}
         artikelCount.forEach((value, id) => {
             result.push({id, value});
         });
-        console.log(tableId,result)
         await fetchClearOrder(tableId);
-        await fetchSetCurrentOrder(tableId, result, new Date().toISOString(),false)
+        await fetchSetCurrentOrder(tableId, Bestellung, new Date().toISOString(),false)
     }
+
     const foodPriceCount = async () => {
         const save:any[] = [];
         for (let i = 0; clearArtikelCount.length > i; i++){
@@ -57,9 +77,8 @@ export default function BestellungPopUp({tableId,openBestellungenDialog, onBlur}
         const result = save.reduce((acc, aktuelleZahl) => acc + aktuelleZahl, 0)
         setPriceAll(result)
     }   
+
     const possilbeFood = async (Kat: any) => {
-        console.log('possilbeFood')
-        const getNumber = await fetchGetCurrentOrder(tableId)
             if (currentArtickel !== undefined && currentArtickel.length > 0) {
                 setPriceAll(0)
                 setShowFood([])
@@ -83,17 +102,19 @@ export default function BestellungPopUp({tableId,openBestellungenDialog, onBlur}
                               }}>
                             <Text style={{fontSize:18}}>{currentArtickel[i].beschreibung}</Text>
                             <Text style={{fontSize:14,color:'green',bottom:-5}}>Preis: {currentArtickel[i].preis}€</Text>
-                            <ThemeNumberPicker bottom={-15} size={Platform.OS !== 'web'? 1.4 :1} setNumer={getNumber !== undefined? getNumber[i].value : 0} return={(e) => heandleReturn(e, currentArtickel[i].artikelnummer)}/>
+                            <ThemeNumberPicker bottom={-15} size={Platform.OS !== 'web'? 1.4 :1} setNumer={0} return={(e) => heandleReturn(e, currentArtickel[i].artikelnummer)}/>
                         </View>
                     ])
 
                 }
         }
     }
+
     const storno = async () => {
         await fetchClearOrder(tableId);
         onBlur()
     }
+
     const del = async () =>  {
         const result = await fetchGetCurrentOrder(tableId);
         if (result) {
@@ -101,10 +122,20 @@ export default function BestellungPopUp({tableId,openBestellungenDialog, onBlur}
         }
         await fetchDelTisch (tableId);
         onBlur();
-    }   
+    }  
+
     const pathname = usePathname()
     useEffect(() => {
-        if (openBestellungenDialog) possilbeFood(Kat)
+        const loadinitialData = async () => {
+            const result = await fetchArtikle()
+            setCurrentArtickel(result)
+            await setUpBestellung()
+            await getBestellung()
+        }
+        if (openBestellungenDialog) {
+            loadinitialData()
+            possilbeFood(Kat)
+        }
         else {
             setKat('')
         }
@@ -190,4 +221,3 @@ export default function BestellungPopUp({tableId,openBestellungenDialog, onBlur}
         )
     } return <></>
 }
-

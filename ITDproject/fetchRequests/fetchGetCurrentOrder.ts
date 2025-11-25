@@ -12,10 +12,8 @@ export default  async  function fetchGetCurrentOrder(orderId:any){
                 orderId: orderId,
             })
         })
-        console.log(res.body,'fetchGetCurrentOrder');
         if(res.status === 200){
-            const a = await res.json()
-            return a
+            return await res.json()
         }else{
             throw Error(`Unable to fetch order ${res.status}`)
         }
