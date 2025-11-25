@@ -42,7 +42,9 @@ export default function BestellungPopUp({tableId,openBestellungenDialog, onBlur}
         });
     }
 
-    const heandleNumbers = async () => {
+    const SendOrder = async () => {
+        console.log('Bestellung to save:', Bestellung);
+        console.log(new Date().toISOString());
         await fetchSetCurrentOrder(tableId, Bestellung, new Date().toISOString(),false)
     }
 
@@ -203,7 +205,7 @@ export default function BestellungPopUp({tableId,openBestellungenDialog, onBlur}
                 </ScrollView>
                     <View style={{alignItems:'flex-end',paddingRight:10}}>
                 <ThemeButton  text={'OK'} onPress={() => {
-                    heandleNumbers()
+                    SendOrder()
                     //setKat('')
                     onBlur()
                 }} position={{bottom: 10}}size={{width:179}}/>
