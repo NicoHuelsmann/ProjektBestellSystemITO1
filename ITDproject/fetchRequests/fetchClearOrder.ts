@@ -1,8 +1,8 @@
-import {getUrl, url} from "@/fetchRequests/config";
+import {checkUrl, getUrl, url} from "@/fetchRequests/config";
 
 export default  async  function fetchClearOrder(orderId:any){
     try{
-        const res= await fetch(`${url}/removeCurrentOrder`,{
+        const res= await fetch(`${checkUrl()}/removeCurrentOrder`,{
             method: "POST",
             headers: {
                 "Content-Type": "application/json",

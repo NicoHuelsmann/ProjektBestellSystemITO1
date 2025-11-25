@@ -1,8 +1,8 @@
-import { url } from "@/fetchRequests/config";
+import {checkUrl, url} from "@/fetchRequests/config";
 
 export async function fetchSetTable(){
     try{
-        const res= await fetch(`${url}/insertTische`)
+        const res= await fetch(`${checkUrl()}/insertTische`)
         if(res.status === 200){
             return await res.json()
         }else{
@@ -28,7 +28,7 @@ export async function fetchGetTisch(){
 
 export async function fetchDelTisch (TischID: number){
     try{
-        const res= await fetch(`${url}/delTisch`,{
+        const res= await fetch(`${checkUrl()}/delTisch`,{
             method: "POST",
             headers: {
                 "Content-Type": "application/json",

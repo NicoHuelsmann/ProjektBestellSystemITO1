@@ -11,3 +11,11 @@ export const setUrl = (data:string) => {
 export function getUrl() {
     return newURL
 }
+
+export function checkUrl(){
+    if(newURL !== ''){
+        return newURL
+    }else{
+        return url
+    }
+}

@@ -1,8 +1,9 @@
-import { url } from "@/fetchRequests/config";
+import {checkUrl, getUrl, url} from "@/fetchRequests/config";
 
 export default  async  function fetchUser(userName:string){
+    console.log(checkUrl())
     try{
-    const res= await fetch(`${url}/getUser`,{
+    const res= await fetch(`${checkUrl()}/getUser`,{
         method: "POST",
             headers: {
             "Content-Type": "application/json",
@@ -23,7 +24,7 @@ export default  async  function fetchUser(userName:string){
 
 export async function fetchUserNames(userId: number) {
     try{
-        const res= await fetch(`${url}/getUserNames`,{
+        const res= await fetch(`${checkUrl()}/getUserNames`,{
             method: "POST", // oder "GET", je nachdem, was dein Server erwartet
                 headers: {
                 "Content-Type": "application/json",
