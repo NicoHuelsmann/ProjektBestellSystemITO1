@@ -71,7 +71,7 @@ app.get("/getArtikel", createEndpoint(async () => {
 
 // ArtikelInsertPOST
 app.post("/insertArtikel", createEndpoint(async (body) => {
-    return await ArtikelInsertEndpoint(dbpath, body.bezeichnung, body.preis);
+    return await ArtikelInsertEndpoint(dbpath, body.bezeichnung, body.preis, body.kategorieID);
 }));
 
 // TischeSetGET
@@ -93,7 +93,17 @@ app.post("/delTisch", createEndpoint(async (body) => {
  * Es werden die bestellungen über alle Geräte sycronisiert
  */
 const currentBestellungenSync:{ orderId:number, data:{}, date:string, ready:boolean }[] = []
-app.post('/setCurrentOrder', (req: Request, res: Response) =>{
+app.post('/SetOrUpdateCurrentOrder', (req: Request, res: Response) =>{
+    const existingOrder = currentBestellungenSync.find((d) => d.orderId === req.body.orderId);
+    if (existingOrder) {
+        // Bestellung aktualisieren
+        existingOrder.data = req.body.data;
+        existingOrder.date = req.body.date;
+        existingOrder.ready = req.body.ready;
+        return res.json({ ok: true, message: "Order updated" });
+    }
+    // Neue Bestellung hinzufügen und neue OrderID registrieren
+    
     currentBestellungenSync.push(req.body)
     console.log(currentBestellungenSync)
     res.json({ ok: true });
