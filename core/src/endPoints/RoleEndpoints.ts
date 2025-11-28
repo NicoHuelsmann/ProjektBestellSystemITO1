@@ -1,5 +1,5 @@
 import sqlite3 from "sqlite3";
-import {fetchFirst} from "../server";
+import { fetchFirst } from "../server";
 
 export default async function RoleEndpoint(dbpath:string,username:string){
     const db = new sqlite3.Database(dbpath,
