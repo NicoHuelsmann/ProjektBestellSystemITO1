@@ -36,12 +36,10 @@ const heandleDone = async (currentOrder:any) => {
             (bestellung: any) =>
                 bestellung.data && bestellung.data.some((artikel: any) => artikel.value > 0)
         );
-
         // 🔹 2. Sortieren nach Datum (älteste zuerst)
         const sortedOrders = filteredOrders.sort(
             (a: any, b: any) => new Date(a.date).getTime() - new Date(b.date).getTime()
         );
-
         const allEinzelneBestellungen: React.JSX.Element[] = [];
 
         // 🔹 3. Schleife über jede sortierte Bestellung
@@ -50,9 +48,10 @@ const heandleDone = async (currentOrder:any) => {
 
             for (const item of bestellung.data) {
                 const artikel = getArtikel.find(
-                    (a: any) => a.artikelnummer === item.id && item.value > 0
+                    (a: any) => a.artikelnummer === item.artikelnummer && item.value > 0
                 );
-                if (artikel) {
+                console.log('artikel',artikel)
+                if (artikel != null) {
                     orderItems.push(
                         <View key={`${bestellung.orderId}-${artikel.artikelnummer}`}>
                             <Text selectable={false}

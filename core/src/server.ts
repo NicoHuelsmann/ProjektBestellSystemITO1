@@ -9,8 +9,8 @@ import { userEndpointGetPersnrByUname, userEndpointGetUserByUserID } from "./end
 const app = express();
 const PORT = 9000;
 const dbpath = './database/datenbank.db';
-//const HOST = '192.168.178.194'
-const HOST = 'localhost';
+const HOST = '10.160.10.141'
+//const HOST = 'localhost';
 app.use(cors());
 app.use(express.json());
 
