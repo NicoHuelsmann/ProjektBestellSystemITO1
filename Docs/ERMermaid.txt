@@ -1,3 +1,5 @@
+erDiagram
+
     ARTIKEL {
         int ARTNR
         string ARTEXT
