@@ -186,7 +186,7 @@ export default function BestellungPopUp({tableId,openBestellungenDialog, onBlur}
                 <Text style={{fontSize:28,alignSelf:'center',paddingBottom:5}}>Tisch Nr: {tableId}</Text>
                 <Text style={{position:'absolute',paddingTop:50,paddingLeft:10}}>Preis: {priceAll}€</Text>
                 <View style={{borderStyle:'solid',borderBottomWidth:2}}/>
-                <View style={{height: Platform.OS !== 'web'? '97%':480,}}>
+                <View style={{height: Platform.OS !== 'web'? '97%':'100%',}}>
                 <ScrollView contentContainerStyle={{
                     width: '100%',
                     flexDirection: 'row',
@@ -209,7 +209,7 @@ export default function BestellungPopUp({tableId,openBestellungenDialog, onBlur}
                     ) : null}
                     {showFood}
                 </ScrollView>
-                    {Kat === ''? <TouchableWithoutFeedback onPress={Keyboard.dismiss}>
+                    {Kat === ''? <TouchableWithoutFeedback onPress={Platform.OS!== 'web'?Keyboard.dismiss : () => ''}>
                         <TextInput style={{
                             backgroundColor: 'lightgray',
                             width: '95%',
