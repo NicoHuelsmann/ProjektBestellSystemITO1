@@ -1,0 +1,58 @@
+erDiagram
+
+    ARTIKEL {
+        int ARTNR
+        string ARTEXT
+        string PICT
+        int KATID
+        string LOEKZ
+    }
+
+    PREIS {
+        float PRWRT
+        int ARTNR
+        date PRDAT
+    }
+
+    KATEG {
+        string KATEXT
+        int PARENTID
+        int KATID
+    }
+
+    BESTELLPOSITION {
+        int ARTIKEL
+        int MENGE
+    }
+
+    BESTELLUNG {
+        string READY
+        int ORDERID
+        date DATE
+        int PERSNR
+    }
+
+    USR01 {
+        string UNAME
+        string NAME1
+        string NAME2
+        string PWCODE
+        int ROLEID
+    }
+
+    TISCHE {
+        int TISCHID
+    }
+
+    ROLES {
+        string ROLEKZ
+        string ROLNAM
+    }
+
+    ARTIKEL ||--o{ PREIS : ARTIKEL_PREIS
+    ARTIKEL ||--o{ KATEG : ARTIKEL_KATEG
+    ARTIKEL ||--o{ BESTELLPOSITION : ARTIKEL_BESTELLPOSITION
+
+    BESTELLUNG ||--o{ BESTELLLPOSITION : BESTELLUNG_BESTELLPOSITION
+
+    USR01 ||--o{ ROLES : USER_ROLE
