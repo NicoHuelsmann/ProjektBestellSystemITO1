@@ -49,8 +49,8 @@ export default function Kellner():React.JSX.Element {
                 let color = 'white'
                 if(allebestellungen.data != null){
                     allebestellungen.data.forEach((item:any) => {;
-                        if(item.ready && elementTables[i].TISCHID === item.orderId){
-                            color = 'green'
+                        if(item.ready != null && elementTables[i].TISCHID === item.orderId){
+                            color = item.ready
                         }
                     })
                 }

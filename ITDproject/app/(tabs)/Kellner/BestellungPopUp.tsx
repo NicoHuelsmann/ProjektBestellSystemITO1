@@ -43,9 +43,7 @@ export default function BestellungPopUp({tableId,openBestellungenDialog, onBlur}
     }
 
     const SendOrder = async () => {
-        console.log('Bestellung to save:', Bestellung);
-        console.log(new Date().toISOString());
-        await fetchSetCurrentOrder(tableId, Bestellung, new Date().toISOString(),false)
+        await fetchSetCurrentOrder(tableId, Bestellung, new Date().toISOString(),'yellow')
     }
 
     // Abhängigkeit: Diese Funktion verwendet den aktuellen 'Bestellung' State
@@ -170,7 +168,8 @@ export default function BestellungPopUp({tableId,openBestellungenDialog, onBlur}
         // 1. Rufe foodPriceCount auf, wenn sich die Bestellung ändert (IMMER erforderlich)
         foodPriceCount()
     }, [Bestellung]); // Reagiere auf Änderungen im State 'Bestellung'
-
+    const essenPath = require('../../../assets/essen.png');;
+    const trineknPath = require('../../../assets/trinken.png');
     if (openBestellungenDialog) {
         return (
             <ThemePopUp platforme={Platform.OS} onBlur={() => {
@@ -193,13 +192,13 @@ export default function BestellungPopUp({tableId,openBestellungenDialog, onBlur}
                 }}>
                     {Kat === '' ? (
                         <>
-                            <ThemeButton text={'Getränke'} onPress={async () => {
+                            <ThemeButton icon={trineknPath} text={'Getränke'} onPress={async () => {
                                 setKat('Getränke')
-                            }} position={{left:0}} size={{width:120}}/>
-                            <ThemeButton text={'Essen'} onPress={async () => {
+                            }} position={{left:0}} size={{width:100,height:200}}/>
+                            <ThemeButton icon={essenPath} text={'Essen'} onPress={async () => {
                                 setKat('Essen')
-                            }} position={{left:0}} size={{width:120}}/>
-                        </>
+                            }} position={{left:0}} size={{width:100,height:200}}/>
+                </>
                     ) : null}
                     {showFood}
                 </ScrollView>
