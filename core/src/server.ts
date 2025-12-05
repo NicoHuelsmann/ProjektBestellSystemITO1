@@ -92,7 +92,7 @@ app.post("/delTisch", createEndpoint(async (body) => {
 /**
  * Es werden die bestellungen über alle Geräte sycronisiert
  */
-const currentBestellungenSync:{ orderId:number, data:{}, date:string, ready:string }[] = []
+const currentBestellungenSync:{ orderId:number, data:{}, date:string, ready:string, beschreibung:string| undefined }[] = []
 app.post('/SetOrUpdateCurrentOrder', (req: Request, res: Response) =>{
     const existingOrder = currentBestellungenSync.find((d) => d.orderId === req.body.orderId);
     if (existingOrder) {
@@ -100,6 +100,7 @@ app.post('/SetOrUpdateCurrentOrder', (req: Request, res: Response) =>{
         existingOrder.data = req.body.data;
         existingOrder.date = req.body.date;
         existingOrder.ready = req.body.ready;
+        existingOrder.beschreibung = req.body.beschreibung;
         return res.json({ ok: true, message: "Order updated" });
     }
     // Neue Bestellung hinzufügen und neue OrderID registrieren

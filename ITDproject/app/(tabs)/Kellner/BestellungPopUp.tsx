@@ -9,7 +9,7 @@ import fetchSetCurrentOrder from "@/fetchRequests/fetchSetCurrentOrder";
 import { fetchDelTisch } from "@/fetchRequests/fetchTische";
 import { usePathname } from "expo-router";
 import React, { useEffect, useState } from "react";
-import { Platform, ScrollView, Text, View } from "react-native";
+import {Keyboard, Platform, ScrollView, Text, TextInput, TouchableWithoutFeedback, View} from "react-native";
 interface BestellungPopUpProps {
     tableId:number;
     openBestellungenDialog:boolean;
@@ -25,6 +25,7 @@ export default function BestellungPopUp({tableId,openBestellungenDialog, onBlur}
     const [currentArtickel, setCurrentArtickel] = useState<any>();
     const [Kat,setKat] = useState<string>('');
     const [priceAll,setPriceAll] = useState<number>(0);
+    const [beschreibung,setBeschreibung] = useState<string>('');
 
     const getArtike = async () => {
         const result = await fetchArtikle()
@@ -43,7 +44,7 @@ export default function BestellungPopUp({tableId,openBestellungenDialog, onBlur}
     }
 
     const SendOrder = async () => {
-        await fetchSetCurrentOrder(tableId, Bestellung, new Date().toISOString(),'yellow')
+        await fetchSetCurrentOrder(tableId, Bestellung, new Date().toISOString(),'yellow',beschreibung)
     }
 
     // Abhängigkeit: Diese Funktion verwendet den aktuellen 'Bestellung' State
@@ -122,6 +123,8 @@ export default function BestellungPopUp({tableId,openBestellungenDialog, onBlur}
             // 1. Zuerst States leeren, um von einem sauberen Blatt zu starten
             setBestellung([]);
             setShowFood([]); // Wurde in der vorherigen Antwort hinzugefügt
+            setBeschreibung('');
+
 
             // 2. Artikel laden
             const resultArtikle = await fetchArtikle();
@@ -133,6 +136,7 @@ export default function BestellungPopUp({tableId,openBestellungenDialog, onBlur}
             if (resultOrder) {
                 // FALL 1: Bestellung existiert, State direkt setzen
                 setBestellung(resultOrder.data);
+                setBeschreibung(resultOrder.beschreibung);
             } else {
                 // FALL 2: Bestellung existiert NICHT, State mit 0 initialisieren
                 const initialBestellung: BestellungItem[] = [];
@@ -168,20 +172,23 @@ export default function BestellungPopUp({tableId,openBestellungenDialog, onBlur}
         // 1. Rufe foodPriceCount auf, wenn sich die Bestellung ändert (IMMER erforderlich)
         foodPriceCount()
     }, [Bestellung]); // Reagiere auf Änderungen im State 'Bestellung'
-    const essenPath = require('../../../assets/essen.png');;
+
+    const essenPath = require('../../../assets/essen.png');
     const trineknPath = require('../../../assets/trinken.png');
     if (openBestellungenDialog) {
         return (
-            <ThemePopUp platforme={Platform.OS} onBlur={() => {
-                onBlur()
-            }}>
+            <ThemePopUp XorBack={Kat === ''}   platforme={Platform.OS}
+                        onBlur={() => {onBlur()}}
+                        onPressBackButton={() => {
+                            setShowFood([])
+                            setKat('')
+                        }}>
                 <Text style={{fontSize:28,alignSelf:'center',paddingBottom:5}}>Tisch Nr: {tableId}</Text>
                 <Text style={{position:'absolute',paddingTop:50,paddingLeft:10}}>Preis: {priceAll}€</Text>
                 <View style={{borderStyle:'solid',borderBottomWidth:2}}/>
-                <View>
-                <ScrollView  contentContainerStyle={{
+                <View style={{height: Platform.OS !== 'web'? '97%':'100%',}}>
+                <ScrollView contentContainerStyle={{
                     width: '100%',
-                    height: Platform.OS !== 'web'? '80%':480,
                     flexDirection: 'row',
                     justifyContent: 'space-between',
                     flexWrap: 'wrap',
@@ -202,18 +209,37 @@ export default function BestellungPopUp({tableId,openBestellungenDialog, onBlur}
                     ) : null}
                     {showFood}
                 </ScrollView>
+                    {Kat === ''? <TouchableWithoutFeedback onPress={Platform.OS!== 'web'?Keyboard.dismiss : () => ''}>
+                        <TextInput style={{
+                            backgroundColor: 'lightgray',
+                            width: '95%',
+                            height: 200,
+                            borderStyle: 'solid',
+                            borderRadius: 15,
+                            borderWidth: 2,
+                            paddingLeft: 5,
+                            alignSelf: 'center',
+                            shadowColor: '#000',
+                            shadowOffset: {width: 2, height: 2},
+                            shadowOpacity: 0.3,
+                            shadowRadius: 4,
+                            elevation: 3,
+                        }} placeholderTextColor={'black'} placeholder={'Beschreibung...'} value={beschreibung}
+                                   onChangeText={setBeschreibung} multiline={true}
+                                   onBlur={() => console.log("geschlossen")}/>
+                    </TouchableWithoutFeedback>: null}
                     <View style={{alignItems:'flex-end',paddingRight:10}}>
                 <ThemeButton  text={'OK'} onPress={() => {
                     SendOrder()
                     //setKat('')
                     onBlur()
-                }} position={{bottom: 10}}size={{width:179}}/>
+                }} position={{bottom: -5}}size={{width:179}}/>
                     </View>
                     <View style={{paddingLeft:10}}>
                         <ThemeButton  text={'Storno'} onPress={()=> {
                             //setKat('')
                             storno()
-                        }} position={{left:0,bottom:60}} size={{width:179}}/>
+                        }} position={{left:0,bottom:45}} size={{width:179}}/>
                     </View>
                     <View>
                         <ThemeTrashIcon paddingLeft={0} paddingTop={0} bottom={Platform.OS !== 'web'? '2555%':'2116%'} left={10} onPress={del}/>
