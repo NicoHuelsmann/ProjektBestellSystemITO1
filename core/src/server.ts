@@ -9,7 +9,7 @@ import { userEndpointGetPersnrByUname, userEndpointGetUserByUserID } from "./end
 const app = express();
 const PORT = 9000;
 const dbpath = './database/datenbank.db';
-const HOST = '10.160.10.141'
+const HOST = '192.168.178.194'
 //const HOST = 'localhost';
 app.use(cors());
 app.use(express.json());
@@ -92,7 +92,7 @@ app.post("/delTisch", createEndpoint(async (body) => {
 /**
  * Es werden die bestellungen über alle Geräte sycronisiert
  */
-const currentBestellungenSync:{ orderId:number, data:{}, date:string, ready:boolean }[] = []
+const currentBestellungenSync:{ orderId:number, data:{}, date:string, ready:string }[] = []
 app.post('/SetOrUpdateCurrentOrder', (req: Request, res: Response) =>{
     const existingOrder = currentBestellungenSync.find((d) => d.orderId === req.body.orderId);
     if (existingOrder) {

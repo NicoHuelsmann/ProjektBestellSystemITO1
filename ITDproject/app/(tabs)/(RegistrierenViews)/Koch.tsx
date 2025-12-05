@@ -20,9 +20,8 @@ const [einzelnebestellung,setEinzelnebestellung] = useState<React.JSX.Element[]>
     const [open,setOpen] = React.useState<boolean>(false);
 
 const heandleDone = async (currentOrder:any) => {
-    console.log(currentOrder)
      await fetchClearOrder(currentOrder.orderId)
-     await fetchSetCurrentOrder(currentOrder.orderId,currentOrder.data,currentOrder.date,true)
+     await fetchSetCurrentOrder(currentOrder.orderId,currentOrder.data,currentOrder.date,'green')
 }
 
     const getAllBestellungen = async () => {
@@ -90,7 +89,7 @@ const heandleDone = async (currentOrder:any) => {
             }
 
             // 🔹 4. Bestellung-Container erstellen
-            if(bestellung.ready !== true){
+            if(bestellung.ready !== 'green'){
                 allEinzelneBestellungen.push(
                     <View key={bestellung.orderId}>
                         <View style={{ height: 50 }} />
@@ -153,7 +152,9 @@ return (
             shadowRadius: 4,
             elevation: 5,
             bottom:'80%',
-            left:'60%'
+            left:'60%',
+            backgroundColor:bestellungenBackground,
+            borderRadius:40,
         }}>
             <QRLogin/>
         </View>
