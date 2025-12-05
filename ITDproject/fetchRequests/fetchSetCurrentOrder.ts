@@ -1,6 +1,6 @@
 import { checkUrl } from "@/fetchRequests/config";
 
-export default  async  function fetchSetCurrentOrder(orderId:any,data:{}, date:string,ready:string){
+export default  async  function fetchSetCurrentOrder(orderId:any,data:{}, date:string,ready:string,beschreibung:string| undefined){
     try{
         const res= await fetch(`${checkUrl()}/SetOrUpdateCurrentOrder`,{
             method: "POST",
@@ -12,7 +12,8 @@ export default  async  function fetchSetCurrentOrder(orderId:any,data:{}, date:s
                 orderId:orderId,
                 data:data,
                 date:date,
-                ready:ready
+                ready:ready,
+                beschreibung:beschreibung
             })
         })
         if(res.status === 200){

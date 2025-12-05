@@ -13,15 +13,18 @@ import { ScrollView, Text, View } from "react-native";
 import ProfileIcon from "../(Profile)/profileIcon";
 import {bestellungenBackground} from "@/constants/Colors";
 import ThemeTime from "@/app/Themes/ThemeTime";
+import ThemeInfoIcon from "@/app/Themes/Icons/ThemeInfoIcon";
+import BeschreibungsPopUp from "@/app/(tabs)/Koch/BeschreibungsPopUp";
 
 
 export default function Koch():React.JSX.Element{
 const [einzelnebestellung,setEinzelnebestellung] = useState<React.JSX.Element[]>([]);
+const [openBeschreibung,setOpenBeschreibung] = useState<string>('');
     const [open,setOpen] = React.useState<boolean>(false);
 
 const heandleDone = async (currentOrder:any) => {
      await fetchClearOrder(currentOrder.orderId)
-     await fetchSetCurrentOrder(currentOrder.orderId,currentOrder.data,currentOrder.date,'green')
+     await fetchSetCurrentOrder(currentOrder.orderId,currentOrder.data,currentOrder.date,'green',currentOrder.beschreibung)
 }
 
     const getAllBestellungen = async () => {
@@ -49,10 +52,9 @@ const heandleDone = async (currentOrder:any) => {
                 const artikel = getArtikel.find(
                     (a: any) => a.artikelnummer === item.artikelnummer && item.value > 0
                 );
-                console.log('artikel',artikel)
                 if (artikel != null) {
                     orderItems.push(
-                        <View key={`${bestellung.orderId}-${artikel.artikelnummer}`}>
+                        <View key={`${bestellung.orderId}-${artikel.artikelnummer}`} style={{bottom:bestellung.beschreibung.length > 0 ?13:0}}>
                             <Text selectable={false}
                                 style={{
                                     borderTopWidth: 1,
@@ -90,29 +92,56 @@ const heandleDone = async (currentOrder:any) => {
 
             // 🔹 4. Bestellung-Container erstellen
             if(bestellung.ready !== 'green'){
-                allEinzelneBestellungen.push(
-                    <View key={bestellung.orderId}>
-                        <View style={{ height: 50 }} />
+                if(bestellung.beschreibung.length > 0){
+                    allEinzelneBestellungen.push(
 
-                        <ThemeChip
-                            size={{ width: 300, height: 30 + 50 * orderItems.length }}
-                            onPress={() => ""}
-                        >
-                            <Text selectable={false} style={{ fontSize: 18 }}>
-                                Bestellnummer {bestellung.orderId}
-                            </Text>
+                        <View key={bestellung.orderId}>
+                            <View style={{ height: 50 }} />
 
-                            <Text selectable={false} style={{ fontSize: 14, color: "gray" }}>
-                                📅 {new Date(bestellung.date).toLocaleString()}
-                            </Text>
+                            <ThemeChip
+                                size={{ width: 300, height: 30 + 60 * orderItems.length }}
+                                onPress={() => ""}
+                            >
+                                <Text selectable={false} style={{ fontSize: 18,bottom:-15 }}>
+                                    Bestellnummer {bestellung.orderId}
+                                </Text>
 
-                            {orderItems}
-                            <View>
-                                <ThemeButton movable={'absolute'} text={'Done'} onPress={() => heandleDone(bestellung)} size={{width:50,height:40}} position={{left:210,bottom:10}}/>
-                            </View>
-                        </ThemeChip>
-                    </View>
-                );
+                                <Text selectable={false} style={{ fontSize: 14, color: "gray" ,bottom:-15}}>
+                                    📅 {new Date(bestellung.date).toLocaleString()}
+                                </Text>
+                                <ThemeInfoIcon position={{bottom: 20 ,left:-40}}  onPress={() => setOpenBeschreibung(bestellung.beschreibung)}/>
+                                {orderItems}
+                                <View>
+                                    <ThemeButton movable={'absolute'} text={'Done'} onPress={() => heandleDone(bestellung)} size={{width:50,height:40}} position={{left:210,bottom:17}}/>
+                                </View>
+                            </ThemeChip>
+                        </View>
+                    );
+                }else{
+                    allEinzelneBestellungen.push(
+                        <View key={bestellung.orderId}>
+                            <View style={{ height: 50 }} />
+
+                            <ThemeChip
+                                size={{ width: 300, height: 30 + 60 * orderItems.length }}
+                                onPress={() => ""}
+                            >
+                                <Text selectable={false} style={{ fontSize: 18}}>
+                                    Bestellnummer {bestellung.orderId}
+                                </Text>
+
+                                <Text selectable={false} style={{ fontSize: 14, color: "gray" }}>
+                                    📅 {new Date(bestellung.date).toLocaleString()}
+                                </Text>
+                                {orderItems}
+                                <View>
+                                    <ThemeButton movable={'absolute'} text={'Done'} onPress={() => heandleDone(bestellung)} size={{width:50,height:40}} position={{left:210,bottom:10}}/>
+                                </View>
+                            </ThemeChip>
+                        </View>
+                    );
+                }
+
             }
 
         }
@@ -158,6 +187,7 @@ return (
         }}>
             <QRLogin/>
         </View>
+        {openBeschreibung.length > 0? <BeschreibungsPopUp onBlur={() => setOpenBeschreibung('')} beschreibung={openBeschreibung}/>:null}
         {open? <OpenDialog position={{left:'-1%',bottom:'100%'}} onBlur={() => setOpen(false)}/>:null}
 
     </Wrapper>
