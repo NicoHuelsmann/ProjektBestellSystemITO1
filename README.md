@@ -2,9 +2,9 @@
 
 ## Funktionen
 ### Login / Check-in (Kellner)
-•	Der Kellner startet die App auf einem Arbeitsgerät (z. B. Tablet oder Smartphone).
-•	Es erscheint eine Login-Maske zur Eingabe Anmeldenamen und des Passworts.
-•	Nach erfolgreichem Login wird der Kellner auf das Haupt-Dashboard weitergeleitet.
+- Der Kellner startet die App auf einem Arbeitsgerät (z. B. Tablet oder Smartphone).
+- Es erscheint eine Login-Maske zur Eingabe Anmeldenamen und des Passworts.
+- Nach erfolgreichem Login wird der Kellner auf das Haupt-Dashboard weitergeleitet.
  
 ### Tisch-Auswahl oder -Erstellung
 - Im Dashboard wird eine Übersicht aller vorhandenen Tische angezeigt.
